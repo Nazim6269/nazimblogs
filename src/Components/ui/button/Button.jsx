@@ -10,6 +10,7 @@ const StyledButton = styled.button`
   font-size: 16px;
   border-radius: 4px;
   margin: 17px 0 0 0;
+  text-transform: capitalize;
 
   &:hover {
     background-color: rgb(72, 46, 218);

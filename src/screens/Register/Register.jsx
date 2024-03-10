@@ -16,6 +16,11 @@ const Register = () => {
         <InputGroup name="password" label={"password"} />
 
         <Button type="submit" text={"Create Account"} />
+
+        <div className={styled.formFooter}>
+          <p>Already have an account?</p>
+          <a href="/">Login</a>
+        </div>
       </form>
     </div>
   );

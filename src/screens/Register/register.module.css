@@ -1,3 +1,20 @@
 .form {
-  width: 38rem;
+  width: 42rem;
+}
+
+.formFooter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 18px;
+}
+
+.formFooter p {
+  color: #ffffff;
+}
+
+.formFooter a {
+  text-decoration: none;
+  color: rgb(82, 53, 244);
 }

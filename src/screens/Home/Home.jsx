@@ -1,10 +1,25 @@
-import Register from "../Register/Register";
+import SideBar from "../../Components/shared/SideBar/SideBar";
+import BlogCards from "../BlogCards/BlogCards";
 
 const Home = () => {
   return (
     <div>
-      <h1>Home</h1>
-      <Register />
+      {/* <Login /> */}
+
+      {/* <Register /> */}
+
+      {/* {<SingleBlog />} */}
+
+      <div className="flex gap-5 m-5">
+        <div className="flex flex-col gap-2">
+          <BlogCards />
+          <BlogCards />
+          <BlogCards />
+          <BlogCards />
+          <BlogCards />
+        </div>
+        <SideBar />
+      </div>
     </div>
   );
 };

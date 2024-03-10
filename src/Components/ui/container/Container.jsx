@@ -1,11 +1,10 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  padding: 0 1rem;
+  padding: 0 5rem;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100vh;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default Container;

@@ -7,6 +7,7 @@ const Input = styled.input`
   background-color: #030317;
   padding: 18px 6px;
   width: 100%;
+  color: #ffffff;
 
   &:focus {
     border: 1px solid #6366f1;

@@ -1,0 +1,7 @@
+.user {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 8px;
+  color: #fff;
+}

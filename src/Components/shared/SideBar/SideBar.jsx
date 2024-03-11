@@ -4,6 +4,7 @@ import PopularBlog from "../../PopularBlog/PopularBlog";
 const SideBar = () => {
   return (
     <div className="flex flex-col gap-5">
+      {/* Popular Blog div */}
       <div className="border border-gray-500 hover:border-gray-600 rounded px-3 py-2">
         <h3 className="text-slate-300 text-xl lg:text-2xl font-semibold">
           Most Popular 👍️
@@ -12,6 +13,7 @@ const SideBar = () => {
         <PopularBlog />
         <PopularBlog />
       </div>
+      {/* Favorite blog div */}
       <div className="border border-gray-500 hover:border-gray-600 rounded px-3 py-2">
         <h3 className="text-slate-300 text-xl lg:text-2xl font-semibold">
           Your Favourites ❤️

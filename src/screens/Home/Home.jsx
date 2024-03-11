@@ -1,16 +1,15 @@
-import SideBar from "../../Components/shared/SideBar/SideBar";
-import BlogCards from "../BlogCards/BlogCards";
+import CreateBlog from "../CreateBlog/CreateBlog";
 
 const Home = () => {
   return (
-    <div>
+    <div className="w-4/6 my-4">
       {/* <Login /> */}
 
       {/* <Register /> */}
 
       {/* {<SingleBlog />} */}
 
-      <div className="flex gap-5 m-5">
+      {/* <div className="flex gap-5 m-5">
         <div className="flex flex-col gap-2">
           <BlogCards />
           <BlogCards />
@@ -19,7 +18,9 @@ const Home = () => {
           <BlogCards />
         </div>
         <SideBar />
-      </div>
+      </div> */}
+
+      <CreateBlog />
     </div>
   );
 };

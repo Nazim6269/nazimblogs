@@ -1,4 +1,4 @@
-import CreateBlog from "../CreateBlog/CreateBlog";
+import Profile from "../Profile/Profile";
 
 const Home = () => {
   return (
@@ -20,7 +20,9 @@ const Home = () => {
         <SideBar />
       </div> */}
 
-      <CreateBlog />
+      {/* <CreateBlog /> */}
+
+      <Profile />
     </div>
   );
 };

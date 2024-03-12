@@ -1,4 +1,4 @@
-import Profile from "../Profile/Profile";
+import SearchPopup from "../../Components/SearchPopup/SearchPopup";
 
 const Home = () => {
   return (
@@ -22,7 +22,8 @@ const Home = () => {
 
       {/* <CreateBlog /> */}
 
-      <Profile />
+      {/* <Profile /> */}
+      <SearchPopup />
     </div>
   );
 };

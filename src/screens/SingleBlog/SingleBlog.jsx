@@ -1,5 +1,5 @@
-import Comments from "../Comments/Comments";
-import User from "../User/User";
+import Comments from "../../Components/Comments/Comments";
+import User from "../../Components/User/User";
 import style from "./single.module.css";
 
 const SingleBlog = () => {

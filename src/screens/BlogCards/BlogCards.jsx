@@ -1,6 +1,6 @@
 const BlogCards = () => {
   return (
-    <div className="flex justify-center items-center gap-3 text-white  px-3 py-7 border rounded border-gray-600 hover:border-blue-400">
+    <div className="flex justify-center items-center gap-3 text-white  px-3 py-7 border rounded border-gray-600 transition duration-300 hover:ease-in hover:border-blue-400">
       <img className="w-96 " src="/React-Roadmap.jpg" alt="" />
       <div className="mt-2">
         <h3 className="text-slate-300 text-xl lg:text-2xl">React Fetch API</h3>

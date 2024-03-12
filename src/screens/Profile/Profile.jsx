@@ -1,3 +1,5 @@
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlogCards from "../BlogCards/BlogCards";
 
 const Profile = () => {
@@ -7,7 +9,9 @@ const Profile = () => {
         <p className="bg-orange-500 w-24 h-24 text-4xl rounded-full text-white font-bold flex justify-center items-center">
           S
         </p>
-        <span className="bg-slate-600 w-7 h-7 rounded-full absolute bottom-0 right-0"></span>
+        <span className="bg-slate-600 w-7 h-7 rounded-full absolute bottom-0 right-0 flex justify-center items-center text-sm">
+          <FontAwesomeIcon icon={faPen} className="text-white" />
+        </span>
       </div>
       <div className="text-center my-6">
         <span className="text-white text-2xl font-bold">Saad Hassan</span>
@@ -22,7 +26,9 @@ const Profile = () => {
           Web and Mobile Application Development firm and the first Digital and
           Social Media Marketing Agency in Bangladesh.
         </p>
-        <span className="bg-slate-600 w-7 h-7 rounded-full absolute  top-0 right-0"></span>
+        <span className="bg-slate-600 w-7 h-7 rounded-full absolute top-0 right-0 flex justify-center items-center text-sm">
+          <FontAwesomeIcon icon={faPen} className="text-white" />
+        </span>
       </div>
 
       <hr />

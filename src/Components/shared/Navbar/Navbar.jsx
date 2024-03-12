@@ -1,3 +1,5 @@
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "./navbar.module.css";
 
 const Navbar = () => {
@@ -9,10 +11,15 @@ const Navbar = () => {
         </div>
         <div className={styled.rightPanel}>
           <button>write</button>
-          <input type="search" name="" id="" placeholder="Search" />
+          <div className="flex justify-center items-center gap-2">
+            <FontAwesomeIcon icon={faSearch} className="text-white text-md " />
+            <span>Search</span>
+          </div>
 
           <a href="/">login</a>
-          <img src="" alt="" />
+          <span className="bg-orange-600 w-12 h-12 rounded-full flex justify-center items-center">
+            S
+          </span>
           <span>saad hassan</span>
         </div>
       </div>

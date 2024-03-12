@@ -1,4 +1,5 @@
-import SearchPopup from "../../Components/SearchPopup/SearchPopup";
+import SideBar from "../../Components/shared/SideBar/SideBar";
+import BlogCards from "../BlogCards/BlogCards";
 
 const Home = () => {
   return (
@@ -9,7 +10,7 @@ const Home = () => {
 
       {/* {<SingleBlog />} */}
 
-      {/* <div className="flex gap-5 m-5">
+      <div className="flex gap-5 m-5">
         <div className="flex flex-col gap-2">
           <BlogCards />
           <BlogCards />
@@ -18,12 +19,12 @@ const Home = () => {
           <BlogCards />
         </div>
         <SideBar />
-      </div> */}
+      </div>
 
       {/* <CreateBlog /> */}
 
       {/* <Profile /> */}
-      <SearchPopup />
+      {/* <SearchPopup /> */}
     </div>
   );
 };

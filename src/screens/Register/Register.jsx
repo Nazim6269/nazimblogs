@@ -1,4 +1,5 @@
-import InputGroup from "../../Components/shared/InputGroup";
+import { Link } from "react-router-dom";
+import InputGroup from "../../Components/InputGroup/InputGroup";
 import Button from "../../Components/ui/button/Button";
 import styled from "./register.module.css";
 
@@ -19,7 +20,7 @@ const Register = () => {
 
         <div className={styled.formFooter}>
           <p>Already have an account?</p>
-          <a href="/">Login</a>
+          <Link to={"/login"}>Login</Link>
         </div>
       </form>
     </div>

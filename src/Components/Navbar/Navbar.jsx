@@ -8,7 +8,9 @@ const Navbar = () => {
     <>
       <div className={styled.navbar}>
         <div className={styled.leftPanel}>
-          <img src="/logo.svg" alt="header logo" />
+          <Link to={"/"}>
+            <img src="/logo.svg" alt="header logo" />
+          </Link>
         </div>
         <div className={styled.rightPanel}>
           <Link to={"/create-blog"}>

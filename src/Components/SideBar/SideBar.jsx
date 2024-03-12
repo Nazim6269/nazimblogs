@@ -1,5 +1,5 @@
-import Favorite from "../../Favorite/Favorite";
-import PopularBlog from "../../PopularBlog/PopularBlog";
+import Favorite from "../../Components/Favorite/Favorite";
+import PopularBlog from "../../Components/PopularBlog/PopularBlog";
 
 const SideBar = () => {
   return (

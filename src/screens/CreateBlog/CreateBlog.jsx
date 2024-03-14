@@ -1,6 +1,6 @@
 const CreateBlog = () => {
   return (
-    <div className="">
+    <div className="w-4/6">
       {/* <!-- Form Input field for creating Blog Post --> */}
       <form action="#" method="POST" className=" px-5 py-4">
         <div className="grid place-items-center bg-slate-600/20  h-[150px] rounded-md my-4">

@@ -2,15 +2,18 @@ import styled from "styled-components";
 
 const Input = styled.input`
   outline: none;
-  border: 1px solid#353545;
+  border: 1px solid
+    ${(props) => (props.theme === "dark" ? "#6366f1" : "#d1d5db")};
   border-radius: 6px;
-  background-color: #030317;
+  background-color: ${(props) =>
+    props.theme === "dark" ? "#030317" : "#ffffff"};
   padding: 18px 6px;
   width: 100%;
-  color: #ffffff;
+  color: ${(props) => (props.theme === "dark" ? "#ffffff" : "#1f2937")};
 
   &:focus {
-    border: 1px solid #6366f1;
+    border: 1px solid
+      ${(props) => (props.theme === "dark" ? "#ffffff" : "#4f46e5")};
   }
 `;
 

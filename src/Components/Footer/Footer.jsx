@@ -1,5 +1,5 @@
-import Social from "../Social/Social";
 import { useTheme } from "../../hooks/useTheme"; // Assuming the hook is in the same location
+import Social from "../Social/Social";
 
 const Footer = () => {
   const [theme] = useTheme(); // Get current theme
@@ -9,7 +9,7 @@ const Footer = () => {
       className={`${
         theme === "dark"
           ? "bg-gray-900 text-white"
-          : "bg-white text-black"
+          : "bg-white shadow-2xl text-black"
       } flex flex-col justify-between items-center py-4 px-24 msm:flex msm:flex-row`}
     >
       <div>

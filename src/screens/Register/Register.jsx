@@ -5,15 +5,18 @@ import { useTheme } from "../../hooks/useTheme";
 
 const Register = () => {
   const [theme] = useTheme();
-
   return (
-    <div
-      className={`flex w-full min-h-screen items-center justify-center ${
-        theme === "light" ? "white" : "gray-900"
-      }`}
-    >
-      <div className="w-full max-w-md px-6 py-8 rounded-lg shadow-lg space-y-6 bg-white dark:bg-gray-800">
-        <h1 className="text-center text-3xl font-bold mb-2 text-gray-800 dark:text-white">
+    <div className={`flex w-full min-h-screen items-center justify-center`}>
+      <div
+        className={`w-full max-w-md px-6 py-8 rounded-lg shadow-lg space-y-6 ${
+          theme === "dark" ? "bg-gray-800" : "bg-white"
+        } `}
+      >
+        <h1
+          className={`text-center text-3xl font-bold mb-2 ${
+            theme === "dark" ? "text-white" : "text-gray-800 "
+          }`}
+        >
           Register
         </h1>
         <form className="space-y-6">

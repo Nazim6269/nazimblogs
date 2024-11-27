@@ -1,18 +1,18 @@
-import { faHamburger, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <>
-      <div className="flex justify-between items-center px-20 py-5 text-lg">
+      <div className="flex justify-between items-center px-8 xsm:px-12 sm:px-20 py-5 text-lg">
         {/* Left Panel */}
         <div>
           <Link to={"/"}>
             <img
               src="/blog.webp"
               alt="header logo"
-              className="h-20 select-none"
+              className="h-14 xsm:h-20 select-none"
             />
           </Link>
         </div>

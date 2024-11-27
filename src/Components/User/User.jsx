@@ -37,7 +37,7 @@ const User = ({ comment }) => {
 };
 
 User.propTypes = {
-  comment: PropTypes.string.isRequired,
+  comment: PropTypes.string,
 };
 
 export default User;

@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
-import { useTheme } from "../../hooks/useTheme"; 
+import { useTheme } from "../../hooks/useTheme";
+import { Link } from "react-router-dom";
 
 const BlogCard = ({ title, description, author, date, imageSrc, likes }) => {
   const [theme] = useTheme();
 
   return (
     <div
-      className={`flex flex-col justify-center items-center gap-3 px-3 py-7 border rounded transition duration-300 hover:ease-in lg:flex lg:flex-row
+      className={`flex flex-col justify-center items-center gap-3 px-3 py-7 border rounded transition duration-300 hover:ease-in lg:flex lg:flex-row mb-3 shadow-lg
       ${
         theme === "dark"
           ? "bg-gray-800 text-white border-gray-600 hover:border-blue-400"
@@ -31,9 +32,9 @@ const BlogCard = ({ title, description, author, date, imageSrc, likes }) => {
 
             <div>
               <h5 className="text-gray-500 text-sm">
-                <a href="/profile" className="hover:underline">
+                <Link to="/profile" className="hover:underline">
                   {author || "Nazim Uddin"}
-                </a>
+                </Link>
               </h5>
               <div className="flex items-center text-xs text-gray-500">
                 <span>{date || "June 28, 2018"}</span>
@@ -56,7 +57,7 @@ BlogCard.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   author: PropTypes.string,
-  date: PropTypes.date,
+  date: PropTypes.func,
   imageSrc: PropTypes.string,
   likes: PropTypes.string,
 };

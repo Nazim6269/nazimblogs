@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import InputGroup from "../../Components/InputGroup/InputGroup";
 import Button from "../../Components/ui/button/Button";
-import { useTheme } from "../../hooks/useTheme"; 
+import { useTheme } from "../../hooks/useTheme";
 
 const Login = () => {
-  const [theme] = useTheme(); 
+  const [theme] = useTheme();
 
   return (
     <div
-      className={`flex min-h-screen items-center justify-center bg-${
+      className={`flex min-h-screen w-full items-center justify-center ${
         theme === "light" ? "white" : "gray-900"
       }`}
     >
@@ -33,8 +33,6 @@ const Login = () => {
             Register
           </Link>
         </div>
-
-        
       </div>
     </div>
   );

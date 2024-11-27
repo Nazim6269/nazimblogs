@@ -8,7 +8,7 @@ const SideBar = () => {
   return (
     <div
       className={`${
-        theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"
+        theme === "dark" ? "bg-dark text-white" : "bg-white text-black"
       } flex flex-col gap-5 p-4 rounded-lg`}
     >
       {/* Popular Blog div */}

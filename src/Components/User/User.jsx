@@ -10,6 +10,7 @@ const StyledUser = styled.div`
   align-items: start;
   gap: 8px;
   color: #fff;
+  letter-spacing: 1px;
 `;
 
 const User = ({ comment }) => {

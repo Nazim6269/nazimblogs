@@ -1,4 +1,4 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faHamburger, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
@@ -9,7 +9,11 @@ const Navbar = () => {
         {/* Left Panel */}
         <div>
           <Link to={"/"}>
-            <img src="/blog.webp" alt="header logo" className="h-20" />
+            <img
+              src="/blog.webp"
+              alt="header logo"
+              className="h-20 select-none"
+            />
           </Link>
         </div>
 
@@ -36,15 +40,20 @@ const Navbar = () => {
           </Link>
 
           <span className="bg-gray-600 w-12 h-12 rounded-full hidden justify-center items-center text-white xsm:flex ">
-            S
+            N
           </span>
 
           <Link
             to={"/profile"}
-            className="text-white capitalize text-sm xsm:text-lg"
+            className="text-white capitalize text-sm xsm:text-lg "
           >
-            <span>saad hassan</span>
+            <span>Nazim Uddin</span>
           </Link>
+        </div>
+        <div className="flex flex-col gap-1 xsm:hidden">
+          <div className="bg-slate-50 h-[1px] w-5"></div>
+          <div className="bg-slate-50 h-[1px] w-5"></div>
+          <div className="bg-slate-50 h-[1px] w-5"></div>
         </div>
       </div>
 

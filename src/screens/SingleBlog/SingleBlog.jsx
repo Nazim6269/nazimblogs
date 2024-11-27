@@ -1,23 +1,30 @@
 import Comments from "../../Components/Comments/Comments";
 import User from "../../Components/User/User";
-import style from "./single.module.css";
 
 const SingleBlog = () => {
   return (
     <div>
-      <div className={style.singleBlog}>
-        <h1>Integer Maecenas Eget Viverra</h1>
-        <div className={style.userInfo}>
-          <User /> <span>12.12.2032</span> <span>100 Likes</span>
+      <div className="">
+        <div className="flex flex-col justify-between items-start gap-5">
+          <h1 className="text-4xl capitalize font-mono">
+            Integer Maecenas Eget Viverra
+          </h1>
+          <div
+            className={
+              "flex flex-col justify-start gap-4 items-start sm:flex sm:flex-row sm:justify-center sm:items-center "
+            }
+          >
+            <User /> <span>12.12.2032</span> <span>100 Likes</span>
+          </div>
         </div>
-        {/* <div className={style.imageDiv}>
-        <img
-          src="/React-Roadmap.jpg"
-          alt=""
-          style={{ height: "50%", width: "59%" }}
-        />
-      </div> */}
-        <div>
+        <div className="mt-2">
+          <img
+            src="/roadmap.webp"
+            alt=""
+            style={{ height: "50%", width: "59%" }}
+          />
+        </div>
+        <div className="font-bold flex justify-start items-center gap-2 my-3 font-mono">
           <button>Javascript</button>
           <button>Node</button>
           <button>React</button>
@@ -25,7 +32,7 @@ const SingleBlog = () => {
         </div>
         <div>
           <div>
-            <p>
+            <p className="tracking-normal leading-7">
               {" "}
               Today I was mob programming with Square{"'"}s Mobile & Performance
               Reliability team and we toyed with an interesting idea. Our
@@ -56,8 +63,8 @@ const SingleBlog = () => {
             </p>
           </div>
           <div>
-            <h2>100% code-based map</h2>
-            <p>
+            <h2 className="text-3xl mt-7 mb-3">100% code-based map</h2>
+            <p className="tracking-normal left-7">
               What if we generate code that returns the right team for a given
               screen, instead of creating a map? Since we know the full list of
               screen classes, we can check ahead of time whether there{"'"}s any
@@ -67,7 +74,7 @@ const SingleBlog = () => {
         </div>
       </div>
 
-      <h2>Comments {"(3)"}</h2>
+      <h2 className="text-2xl mt-7 mb-2">Comments {"(3)"}</h2>
       <Comments />
     </div>
   );

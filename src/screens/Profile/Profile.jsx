@@ -6,25 +6,23 @@ const Profile = () => {
   return (
     <div className="flex flex-col gap-3 justify-center items-center">
       <div className="relative">
-        <p className="bg-orange-500 w-24 h-24 text-4xl rounded-full text-white font-bold flex justify-center items-center">
-          S
+        <p className="bg-gray-500 w-24 h-24 text-4xl rounded-full text-white font-bold flex justify-center items-center">
+          N
         </p>
         <span className="bg-slate-600 w-7 h-7 rounded-full absolute bottom-0 right-0 flex justify-center items-center text-sm">
           <FontAwesomeIcon icon={faPen} className="text-white" />
         </span>
       </div>
       <div className="text-center my-6">
-        <span className="text-white text-2xl font-bold">Saad Hassan</span>
-        <p className="text-white">saad@gmail.com</p>
+        <span className="text-white text-2xl font-bold">Nazim Uddin</span>
+        <p className="text-white">nazimdev10022001@gmail.com</p>
       </div>
       <div className="relative">
         <p className="text-slate-500 text-center">
-          Sumit is an entrepreneurial visionary known for his exceptional
-          performance and passion for technology and business. He established
-          Analyzen in 2008 while he was a student at Bangladesh University of
-          Engineering & Technology (BUET). Analyzen has since become a top-tier
-          Web and Mobile Application Development firm and the first Digital and
-          Social Media Marketing Agency in Bangladesh.
+          This is Nazim, who wants to be a full stack engineer though its not
+          easy at all.But he is always trying his best. Now he is learning Front
+          end development through various resourches in online.Recently he is
+          studying in University of Chittagong .
         </p>
         <span className="bg-slate-600 w-7 h-7 rounded-full absolute top-0 right-0 flex justify-center items-center text-sm">
           <FontAwesomeIcon icon={faPen} className="text-white" />
@@ -34,8 +32,6 @@ const Profile = () => {
       <hr />
       <div className="flex flex-col gap-3 mt-7">
         <h2 className="text-white text-4xl font-semibold mb-5">Your blogs</h2>
-        <BlogCards />
-        <BlogCards />
         <BlogCards />
       </div>
     </div>

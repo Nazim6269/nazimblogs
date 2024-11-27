@@ -8,6 +8,7 @@ import Home from "./screens/Home/Home";
 import Login from "./screens/Login/Login";
 import Profile from "./screens/Profile/Profile";
 import Register from "./screens/Register/Register";
+import SingleBlog from "./screens/SingleBlog/SingleBlog";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/create-blog" element={<CreateBlog />} />
             <Route exact path="/profile" element={<Profile />} />
+            <Route exact path="/single-blog" element={<SingleBlog />} />
           </Routes>
         </Container>
         <Footer />

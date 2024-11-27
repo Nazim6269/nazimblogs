@@ -9,7 +9,7 @@ export default {
         padding: "1.25rem",
       },
       colors: {
-        dark: "#121416",
+        dark: "#030317",
       },
     },
     screens: {

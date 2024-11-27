@@ -1,9 +1,21 @@
+import { useTheme } from "../../hooks/useTheme";
+
 const CreateBlog = () => {
+  const [theme] = useTheme();
+
   return (
-    <div className="">
-      {/* <!-- Form Input field for creating Blog Post --> */}
-      <form action="#" method="POST" className="px-5 py-4">
-        <div className="grid place-items-center bg-slate-600/20  h-[150px] rounded-md my-4">
+    <div
+      className={`${
+        theme === "light" ? "bg-white text-gray-800" : "bg-gray-900 text-white"
+      } min-h-screen flex items-center justify-center p-6`}
+    >
+      <form
+        action="#"
+        method="POST"
+        className="px-5 py-4 w-full max-w-4xl rounded-lg shadow-lg space-y-6 bg-gray-100 dark:bg-gray-800"
+      >
+        {/* Image Upload Section */}
+        <div className="grid place-items-center bg-slate-600/20 h-[150px] rounded-md my-4">
           <div className="flex flex-col sm:flex sm:flex-row items-center gap-4 hover:scale-110 transition-all cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -23,36 +35,40 @@ const CreateBlog = () => {
           </div>
         </div>
 
+        {/* Blog Title Input */}
         <div className="mb-6">
           <input
             type="text"
             id="title"
             name="title"
             placeholder="Enter your blog title"
-            className=" font-semibold py-2 bg-transparent border-transparent outline-none focus:outline-transparent w-full text-xl sm:text-2xl md:text-4xl"
+            className="font-semibold py-2 bg-transparent border-transparent outline-none focus:outline-transparent w-full text-xl sm:text-2xl md:text-4xl dark:text-white"
           />
         </div>
 
+        {/* Blog Tags Input */}
         <div className="mb-6">
           <input
             type="text"
             id="tags"
             name="tags"
             placeholder="Your Comma Separated Tags"
-            className="bg-transparent w-full border-transparent outline-none focus:outline-transparent text-xs sm:text-lg"
+            className="bg-transparent w-full border-transparent outline-none focus:outline-transparent text-xs sm:text-lg dark:text-white"
           />
         </div>
 
+        {/* Blog Content Input */}
         <div className="mb-6">
           <textarea
             id="content"
             name="content"
             placeholder="Write your blog content"
             rows="8"
-            className="bg-transparent w-full border-transparent outline-none focus:outline-transparent text-xs sm:text-lg"
+            className="bg-transparent w-full border-transparent outline-none focus:outline-transparent text-xs sm:text-lg dark:text-white"
           ></textarea>
         </div>
 
+        {/* Submit Button */}
         <a
           href="#"
           className="bg-indigo-600 text-white px-6 py-2 md:py-3 rounded-md hover:bg-indigo-700 transition-all duration-200 flex justify-center"

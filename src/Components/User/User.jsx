@@ -1,37 +1,43 @@
-//externalimports
 import PropTypes from "prop-types";
-
-//internal imports
-import styled from "styled-components";
-
-const StyledUser = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  gap: 8px;
-  color: #fff;
-  letter-spacing: 1px;
-`;
+import { useTheme } from "../../hooks/useTheme";
 
 const User = ({ comment }) => {
+  const [theme] = useTheme();
+
   return (
-    <StyledUser>
-      <div>
-        <img src="/logo.svg" alt="" />
+    <div
+      className={`flex items-start space-x-3 ${
+        theme === "dark" ? "text-white" : "text-black"
+      }`}
+    >
+      <div className="avatar">
+        <span
+          className={`${
+            theme === "dark"
+              ? "text-white bg-gray-600"
+              : "text-black bg-gray-200"
+          } p-2 rounded-full`}
+        >
+          U
+        </span>{" "}
+        {/* Example avatar */}
       </div>
       <div>
-        <span>
-          <b>Saad Hassan</b>
-        </span>
-        <p>{comment && comment}</p>
+        <p
+          className={`text-sm ${
+            theme === "dark" ? "text-gray-400" : "text-gray-600"
+          }`}
+        >
+          {comment}
+        </p>
+        {/* Display the comment */}
       </div>
-    </StyledUser>
+    </div>
   );
 };
 
-//declaring proptypes
-
 User.propTypes = {
-  comment: PropTypes.string,
+  comment: PropTypes.string.isRequired,
 };
+
 export default User;

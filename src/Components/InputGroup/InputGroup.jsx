@@ -11,7 +11,7 @@ const InputGroup = ({ name, label }) => {
   );
 };
 
-//declaring proptyles
+//declaring proptypes
 InputGroup.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

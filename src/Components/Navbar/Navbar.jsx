@@ -1,10 +1,14 @@
 import { faMoon, faSearch, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import { useTheme } from "../../hooks/useTheme"; // Your custom hook to manage theme
+import { useTheme } from "../../hooks/useTheme";
+import Modal from "../Modal/Modal";
 
 const Navbar = () => {
   const [theme, toggleTheme] = useTheme();
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <>
@@ -46,7 +50,7 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
             <FontAwesomeIcon
               icon={faSearch}
-              className={`text-md ${
+              className={`text-md -inset-3 ${
                 theme === "dark" ? "text-white" : "text-gray-800"
               }`}
             />
@@ -55,7 +59,13 @@ const Navbar = () => {
                 theme === "dark" ? "text-white" : "text-gray-800"
               }`}
             >
-              Search
+              <input
+                type="text"
+                placeholder="Search your blog..."
+                className={`px-2 py-1 rounded outline-none ${
+                  theme === "dark" ? "bg-slate-600" : "bg-slate-200"
+                }`}
+              />
             </span>
           </div>
 
@@ -83,7 +93,10 @@ const Navbar = () => {
         </div>
 
         {/* Hamburger Menu (for smaller screens) */}
-        <div className="flex flex-col gap-1 xsm:hidden">
+        <div
+          onClick={() => setShowModal(true)}
+          className="flex flex-col gap-1 xsm:hidden"
+        >
           <div
             className={`h-[1px] w-5 ${
               theme === "dark" ? "bg-slate-50 " : "bg-black"
@@ -100,6 +113,13 @@ const Navbar = () => {
             }`}
           ></div>
         </div>
+
+        {/* Rendering modal */}
+        {showModal &&
+          createPortal(
+            <Modal onClose={() => setShowModal(false)} />,
+            document.body
+          )}
       </div>
 
       {/* Horizontal Line */}

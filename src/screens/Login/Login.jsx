@@ -4,7 +4,7 @@ import Button from "../../Components/ui/button/Button";
 
 const Login = () => {
   return (
-    <>
+    <div className="flex flex-col">
       <h2 className="text-center text-3xl font-bold mb-2">Login</h2>
       <form className="w-[42rem] px-[180px] xsm:px-32 msm:px-28 sm:px-20 md:px-8 rounded-lg shadow-lg space-y-6">
         <InputGroup name="email" label={"email"} />
@@ -23,7 +23,7 @@ const Login = () => {
           </Link>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

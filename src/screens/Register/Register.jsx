@@ -4,7 +4,7 @@ import Button from "../../Components/ui/button/Button";
 
 const Register = () => {
   return (
-    <>
+    <div className="flex flex-col">
       <h1 className="text-center text-3xl font-bold mb-2">Register</h1>
       <form className="w-[42rem] px-[180px] xsm:px-32 msm:px-28 sm:px-20 md:px-8  rounded-lg shadow-lg space-y-6">
         <InputGroup name="firstName" label="First Name" />
@@ -22,7 +22,7 @@ const Register = () => {
           </Link>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

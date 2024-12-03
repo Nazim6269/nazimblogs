@@ -9,7 +9,7 @@ const SideBar = () => {
     <div
       className={`${
         theme === "dark" ? "bg-dark text-white" : "bg-white text-black"
-      } flex flex-col gap-5 p-4 rounded-lg`}
+      } flex flex-col gap-5 rounded-lg`}
     >
       {/* Popular Blog div */}
       <div

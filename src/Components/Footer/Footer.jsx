@@ -5,7 +5,7 @@ const Footer = () => {
   const [theme] = useTheme(); // Get current theme
 
   return (
-    <div
+    <footer
       className={`${
         theme === "dark"
           ? "bg-gray-900 text-white"
@@ -20,7 +20,7 @@ const Footer = () => {
         />
       </div>
       <Social />
-    </div>
+    </footer>
   );
 };
 

@@ -11,8 +11,8 @@ const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <>
-      <div
+    <header>
+      <nav
         className={`${
           theme === "dark"
             ? "flex justify-between items-center px-8 xsm:px-12 sm:px-20 py-5 text-lg bg-gray-900 text-white"
@@ -47,7 +47,7 @@ const Navbar = () => {
             </button>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="hidden xsm:flex  items-center gap-2">
             <FontAwesomeIcon
               icon={faSearch}
               className={`text-md -inset-3 ${
@@ -62,7 +62,7 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="Search your blog..."
-                className={`px-2 py-1 rounded outline-none ${
+                className={`px-2 py-1 rounded outline-none hidden lg:block ${
                   theme === "dark" ? "bg-slate-600" : "bg-slate-200"
                 }`}
               />
@@ -120,11 +120,11 @@ const Navbar = () => {
             <Modal onClose={() => setShowModal(false)} />,
             document.body
           )}
-      </div>
+      </nav>
 
       {/* Horizontal Line */}
       <div className="bg-gray-300 h-[1px] w-full"></div>
-    </>
+    </header>
   );
 };
 

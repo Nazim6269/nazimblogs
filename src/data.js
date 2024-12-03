@@ -16,13 +16,13 @@ export const socialIcons = [
     id: "125",
     icon: "fa-github",
     color: "#232323",
-    link: "https://github.io",
+    link: "https://github.com/Nazim6269",
   },
   {
     id: "126",
-    icon: "fa-youtube",
+    icon: "fa-linkedin",
     color: "#232323",
-    link: "https://github.io",
+    link: "https://www.linkedin.com/in/nazim-uddin-23a93a216/",
   },
   {
     id: "127",

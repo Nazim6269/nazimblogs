@@ -1,14 +1,39 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 const Modal = ({ onClose }) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = (path) => {
+    navigate(`/${path}`);
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       {/* Modal Box */}
-      <div className="bg-white w-96 rounded-lg shadow-lg p-6 relative">
-        <h2 className="text-lg font-semibold mb-4">Modal Title</h2>
-        <p className="text-gray-600 mb-6">
-          This is a modal. You can add your content here.
-        </p>
+      <div className="bg-white  text-black w-64 xsm:w-96 rounded-lg shadow-lg p-6 relative">
+        {/* modal list item */}
+        <div className="flex flex-col items-center justify-center">
+          <ul className="my-1">
+            <li className=" hover:text-gray-400 mb-1">
+              <button onClick={() => handleNavigate("")} className="">
+                Home
+              </button>
+            </li>
+            <li className=" hover:text-gray-400 mb-1">
+              <button onClick={() => handleNavigate("profile")}>Profile</button>
+            </li>
+            <li className=" hover:text-gray-400 mb-1">
+              <button onClick={() => handleNavigate("setting")}>Setting</button>
+            </li>
+            <li className=" hover:text-gray-400 mb-1">
+              <button onClick={() => handleNavigate("login")} className="">
+                Log out
+              </button>
+            </li>
+          </ul>
+        </div>
         <button
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 transition duration-150"
           onClick={onClose}

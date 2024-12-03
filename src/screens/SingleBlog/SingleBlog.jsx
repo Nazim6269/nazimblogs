@@ -1,4 +1,4 @@
-import { useTheme } from "../../hooks/useTheme"; 
+import { useTheme } from "../../hooks/useTheme";
 import Comments from "../../Components/Comments/Comments";
 import User from "../../Components/User/User";
 
@@ -13,7 +13,7 @@ const SingleBlog = () => {
     >
       <div className="flex flex-col justify-between items-start gap-5">
         <h1
-          className={`text-4xl capitalize font-mono ${
+          className={`text-4xl capitalize ${
             theme === "dark" ? "text-white" : "text-black"
           }`}
         >
@@ -38,7 +38,7 @@ const SingleBlog = () => {
         />
       </div>
 
-      <div className="font-bold flex justify-start items-center gap-2 my-3 font-mono">
+      <div className="font-bold flex justify-start items-center gap-2 my-3">
         <button>Javascript</button>
         <button>Node</button>
         <button>React</button>
@@ -55,7 +55,9 @@ const SingleBlog = () => {
 
         <div>
           <h2
-            className={`text-3xl mt-7 mb-3 ${theme === "dark" ? "text-white" : ""}`}
+            className={`text-3xl mt-7 mb-3 ${
+              theme === "dark" ? "text-white" : ""
+            }`}
           >
             100% code-based map
           </h2>
@@ -66,9 +68,7 @@ const SingleBlog = () => {
         </div>
       </div>
 
-      <h2 className="text-2xl mt-7 mb-2">
-        Comments {"(3)"}
-      </h2>
+      <h2 className="text-2xl mt-7 mb-2">Comments {"(3)"}</h2>
       <Comments />
     </div>
   );

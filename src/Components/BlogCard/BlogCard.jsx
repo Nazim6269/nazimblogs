@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import { useTheme } from "../../hooks/useTheme";
 import { Link } from "react-router-dom";
 
-const BlogCard = ({ title, description, author, date, imageSrc, likes }) => {
+const BlogCard = ({ data }) => {
+  const { title, imageSrc, body, author, date, likes } = data;
   const [theme] = useTheme();
 
   return (
@@ -19,7 +20,7 @@ const BlogCard = ({ title, description, author, date, imageSrc, likes }) => {
       <div className="mt-2">
         <h3 className="text-slate-300 text-xl lg:text-2xl">{title}</h3>
         <p className="mb-6 text-base mt-1">
-          {description ||
+          {body ||
             "Aenean eleifend ante maecenas pulvinar montes lorem et pede dis dolor pretium donec dictum. Vici consequat justo enim. Venenatis eget adipiscing luctus lorem."}
         </p>
 
@@ -54,10 +55,12 @@ const BlogCard = ({ title, description, author, date, imageSrc, likes }) => {
 export default BlogCard;
 
 BlogCard.propTypes = {
-  title: PropTypes.string,
-  description: PropTypes.string,
-  author: PropTypes.string,
-  date: PropTypes.func,
-  imageSrc: PropTypes.string,
-  likes: PropTypes.string,
+  data: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    body: PropTypes.string,
+    author: PropTypes.string,
+    date: PropTypes.string,
+    imageSrc: PropTypes.string,
+    likes: PropTypes.string,
+  }).isRequired,
 };

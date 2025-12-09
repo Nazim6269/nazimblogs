@@ -2,8 +2,10 @@ import PropTypes from "prop-types";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { getTheme } from "../helper/localStorage";
 
+//create context
 export const ThemeContext = createContext();
 
+//provide context
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(getTheme() || "light");
 
@@ -20,7 +22,7 @@ export const ThemeProvider = ({ children }) => {
   }, [theme, toggleTheme]);
 
   return (
-    <ThemeContext.Provider value={[theme, toggleTheme]}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

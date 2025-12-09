@@ -1,43 +1,63 @@
 import PropTypes from "prop-types";
+import { useTheme } from "../../hooks/useTheme";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  // Function to generate the page numbers array
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  const pages = [...Array(totalPages)].map((_, i) => i + 1);
 
   return (
-    <div className="flex justify-center space-x-2 mt-4">
-      {/* Previous Button */}
+    <div className="flex justify-center gap-2 mt-6">
+      {/* Previous */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all
+          ${
+            currentPage === 1
+              ? "opacity-40 cursor-not-allowed bg-gray-400 text-white"
+              : isDark
+              ? "bg-gray-800 text-gray-200 hover:bg-gray-700"
+              : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+          }
+        `}
       >
         Previous
       </button>
 
       {/* Page Numbers */}
-      {pageNumbers.map((number) => (
+      {pages.map((num) => (
         <button
-          key={number}
-          onClick={() => onPageChange(number)}
-          className={`px-4 py-2 border rounded ${
-            currentPage === number
-              ? "bg-blue-500 text-white"
-              : "bg-white text-blue-500"
-          }`}
+          key={num}
+          onClick={() => onPageChange(num)}
+          className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-300
+      ${
+        currentPage === num
+          ? "bg-linear-to-r from-blue-500 to-purple-500 text-white border-0 shadow-md shadow-blue-500/40"
+          : isDark
+          ? "bg-gray-900 border-gray-700 text-gray-200 hover:border-purple-500 hover:shadow-sm hover:shadow-purple-500/20"
+          : "bg-white border-gray-300 text-gray-700 hover:border-blue-500 hover:shadow-sm hover:shadow-blue-500/20"
+      }
+    `}
         >
-          {number}
+          {num}
         </button>
       ))}
 
-      {/* Next Button */}
+      {/* Next */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all
+          ${
+            currentPage === totalPages
+              ? "opacity-40 cursor-not-allowed bg-gray-400 text-white"
+              : isDark
+              ? "bg-gray-800 text-gray-200 hover:bg-gray-700"
+              : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+          }
+        `}
       >
         Next
       </button>

@@ -2,35 +2,37 @@ import PropTypes from "prop-types";
 import { useTheme } from "../../hooks/useTheme";
 
 const User = ({ comment }) => {
-  const [theme] = useTheme();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
-    <div
-      className={`flex items-start space-x-3 ${
-        theme === "dark" ? "text-white" : "text-black"
-      }`}
-    >
+    <div className={`flex items-start space-x-3`}>
+      {/* Avatar */}
       <div className="avatar">
         <span
-          className={`${
-            theme === "dark"
-              ? "text-white bg-gray-600"
-              : "text-black bg-gray-200"
-          } p-2 rounded-full`}
+          className={`
+            p-2 rounded-full font-bold
+            ${
+              isDark
+                ? "bg-linear-to-r from-blue-900 via-purple-900 to-blue-800 text-gray-100"
+                : "bg-gray-200 text-black"
+            }
+          `}
         >
           U
-        </span>{" "}
-        {/* Example avatar */}
+        </span>
       </div>
+
+      {/* Comment Text */}
       <div>
         <p
-          className={`text-sm ${
-            theme === "dark" ? "text-gray-400" : "text-gray-600"
-          }`}
+          className={`
+            text-sm
+            ${isDark ? "text-gray-100" : "text-gray-800"}
+          `}
         >
           {comment}
         </p>
-        {/* Display the comment */}
       </div>
     </div>
   );

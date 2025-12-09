@@ -1,50 +1,98 @@
 import PropTypes from "prop-types";
-import { useTheme } from "../../hooks/useTheme";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../hooks/useTheme";
 
 const BlogCard = ({ data }) => {
   const { title, imageSrc, body, author, date, likes } = data;
-  const [theme] = useTheme();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <div
-      className={`flex flex-col justify-center items-center gap-3 px-3 py-7 border rounded transition duration-300 hover:ease-in lg:flex lg:flex-row mb-3 shadow-lg
-      ${
-        theme === "dark"
-          ? "bg-gray-800 text-white border-gray-600 hover:border-blue-400"
-          : "bg-white text-black border-gray-300 hover:border-blue-400"
-      }`}
+      className={`
+        group flex flex-col lg:flex-row gap-5 p-6 rounded-2xl border shadow-xl transition-all duration-300
+        hover:scale-[1.02] hover:shadow-lg
+        ${
+          isDark
+            ? "bg-linear-to-r from-[#0b1025] via-[#0d0f2c] to-[#050816] border-gray-700 text-gray-200 hover:shadow-blue-500/20"
+            : "bg-linear-to-r from-sky-100 via-blue-100 to-indigo-100 border-gray-300 text-gray-900 hover:shadow-purple-300/30"
+        }
+      `}
     >
-      <img className="w-96" src={imageSrc || "/roadmap.webp"} alt={title} />
+      {/* Image */}
+      <div className="w-full lg:w-60 overflow-hidden rounded-xl">
+        <img
+          className="w-full h-40 object-cover transition-transform duration-500 group-hover:scale-110"
+          src={imageSrc || "/roadmap.webp"}
+          alt={title}
+        />
+      </div>
 
-      <div className="mt-2">
-        <h3 className="text-slate-300 text-xl lg:text-2xl">{title}</h3>
-        <p className="mb-6 text-base mt-1">
-          {body ||
-            "Aenean eleifend ante maecenas pulvinar montes lorem et pede dis dolor pretium donec dictum. Vici consequat justo enim. Venenatis eget adipiscing luctus lorem."}
+      {/* Content */}
+      <div className="flex flex-col justify-between flex-1">
+        {/* Title */}
+        <h3
+          className={`text-2xl font-bold mb-2 ${
+            isDark ? "text-gray-100" : "text-gray-900"
+          }`}
+        >
+          {title}
+        </h3>
+
+        {/* Description */}
+        <p
+          className={`leading-relaxed text-sm mb-4 ${
+            isDark ? "text-gray-300" : "text-gray-700"
+          }`}
+        >
+          {body?.slice(0, 120) ||
+            "Aenean eleifend ante maecenas pulvinar montes lorem et pede dis dolor pretium donec dictum."}
+          ...
         </p>
 
-        {/* Meta Information */}
-        <div className="flex justify-between items-center">
-          <div className="flex items-center capitalize space-x-2">
-            <div className="avater-img bg-gray-600 text-white px-4 py-2 rounded-full">
-              <span>{author ? author[0] : "N"}</span>
+        {/* Meta Info */}
+        <div className="flex justify-between items-center mt-2">
+          {/* Author + Avatar */}
+          <div className="flex items-center gap-3">
+            <div
+              className={`
+                w-12 h-12 flex items-center justify-center rounded-full text-lg font-semibold
+                ${
+                  isDark
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-200 text-gray-800"
+                }
+              `}
+            >
+              {author ? author[0] : "N"}
             </div>
 
             <div>
-              <h5 className="text-gray-500 text-sm">
-                <Link to="/profile" className="hover:underline">
-                  {author || "Nazim Uddin"}
-                </Link>
-              </h5>
-              <div className="flex items-center text-xs text-gray-500">
-                <span>{date || "June 28, 2018"}</span>
+              <Link
+                to="/profile"
+                className={`font-medium ${
+                  isDark ? "text-blue-300" : "text-purple-600"
+                } hover:underline`}
+              >
+                {author || "Nazim Uddin"}
+              </Link>
+              <div
+                className={`text-xs ${
+                  isDark ? "text-gray-500" : "text-gray-500"
+                }`}
+              >
+                {date || "June 28, 2018"}
               </div>
             </div>
           </div>
 
-          <div className="text-sm px-2 py-1 text-gray-500">
-            <span>{likes || "100 Likes"}</span>
+          {/* Likes */}
+          <div
+            className={`text-sm px-3 py-1 rounded-full ${
+              isDark ? "bg-gray-800 text-gray-300" : "bg-gray-100 text-gray-600"
+            }`}
+          >
+            ❤️ {likes || "100"}
           </div>
         </div>
       </div>
@@ -61,6 +109,6 @@ BlogCard.propTypes = {
     author: PropTypes.string,
     date: PropTypes.string,
     imageSrc: PropTypes.string,
-    likes: PropTypes.string,
+    likes: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
 };

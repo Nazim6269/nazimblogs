@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BlogCard from "../../Components/BlogCard/BlogCard";
-import SideBar from "../../Components/SideBar/SideBar";
 import Pagination from "../../Components/Pagination/Pagination";
+import SideBar from "../../Components/SideBar/SideBar";
 
 const BlogCards = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = data.length / 10;
+
+  const postsPerPage = 10;
+
+  // Total pages
+  const totalPages = Math.ceil(data.length / postsPerPage);
+
+  // Slice posts for current page
+  const firstIndex = (currentPage - 1) * postsPerPage;
+  const currentPosts = data.slice(firstIndex, firstIndex + postsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // data fetching here
+  // Fetching data
   useEffect(() => {
     const getData = async () => {
       try {
@@ -33,23 +42,28 @@ const BlogCards = () => {
   }, []);
 
   return (
-    <>
-      <div className="flex flex-col md:flex md:flex-row gap-5 m-5">
-        <div className="flex flex-col gap-2">
-          <Link to={`/blog-details?id=${2}`}>
-            {data?.map((item) => (
-              <BlogCard key={item.id} data={item} />
-            ))}
-          </Link>
+    <div className="flex  flex-col ">
+      <div className="flex flex-col md:flex-row gap-5 m-5">
+        {/* Blog Cards Section */}
+        <div className="flex flex-col gap-4 flex-1">
+          {currentPosts.map((item) => (
+            <Link key={item.id} to={`/blog-details?id=${item.id}`}>
+              <BlogCard data={item} />
+            </Link>
+          ))}
         </div>
+
+        {/* Sidebar */}
         <SideBar />
       </div>
+
+      {/* Pagination */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />
-    </>
+    </div>
   );
 };
 

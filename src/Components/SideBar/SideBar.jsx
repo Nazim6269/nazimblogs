@@ -1,52 +1,56 @@
-import { useTheme } from "../../hooks/useTheme"; // Assuming you have a `useTheme` hook
 import Favorite from "../../Components/Favorite/Favorite";
 import PopularBlog from "../../Components/PopularBlog/PopularBlog";
+import { useTheme } from "../../hooks/useTheme";
 
 const SideBar = () => {
-  const [theme] = useTheme(); // Get current theme (dark or light)
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
-    <div
-      className={`${
-        theme === "dark" ? "bg-dark text-white" : "bg-white text-black"
-      } flex flex-col gap-5 rounded-lg`}
+    <aside
+      className={`w-full md:w-80 flex flex-col gap-6 p-4 rounded-xl border
+      ${isDark ? " border-gray-700 " : " border-gray-300 "}
+    `}
     >
-      {/* Popular Blog div */}
-      <div
-        className={`${
-          theme === "dark" ? "border-gray-600" : "border-gray-500"
-        } border hover:border-gray-600 rounded px-3 py-2`}
+      {/* Popular Section */}
+      <section
+        className={`p-4 rounded-xl  transition-all duration-300 border-0`}
       >
         <h3
-          className={`text-black text-xl lg:text-2xl font-semibold ${
-            theme === "dark" ? "text-white" : ""
-          }`}
+          className={`text-xl font-bold mb-3
+          ${isDark ? "text-white" : "text-gray-900"}
+        `}
         >
           Most Popular 👍️
         </h3>
-        <PopularBlog />
-        <PopularBlog />
-        <PopularBlog />
-      </div>
 
-      {/* Favorite Blog div */}
-      <div
-        className={`${
-          theme === "dark" ? "border-gray-600" : "border-gray-500"
-        } border hover:border-gray-600 rounded px-3 py-2`}
+        <div className="space-y-3">
+          <PopularBlog />
+          <PopularBlog />
+          <PopularBlog />
+        </div>
+      </section>
+
+      {/* Favourites Section */}
+      <section
+        className={`p-4 rounded-xl border-0 transition-all duration-300
+    `}
       >
         <h3
-          className={`text-black text-xl lg:text-2xl font-semibold ${
-            theme === "dark" ? "text-white" : ""
+          className={`text-xl font-bold mb-3 ${
+            isDark ? "text-white" : "text-gray-900"
           }`}
         >
           Your Favourites ❤️
         </h3>
-        <Favorite />
-        <Favorite />
-        <Favorite />
-      </div>
-    </div>
+
+        <div className="space-y-3">
+          <Favorite />
+          <Favorite />
+          <Favorite />
+        </div>
+      </section>
+    </aside>
   );
 };
 

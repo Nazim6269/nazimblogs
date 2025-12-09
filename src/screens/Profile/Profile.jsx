@@ -1,38 +1,90 @@
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import BlogCards from "../BlogCards/BlogCards";
+import { useTheme } from "../../hooks/useTheme";
 
 const Profile = () => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
-    <div className="flex flex-col gap-3 justify-center items-center">
-      <div className="relative">
-        <p className="bg-gray-500 w-24 h-24 text-4xl rounded-full text-white font-bold flex justify-center items-center">
+    <div
+      className={`min-h-screen px-6 py-10 flex flex-col items-center gap-8 transition-colors duration-500 `}
+    >
+      {/* Avatar */}
+      <div className="relative group">
+        <div
+          className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold transition-all duration-300 group-hover:scale-105 ${
+            isDark ? "bg-gray-700 text-white" : "bg-gray-300 text-gray-800"
+          }`}
+        >
           N
-        </p>
-        <span className="bg-slate-600 w-7 h-7 rounded-full absolute bottom-0 right-0 flex justify-center items-center text-sm">
-          <FontAwesomeIcon icon={faPen} className="text-white" />
-        </span>
-      </div>
-      <div className="text-center my-6">
-        <span className="text-white text-2xl font-bold">Nazim Uddin</span>
-        <p className="text-white">nazimdev10022001@gmail.com</p>
-      </div>
-      <div className="relative">
-        <p className="text-slate-500 text-center">
-          This is Nazim, who wants to be a full stack engineer though its not
-          easy at all.But he is always trying his best. Now he is learning Front
-          end development through various resourches in online.Recently he is
-          studying in University of Chittagong .
-        </p>
-        <span className="bg-slate-600 w-7 h-7 rounded-full absolute top-0 right-0 flex justify-center items-center text-sm">
-          <FontAwesomeIcon icon={faPen} className="text-white" />
+        </div>
+        <span
+          className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors ${
+            isDark
+              ? "bg-blue-700 hover:bg-blue-600"
+              : "bg-indigo-500 hover:bg-indigo-400"
+          }`}
+        >
+          <FontAwesomeIcon icon={faPen} className="text-white text-sm" />
         </span>
       </div>
 
-      <hr />
-      <div className="flex flex-col gap-3 mt-7">
-        <h2 className="text-white text-4xl font-semibold mb-5">Your blogs</h2>
-        <BlogCards />
+      {/* Name and Email */}
+      <div className="text-center space-y-1">
+        <h1
+          className={`text-3xl font-bold ${
+            isDark ? "text-gray-600" : "text-gray-900"
+          }`}
+        >
+          Nazim Uddin
+        </h1>
+        <p className={`${isDark ? "text-gray-400" : "text-gray-600"} text-sm`}>
+          nazimdev10022001@gmail.com
+        </p>
+      </div>
+
+      {/* Bio Section */}
+      <div
+        className={`relative w-full max-w-3xl rounded-xl p-6 shadow-md transition-colors duration-500 ${
+          isDark
+            ? "bg-linear-to-r from-[#0b1025] via-[#0d0f2c] to-[#050816] text-gray-200"
+            : "bg-linear-to-r from-sky-100 via-blue-100 to-gray-500 border-gray-300 text-gray-900 shadow-lg "
+        }`}
+      >
+        <p className="leading-relaxed text-center">
+          This is Nazim, who wants to be a full stack engineer though it's not
+          easy at all. But he is always trying his best. Now he is learning
+          Front end development through various online resources. Recently he is
+          studying at the University of Chittagong.
+        </p>
+        <span
+          className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors ${
+            isDark
+              ? "bg-blue-700 hover:bg-blue-600"
+              : "bg-indigo-500 hover:bg-indigo-400"
+          }`}
+        >
+          <FontAwesomeIcon icon={faPen} className="text-white text-sm" />
+        </span>
+      </div>
+
+      {/* Blogs Section */}
+      <div
+        className={`w-full max-w-6xl border rounded-xl ${
+          isDark ? "border-gray-600" : "border-gray-300"
+        }`}
+      >
+        <h2
+          className={`text-3xl font-semibold p-2 ${
+            isDark ? "text-gray-600" : "text-gray-900"
+          }`}
+        >
+          Your Blogs
+        </h2>
+        <div className="grid p-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          No blogs written yet...
+        </div>
       </div>
     </div>
   );

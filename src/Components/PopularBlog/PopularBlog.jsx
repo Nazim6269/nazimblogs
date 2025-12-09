@@ -2,43 +2,56 @@ import { Link } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
 
 const PopularBlog = () => {
-  const [theme] = useTheme();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
-    <Link to={`/blog-details?id=${2}`}>
+    <Link to={`/blog-details?id=2`}>
       <div
-        className={`px-2 py-2 my-2 rounded ${
-          theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"
-        }`}
+        className={`px-4 py-4 my-3 rounded-lg border transition-all duration-300
+        transform hover:scale-[1.02] hover:shadow-lg
+        ${
+          isDark
+            ? "bg-gray-900 border-gray-700 text-gray-200"
+            : "bg-white border-gray-200 text-gray-900"
+        }
+        hover:bg-linear-to-r `}
       >
-        <div className="md:col-span-2 h-full w-full space-y-5">
-          <div>
-            <ul className="space-y-5 my-5">
-              <li>
-                <h3
-                  className={`text-black font-medium hover:text-slate-300 transition-all cursor-pointer ${
-                    theme === "dark" ? "hover:text-slate-200" : ""
+        <div className="space-y-4">
+          <ul className="space-y-4">
+            <li>
+              <h3
+                className={`text-lg font-semibold transition-all cursor-pointer
+                  bg-clip-text text-transparent
+                  ${
+                    isDark
+                      ? "bg-linear-to-r from-gray-200 to-gray-400 hover:from-blue-300 hover:to-purple-400"
+                      : "bg-linear-to-r from-gray-900 to-gray-700 hover:from-blue-500 hover:to-purple-500"
+                  }`}
+              >
+                How to Auto Deploy a Next.js App on Ubuntu from GitHub
+              </h3>
+
+              <p
+                className={`text-sm mt-1 transition-colors ${
+                  isDark ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                by{" "}
+                <Link
+                  to="/profile"
+                  className={`transition-colors ${
+                    isDark
+                      ? "text-blue-400 hover:underline"
+                      : "text-purple-600 hover:underline"
                   }`}
                 >
-                  How to Auto Deploy a Next.js App on Ubuntu from GitHub
-                </h3>
-                <p
-                  className={`text-slate-600 text-sm ${
-                    theme === "dark" ? "text-slate-400" : ""
-                  }`}
-                >
-                  by
-                  <a
-                    href="./profile.html"
-                    className="text-indigo-500 hover:underline"
-                  >
-                    Saad Hasan
-                  </a>
-                  <span>·</span> 100 Likes
-                </p>
-              </li>
-            </ul>
-          </div>
+                  Saad Hasan
+                </Link>{" "}
+                <span className="mx-1">•</span> 100 Likes
+              </p>
+            </li>
+          </ul>
         </div>
       </div>
     </Link>

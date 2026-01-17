@@ -3,7 +3,7 @@ import { useTheme } from "../../hooks/useTheme";
 import Input from "../ui/input/Input";
 import Label from "../ui/label/Label";
 
-const InputGroup = ({ name, label, className }) => {
+const InputGroup = ({ name, label, className, ...props }) => {
   const { theme } = useTheme();
   return (
     <div>
@@ -12,11 +12,13 @@ const InputGroup = ({ name, label, className }) => {
       </Label>
       <Input
         theme={theme}
-        className={`w-full rounded-lg px-4 transition-all duration-300 ${
-          theme === "dark"
-            ? "bg-gray-500 text-white placeholder-gray-400"
-            : "bg-gray-100 text-gray-900 placeholder-gray-500"
-        } ${className || "h-10"}`} // default height 48px
+        name={name}
+        id={name}
+        {...props}
+        className={`w-full rounded-lg px-4 transition-all duration-300 ${theme === "dark"
+          ? "bg-gray-500 text-white placeholder-gray-400"
+          : "bg-gray-100 text-gray-900 placeholder-gray-500"
+          } ${className || "h-10"}`} // default height 48px
       />
     </div>
   );

@@ -1,11 +1,13 @@
-import { faMoon, faSearch, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSearch, faSun, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
   const isDark = theme === "dark";
   const [showModal, setShowModal] = useState(false);
 
@@ -14,22 +16,20 @@ const Navbar = () => {
       <nav
         className={`
       backdrop-blur-lg border-b transition-all duration-500
-      ${
-        isDark
-          ? "bg-[#050816]/70 border-white/10 text-white"
-          : "bg-white/70 border-black/10 text-gray-900"
-      }
+      ${isDark
+            ? "bg-[#050816]/70 border-white/10 text-white"
+            : "bg-white/70 border-black/10 text-gray-900"
+          }
     `}
       >
         <div className="flex justify-between items-center px-8 xsm:px-12 sm:px-20 py-4">
           {/* Logo */}
           <Link to="/">
             <p
-              className={`text-4xl font-bold bg-clip-text text-transparent transition-all duration-500 ${
-                isDark
+              className={`text-4xl font-bold bg-clip-text text-transparent transition-all duration-500 ${isDark
                   ? "bg-linear-to-r from-blue-400 via-purple-500 to-pink-500"
                   : "bg-linear-to-r from-purple-400 to-indigo-500"
-              }`}
+                }`}
             >
               HexaBlog
             </p>
@@ -40,9 +40,8 @@ const Navbar = () => {
             {["Featured", "Tutorial", "Design", "Freelance"].map((item) => (
               <span
                 key={item}
-                className={`${
-                  isDark ? "text-gray-400 " : "text-gray-600"
-                } cursor-pointer hover:text-purple-400 transition-all font-semibold text-lg`}
+                className={`${isDark ? "text-gray-400 " : "text-gray-600"
+                  } cursor-pointer hover:text-purple-400 transition-all font-semibold text-lg`}
               >
                 {item}
               </span>
@@ -65,66 +64,87 @@ const Navbar = () => {
 
             {/* Search */}
             <div
-              className={`hidden lg:flex items-center gap-2 px-3 py-1 rounded-lg transition-all duration-300 ${
-                isDark
+              className={`hidden lg:flex items-center gap-2 px-3 py-1 rounded-lg transition-all duration-300 ${isDark
                   ? "bg-gray-800/80 text-gray-200"
                   : "bg-gray-300/30 text-gray-900"
-              }`}
+                }`}
             >
               <FontAwesomeIcon
                 icon={faSearch}
-                className={`transition-opacity duration-300 ${
-                  isDark
+                className={`transition-opacity duration-300 ${isDark
                     ? "text-gray-400 opacity-70"
                     : "text-gray-500 opacity-70"
-                }`}
+                  }`}
               />
               <input
                 type="text"
                 placeholder="Search blog..."
-                className={`bg-transparent outline-none text-sm  w-full placeholder-transition transition-colors duration-300 ${
-                  isDark
+                className={`bg-transparent outline-none text-sm  w-full placeholder-transition transition-colors duration-300 ${isDark
                     ? "placeholder-gray-400 text-gray-200"
                     : "placeholder-gray-500 text-gray-900"
-                }`}
+                  }`}
               />
             </div>
 
             {/* Write Button */}
-            <Link to="/create-blog">
-              <button
-                className="hidden md:block px-5 py-2 rounded-lg text-sm font-medium text-white 
-            bg-linear-to-r from-blue-500 to-purple-500 
-            hover:scale-105 transition-transform shadow-md"
-              >
-                Write
-              </button>
-            </Link>
+            {user && (
+              <Link to="/create-blog">
+                <button
+                  className="hidden md:block px-5 py-2 rounded-lg text-sm font-medium text-white 
+              bg-linear-to-r from-blue-500 to-purple-500 
+              hover:scale-105 transition-transform shadow-md"
+                >
+                  Write
+                </button>
+              </Link>
+            )}
 
-            {/* Login */}
-            <Link
-              to="/login"
-              className={`${
-                isDark ? "text-gray-400" : "text-gray-600"
-              } hidden sm:block hover:text-purple-400 font-semibold`}
-            >
-              Login
-            </Link>
+            {user ? (
+              <>
+                {/* Avatar */}
+                <div className="h-10 w-10 rounded-full bg-linear-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-semibold shadow-lg">
+                  {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                </div>
 
-            {/* Avatar */}
-            <div className="h-10 w-10 rounded-full bg-linear-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-semibold shadow-lg">
-              N
-            </div>
+                {/* Profile Link */}
+                <Link
+                  to="/profile"
+                  className={`${isDark ? "text-gray-400" : "text-gray-600"
+                    } hidden sm:block hover:text-purple-400 font-semibold`}
+                >
+                  {user.name && user.name.split(" ")[0]}
+                </Link>
 
-            {/* Profile */}
-            <Link
-              to="/profile"
-              className={`${
-                isDark ? "text-gray-400" : "text-gray-600"
-              } hidden sm:block hover:text-purple-400 font-semibold`}
-            >
-              Nazim Uddin
-            </Link>
+                {/* Logout Button */}
+                <button
+                  onClick={logout}
+                  className={`${isDark ? "text-gray-400" : "text-gray-600"
+                    } hidden sm:block hover:text-red-400 font-semibold ml-2`}
+                  title="Logout"
+                >
+                  <FontAwesomeIcon icon={faRightFromBracket} />
+                </button>
+              </>
+            ) : (
+              <>
+                {/* Login */}
+                <Link
+                  to="/login"
+                  className={`${isDark ? "text-gray-400" : "text-gray-600"
+                    } hidden sm:block hover:text-purple-400 font-semibold`}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="hidden md:block px-5 py-2 rounded-lg text-sm font-medium text-white 
+              bg-linear-to-r from-purple-500 to-indigo-500 
+              hover:scale-105 transition-transform shadow-md"
+                >
+                  Join
+                </Link>
+              </>
+            )}
 
             {/* Mobile Menu */}
             <div
@@ -132,19 +152,16 @@ const Navbar = () => {
               className="md:hidden flex flex-col gap-[3px] cursor-pointer"
             >
               <span
-                className={`w-5 h-0.5 rounded ${
-                  isDark ? "bg-white" : "bg-black"
-                }`}
+                className={`w-5 h-0.5 rounded ${isDark ? "bg-white" : "bg-black"
+                  }`}
               ></span>
               <span
-                className={`w-5 h-0.5 rounded ${
-                  isDark ? "bg-white" : "bg-black"
-                }`}
+                className={`w-5 h-0.5 rounded ${isDark ? "bg-white" : "bg-black"
+                  }`}
               ></span>
               <span
-                className={`w-5 h-0.5 rounded ${
-                  isDark ? "bg-white" : "bg-black"
-                }`}
+                className={`w-5 h-0.5 rounded ${isDark ? "bg-white" : "bg-black"
+                  }`}
               ></span>
             </div>
           </div>

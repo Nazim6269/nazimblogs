@@ -12,10 +12,9 @@ const User = ({ comment }) => {
         <span
           className={`
             p-2 rounded-full font-bold
-            ${
-              isDark
-                ? "bg-linear-to-r from-blue-900 via-purple-900 to-blue-800 text-gray-100"
-                : "bg-gray-200 text-black"
+            ${isDark
+              ? "bg-slate-800 text-gray-100"
+              : "bg-gray-200 text-black"
             }
           `}
         >

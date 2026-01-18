@@ -16,8 +16,8 @@ const NotFound = () => {
 
             <div className="relative z-10 space-y-6">
                 <div className="relative inline-block">
-                    <div className="w-32 h-32 bg-linear-to-tr from-purple-600 to-blue-500 rounded-3xl rotate-12 absolute -inset-1 blur-xl opacity-30 animate-pulse"></div>
-                    <div className="w-32 h-32 bg-linear-to-tr from-purple-600 to-blue-500 rounded-3xl flex items-center justify-center text-white text-5xl font-bold shadow-2xl relative">
+                    <div className="w-32 h-32 bg-purple-600/30 rounded-3xl rotate-12 absolute -inset-1 blur-xl animate-pulse"></div>
+                    <div className="w-32 h-32 bg-purple-600 rounded-3xl flex items-center justify-center text-white text-5xl font-bold shadow-2xl relative">
                         ?
                     </div>
                 </div>
@@ -35,8 +35,8 @@ const NotFound = () => {
                     <button
                         onClick={() => window.history.back()}
                         className={`px-8 py-3 rounded-xl font-bold transition-all duration-300 flex items-center gap-2 ${isDark
-                                ? "bg-white/5 hover:bg-white/10 text-white border border-white/10"
-                                : "bg-gray-100 hover:bg-gray-200 text-gray-900 border border-transparent"
+                            ? "bg-white/5 hover:bg-white/10 text-white border border-white/10"
+                            : "bg-gray-100 hover:bg-gray-200 text-gray-900 border border-transparent"
                             }`}
                     >
                         <FontAwesomeIcon icon={faArrowLeft} className="text-sm" />
@@ -45,7 +45,7 @@ const NotFound = () => {
 
                     <Link
                         to="/"
-                        className="px-8 py-3 rounded-xl font-bold text-white bg-linear-to-r from-purple-600 to-blue-600 hover:shadow-lg hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+                        className="px-8 py-3 rounded-xl font-bold text-white bg-purple-600 hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
                     >
                         <FontAwesomeIcon icon={faHome} className="text-sm" />
                         Return Home

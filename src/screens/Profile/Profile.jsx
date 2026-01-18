@@ -54,8 +54,8 @@ const Profile = () => {
       {/* Bio Section */}
       <div
         className={`relative w-full max-w-3xl rounded-xl p-6 shadow-md transition-colors duration-500 ${isDark
-          ? "bg-linear-to-r from-[#0b1025] via-[#0d0f2c] to-[#050816] text-gray-200"
-          : "bg-linear-to-r from-sky-100 via-blue-100 to-gray-500 border-gray-300 text-gray-900 shadow-lg "
+          ? "bg-slate-800 text-gray-200"
+          : "bg-slate-100 border-gray-300 text-gray-900 shadow-lg"
           }`}
       >
         <p className="leading-relaxed text-center">

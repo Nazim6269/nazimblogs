@@ -62,8 +62,8 @@ const CreateBlog = () => {
         {/* Image Upload Section */}
         <div
           className={`grid place-items-center h-40 rounded-lg transition-all duration-300 overflow-hidden relative ${isDark
-              ? "bg-linear-to-r from-[#0b1025] via-[#0d0f2c] to-[#050816] border border-gray-600"
-              : "bg-gray-200/40 border border-gray-300"
+            ? "bg-slate-800 border border-gray-700"
+            : "bg-gray-200/40 border border-gray-300"
             }`}
         >
           {imageSrc ? (
@@ -84,8 +84,8 @@ const CreateBlog = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className={`w-full text-2xl sm:text-3xl md:text-4xl font-semibold px-4 py-3 rounded-lg border focus:outline-none transition-colors duration-300 ${isDark
-              ? "bg-linear-to-r from-[#0b1025] via-[#0d0f2c] to-[#050816] border-gray-600 text-gray-100 placeholder-gray-400 focus:border-blue-600"
-              : "bg-gray-200/40 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-indigo-600"
+            ? "bg-slate-800 border-gray-700 text-gray-100 placeholder-gray-400 focus:border-purple-500"
+            : "bg-gray-200/40 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-indigo-600"
             }`}
         />
 
@@ -96,8 +96,8 @@ const CreateBlog = () => {
           value={tags}
           onChange={(e) => setTags(e.target.value)}
           className={`w-full text-sm sm:text-lg px-4 py-2 rounded-lg border focus:outline-none transition-colors duration-300 ${isDark
-              ? "bg-linear-to-r from-[#0b1025] via-[#0d0f2c] to-[#050816] border-gray-600 text-gray-100 placeholder-gray-400 focus:border-blue-600"
-              : "bg-gray-200/40 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-indigo-600"
+            ? "bg-slate-800 border-gray-700 text-gray-100 placeholder-gray-400 focus:border-purple-500"
+            : "bg-gray-200/40 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-indigo-600"
             }`}
         />
 
@@ -108,8 +108,8 @@ const CreateBlog = () => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className={`w-full text-sm sm:text-lg px-4 py-3 rounded-lg border focus:outline-none transition-colors duration-300 ${isDark
-              ? "bg-linear-to-r from-[#0b1025] via-[#0d0f2c] to-[#050816] border-gray-600 text-gray-100 placeholder-gray-400 focus:border-blue-600"
-              : "bg-gray-200/40 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-indigo-600"
+            ? "bg-slate-800 border-gray-700 text-gray-100 placeholder-gray-400 focus:border-purple-500"
+            : "bg-gray-200/40 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-indigo-600"
             }`}
         ></textarea>
 
@@ -117,8 +117,8 @@ const CreateBlog = () => {
         <button
           type="submit"
           className={`w-full py-3 md:py-2 px-2 rounded-lg font-bold text-white text-center transition-all duration-300 cursor-pointer ${isDark
-              ? "bg-linear-to-r from-blue-500 to-purple-500  text-white hover:shadow-[0_0_20px_rgba(130,90,250,0.7)]"
-              : "bg-linear-to-r from-purple-400 via-blue-500 to-purple-600 text-white hover:shadow-[0_0_20px_rgba(130,90,250,0.7)]"
+            ? "bg-purple-600 text-white hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/50"
+            : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-lg hover:shadow-violet-500/50"
             }`}
         >
           Create Blog

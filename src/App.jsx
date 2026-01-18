@@ -21,17 +21,14 @@ function App() {
     <BrowserRouter>
       <div
         className={`min-h-screen transition-all duration-500 ${isDark
-            ? "bg-linear-to-br from-[#0b1025] via-[#0d0f2c] to-[#050816] text-gray-200"
-            : "bg-linear-to-br from-[#f3d9ff] via-[#e0e7ff] to-[#c7ddff] text-gray-900"
+          ? "bg-slate-900 text-gray-200"
+          : "bg-slate-50 text-gray-900"
           }`}
       >
         <Navbar />
 
         {/* Page Content */}
         <main className="relative pt-15 flex justify-center">
-          {/* Glowing blobs */}
-          <div className="absolute -top-40 -left-40 h-[400px] w-[400px] bg-purple-500/30 rounded-full blur-[120px]"></div>
-          <div className="absolute top-40 -right-40 h-[400px] w-[400px] bg-blue-500/30 rounded-full blur-[120px]"></div>
 
           <Container>
             <div

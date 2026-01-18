@@ -96,8 +96,8 @@ const Login = () => {
           <button
             type="submit"
             className={`w-full py-3 font-bold transition-all duration-500 ${isDark
-              ? "bg-linear-to-r from-blue-900 via-purple-900 to-blue-800 text-white hover:shadow-[0_0_20px_rgba(130,90,250,0.6)]"
-              : "bg-linear-to-r from-purple-400 to-indigo-500 text-white hover:shadow-[0_0_20px_rgba(130,90,250,0.4)]"
+              ? "bg-purple-600 text-white hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/50"
+              : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-lg hover:shadow-violet-500/50"
               }`}
           >
             Login{" "}

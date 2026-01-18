@@ -65,52 +65,67 @@ const BlogCards = () => {
   }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="max-w-7xl mx-auto w-full flex flex-col min-h-screen">
       {searchQuery && (
-        <div className="mx-5 mt-5">
-          <h2 className="text-xl font-semibold opacity-70">
-            Showing results for: <span className="text-purple-500">"{searchQuery}"</span>
-            <span className="ml-2 text-sm font-normal">({filteredData.length} articles found)</span>
+        <div className="px-5 mt-10 mb-2">
+          <h2 className={`text-2xl font-black ${isDark ? "text-white" : "text-gray-900"}`}>
+            Search Results
           </h2>
+          <p className={`text-sm font-semibold opacity-60 flex items-center gap-2 mt-1`}>
+            Found {filteredData.length} articles for <span className="text-purple-500 underline decoration-purple-500/30 underline-offset-4">"{searchQuery}"</span>
+          </p>
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row gap-5 m-5">
+      <div className="flex flex-col lg:flex-row gap-8 p-5 lg:p-8">
         {/* Blog Cards Section */}
-        <div className="flex flex-col gap-4 flex-1">
+        <div className="flex flex-col gap-6 flex-1 order-2 lg:order-1">
           {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+            <div className="flex justify-center items-center py-32">
+              <div className="relative">
+                <div className="w-16 h-16 rounded-full border-4 border-purple-500/20 border-t-purple-500 animate-spin"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full animate-ping"></div>
+                </div>
+              </div>
             </div>
           ) : currentPosts.length > 0 ? (
-            currentPosts.map((item) => (
-              <Link key={item.id} to={`/blog-details?id=${item.id}`}>
-                <BlogCard data={item} />
-              </Link>
-            ))
+            <div className="grid gap-6">
+              {currentPosts.map((item) => (
+                <Link key={item.id} to={`/blog-details?id=${item.id}`} className="block">
+                  <BlogCard data={item} />
+                </Link>
+              ))}
+            </div>
           ) : (
-            <NoData
-              message={searchQuery ? "No results found" : "No Blogs Found"}
-              subMessage={searchQuery
-                ? "We couldn't find any articles matching your search. Try different keywords!"
-                : "We couldn't find any articles at the moment. Please check back later!"
-              }
-            />
+            <div className="py-20">
+              <NoData
+                message={searchQuery ? "No results found" : "No Blogs Found"}
+                subMessage={searchQuery
+                  ? "We couldn't find any articles matching your search. Try different keywords!"
+                  : "We couldn't find any articles at the moment. Please check back later!"
+                }
+              />
+            </div>
+          )}
+
+          {/* Pagination */}
+          {currentPosts.length > 0 && totalPages > 1 && (
+            <div className="py-10 border-t border-gray-500/10 mt-4">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
           )}
         </div>
 
         {/* Sidebar */}
-        <SideBar />
+        <div className="order-1 lg:order-2">
+          <SideBar />
+        </div>
       </div>
-
-      {/* Pagination */}
-      {currentPosts.length > 0 && totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      )}
     </div>
   );
 };

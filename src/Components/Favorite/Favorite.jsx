@@ -10,11 +10,10 @@ const Favorite = () => {
       <div
         className={`py-4 px-4 my-3 rounded-lg border transition-all duration-300
         transform hover:scale-[1.02] shadow-lg
-        ${
-          isDark
+        ${isDark
             ? "bg-gray-900 border-gray-700 text-gray-200"
             : "bg-white border-gray-300 text-gray-900"
-        }
+          }
         `}
       >
         <ul className="space-y-4">
@@ -23,10 +22,9 @@ const Favorite = () => {
             <h3
               className={`text-lg font-semibold transition-all cursor-pointer
                 bg-clip-text text-transparent
-                ${
-                  isDark
-                    ? "bg-linear-to-r from-gray-200 to-gray-400 hover:from-blue-300 hover:to-purple-400"
-                    : "bg-linear-to-r from-gray-900 to-gray-700 hover:from-blue-500 hover:to-purple-500"
+                ${isDark
+                  ? "bg-gray-200 hover:bg-purple-500 hover:text-white"
+                  : "bg-gray-800 hover:bg-purple-500 hover:text-white"
                 }`}
             >
               How to Auto Deploy a Next.js App on Ubuntu from GitHub
@@ -34,9 +32,8 @@ const Favorite = () => {
 
             {/* Tags */}
             <p
-              className={`mt-1 text-sm transition-colors ${
-                isDark ? "text-gray-400" : "text-gray-600"
-              }`}
+              className={`mt-1 text-sm transition-colors ${isDark ? "text-gray-400" : "text-gray-600"
+                }`}
             >
               <span className="mr-2">#tailwindcss</span>
               <span className="mr-2">#server</span>

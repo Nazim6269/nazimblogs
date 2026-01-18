@@ -1,175 +1,274 @@
-import { faMoon, faSearch, faSun, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMoon,
+  faSearch,
+  faSun,
+  faChevronDown,
+  faUser,
+  faGear,
+  faPenNib,
+  faSignOutAlt,
+  faBars,
+  faClose
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
+import { useDebounce } from "../../hooks/useDebounce";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
   const isDark = theme === "dark";
-  const [showModal, setShowModal] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
+  const debouncedSearch = useDebounce(searchTerm, 500);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Sync debounced search to URL
+  useEffect(() => {
+    if (debouncedSearch !== null) {
+      if (debouncedSearch.trim()) {
+        setSearchParams({ search: debouncedSearch.trim() });
+        // If not on home page, maybe redirect?
+        // For now just update params. If BlogCards is on home, it will pick it up.
+      } else {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete("search");
+        setSearchParams(newParams);
+      }
+    }
+  }, [debouncedSearch]);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    setIsDropdownOpen(false);
+    navigate("/");
+  };
+
+  const navLinks = [
+    { name: "Explore", path: "/" },
+    { name: "Tutorials", path: "/tutorials" },
+    { name: "Design", path: "/design" },
+    { name: "Community", path: "/community" },
+  ];
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50">
+    <header className={`fixed top-0 left-0 w-full z-100 transition-all duration-300 ${isScrolled ? "py-2" : "py-4"}`}>
       <nav
         className={`
-      backdrop-blur-lg border-b transition-all duration-500
-      ${isDark
-            ? "bg-[#050816]/70 border-white/10 text-white"
-            : "bg-white/70 border-black/10 text-gray-900"
+          max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
+          rounded-2xl transition-all duration-500
+          ${isScrolled
+            ? (isDark ? "bg-[#0f172a]/80 backdrop-blur-xl border border-white/10 shadow-2xl" : "bg-white/80 backdrop-blur-xl border border-black/5 shadow-xl")
+            : "bg-transparent"
           }
-    `}
+        `}
       >
-        <div className="flex justify-between items-center px-8 xsm:px-12 sm:px-20 py-4">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/">
-            <p
-              className={`text-4xl font-bold bg-clip-text text-transparent transition-all duration-500 ${isDark
-                  ? "bg-linear-to-r from-blue-400 via-purple-500 to-pink-500"
-                  : "bg-linear-to-r from-purple-400 to-indigo-500"
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 bg-linear-to-tr from-purple-600 to-blue-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg group-hover:rotate-12 transition-transform duration-300">
+              H
+            </div>
+            <span
+              className={`text-2xl font-bold tracking-tight transition-all duration-500 ${isDark ? "text-white" : "text-gray-900"
                 }`}
             >
-              HexaBlog
-            </p>
+              Hexa<span className="text-purple-500">Blog</span>
+            </span>
           </Link>
 
-          {/* Center Links */}
-          <div className="hidden md:flex items-center gap-8 text-sm opacity-90">
-            {["Featured", "Tutorial", "Design", "Freelance"].map((item) => (
-              <span
-                key={item}
-                className={`${isDark ? "text-gray-400 " : "text-gray-600"
-                  } cursor-pointer hover:text-purple-400 transition-all font-semibold text-lg`}
+          {/* Desktop Nav Links */}
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                to={link.path}
+                className={({ isActive }) => `
+                  px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200
+                  ${isActive
+                    ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-purple-600 bg-purple-50")
+                    : (isDark ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100")
+                  }
+                `}
               >
-                {item}
-              </span>
+                {link.name}
+              </NavLink>
             ))}
           </div>
 
-          {/* Right Panel */}
-          <div className="flex items-center gap-4">
+          {/* Right Section */}
+          <div className="flex items-center gap-3">
+            {/* Search - Icon only on mobile/small desktop */}
+            <div className="hidden lg:flex items-center relative group">
+              <FontAwesomeIcon icon={faSearch} className={`absolute left-3 transition-colors ${isDark ? "text-gray-500 group-focus-within:text-purple-400" : "text-gray-400 group-focus-within:text-purple-500"}`} />
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={`
+                  pl-10 pr-4 py-2 rounded-xl text-sm w-48 focus:w-64 transition-all duration-300 outline-none
+                  ${isDark
+                    ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50"
+                    : "bg-gray-100 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30 shadow-sm"}
+                `}
+              />
+            </div>
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-white/10 transition"
+              className={`
+                w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300
+                ${isDark ? "bg-white/5 text-yellow-400 hover:bg-white/10" : "bg-gray-100 text-purple-600 hover:bg-gray-200"}
+              `}
             >
-              {isDark ? (
-                <FontAwesomeIcon icon={faSun} className="text-yellow-400" />
-              ) : (
-                <FontAwesomeIcon icon={faMoon} className="text-indigo-600" />
-              )}
+              {isDark ? <FontAwesomeIcon icon={faSun} /> : <FontAwesomeIcon icon={faMoon} />}
             </button>
 
-            {/* Search */}
-            <div
-              className={`hidden lg:flex items-center gap-2 px-3 py-1 rounded-lg transition-all duration-300 ${isDark
-                  ? "bg-gray-800/80 text-gray-200"
-                  : "bg-gray-300/30 text-gray-900"
-                }`}
-            >
-              <FontAwesomeIcon
-                icon={faSearch}
-                className={`transition-opacity duration-300 ${isDark
-                    ? "text-gray-400 opacity-70"
-                    : "text-gray-500 opacity-70"
-                  }`}
-              />
-              <input
-                type="text"
-                placeholder="Search blog..."
-                className={`bg-transparent outline-none text-sm  w-full placeholder-transition transition-colors duration-300 ${isDark
-                    ? "placeholder-gray-400 text-gray-200"
-                    : "placeholder-gray-500 text-gray-900"
-                  }`}
-              />
-            </div>
-
-            {/* Write Button */}
-            {user && (
-              <Link to="/create-blog">
-                <button
-                  className="hidden md:block px-5 py-2 rounded-lg text-sm font-medium text-white 
-              bg-linear-to-r from-blue-500 to-purple-500 
-              hover:scale-105 transition-transform shadow-md"
-                >
-                  Write
-                </button>
-              </Link>
-            )}
-
+            {/* Auth States */}
             {user ? (
-              <>
-                {/* Avatar */}
-                <div className="h-10 w-10 rounded-full bg-linear-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-semibold shadow-lg">
-                  {user.name ? user.name.charAt(0).toUpperCase() : "U"}
-                </div>
-
-                {/* Profile Link */}
-                <Link
-                  to="/profile"
-                  className={`${isDark ? "text-gray-400" : "text-gray-600"
-                    } hidden sm:block hover:text-purple-400 font-semibold`}
-                >
-                  {user.name && user.name.split(" ")[0]}
-                </Link>
-
-                {/* Logout Button */}
+              <div className="relative" ref={dropdownRef}>
                 <button
-                  onClick={logout}
-                  className={`${isDark ? "text-gray-400" : "text-gray-600"
-                    } hidden sm:block hover:text-red-400 font-semibold ml-2`}
-                  title="Logout"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className={`
+                    flex items-center gap-2 p-1 pr-3 rounded-xl transition-all duration-300
+                    ${isDark ? "hover:bg-white/5" : "hover:bg-gray-100"}
+                  `}
                 >
-                  <FontAwesomeIcon icon={faRightFromBracket} />
+                  <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold shadow-md">
+                    {user.name?.charAt(0).toUpperCase() || "U"}
+                  </div>
+                  <FontAwesomeIcon
+                    icon={faChevronDown}
+                    className={`text-[10px] transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""} ${isDark ? "text-gray-500" : "text-gray-400"}`}
+                  />
                 </button>
-              </>
+
+                {/* Dropdown Menu */}
+                {isDropdownOpen && (
+                  <div
+                    className={`
+                      absolute right-0 mt-3 w-56 rounded-2xl shadow-2xl border p-2
+                      animate-in fade-in zoom-in duration-200
+                      ${isDark ? "bg-[#0f172a] border-white/10" : "bg-white border-gray-100"}
+                    `}
+                  >
+                    <div className="px-4 py-3 border-b border-gray-100 dark:border-white/5 mb-2">
+                      <p className={`text-sm font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{user.name}</p>
+                      <p className={`text-xs ${isDark ? "text-gray-500" : "text-gray-400"} truncate`}>{user.email}</p>
+                    </div>
+
+                    <Link to="/profile" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
+                      <FontAwesomeIcon icon={faUser} className="w-4 text-purple-500" />
+                      <span>My Profile</span>
+                    </Link>
+
+                    <Link to="/create-blog" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
+                      <FontAwesomeIcon icon={faPenNib} className="w-4 text-blue-500" />
+                      <span>Write a Post</span>
+                    </Link>
+
+                    <Link to="/settings" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
+                      <FontAwesomeIcon icon={faGear} className="w-4 text-gray-400" />
+                      <span>Settings</span>
+                    </Link>
+
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-red-500 hover:bg-red-500/5 transition-colors mt-2 border-t border-gray-100 dark:border-white/5 pt-3"
+                    >
+                      <FontAwesomeIcon icon={faSignOutAlt} className="w-4" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
-              <>
-                {/* Login */}
+              <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className={`${isDark ? "text-gray-400" : "text-gray-600"
-                    } hidden sm:block hover:text-purple-400 font-semibold`}
+                  className={`hidden sm:block px-4 py-2 text-sm font-semibold transition-colors ${isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-gray-900"}`}
                 >
-                  Login
+                  Sign In
                 </Link>
                 <Link
                   to="/register"
-                  className="hidden md:block px-5 py-2 rounded-lg text-sm font-medium text-white 
-              bg-linear-to-r from-purple-500 to-indigo-500 
-              hover:scale-105 transition-transform shadow-md"
+                  className="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-linear-to-r from-purple-600 to-blue-600 hover:shadow-lg hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300"
                 >
-                  Join
+                  Join Hexa
                 </Link>
-              </>
+              </div>
             )}
 
-            {/* Mobile Menu */}
-            <div
-              onClick={() => setShowModal(true)}
-              className="md:hidden flex flex-col gap-[3px] cursor-pointer"
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={`md:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isDark ? "bg-white/5 text-white" : "bg-gray-100 text-gray-900"}`}
             >
-              <span
-                className={`w-5 h-0.5 rounded ${isDark ? "bg-white" : "bg-black"
-                  }`}
-              ></span>
-              <span
-                className={`w-5 h-0.5 rounded ${isDark ? "bg-white" : "bg-black"
-                  }`}
-              ></span>
-              <span
-                className={`w-5 h-0.5 rounded ${isDark ? "bg-white" : "bg-black"
-                  }`}
-              ></span>
-            </div>
+              <FontAwesomeIcon icon={isMobileMenuOpen ? faClose : faBars} />
+            </button>
           </div>
         </div>
-      </nav>
 
-      {/* Bottom glow line */}
-      <div className="h-px bg-linear-to-r from-transparent via-purple-500/50 to-transparent"></div>
+        {/* Mobile Menu Content */}
+        {isMobileMenuOpen && (
+          <div className={`md:hidden py-4 border-t ${isDark ? "border-white/5" : "border-gray-100"} transition-all animate-in slide-in-from-top duration-300`}>
+            <div className="flex flex-col gap-2">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={({ isActive }) => `
+                      px-4 py-3 rounded-xl text-base font-semibold transition-all
+                      ${isActive
+                      ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-purple-600 bg-purple-50")
+                      : (isDark ? "text-gray-400" : "text-gray-600")
+                    }
+                    `}
+                >
+                  {link.name}
+                </NavLink>
+              ))}
+              {!user && (
+                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/5 flex flex-col gap-2">
+                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className={`px-4 py-3 rounded-xl font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>Sign In</Link>
+                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 rounded-xl font-bold text-white bg-linear-to-r from-purple-600 to-blue-600 text-center">Join Hexa</Link>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </nav>
     </header>
   );
 };

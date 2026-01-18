@@ -11,6 +11,7 @@ import Login from "./screens/Login/Login";
 import Profile from "./screens/Profile/Profile";
 import Register from "./screens/Register/Register";
 import SingleBlog from "./screens/SingleBlog/SingleBlog";
+import NotFound from "./screens/NotFound/NotFound";
 
 function App() {
   const { theme } = useTheme();
@@ -19,11 +20,10 @@ function App() {
   return (
     <BrowserRouter>
       <div
-        className={`min-h-screen transition-all duration-500 ${
-          isDark
+        className={`min-h-screen transition-all duration-500 ${isDark
             ? "bg-linear-to-br from-[#0b1025] via-[#0d0f2c] to-[#050816] text-gray-200"
             : "bg-linear-to-br from-[#f3d9ff] via-[#e0e7ff] to-[#c7ddff] text-gray-900"
-        }`}
+          }`}
       >
         <Navbar />
 
@@ -44,6 +44,7 @@ function App() {
                 <Route path="/create-blog" element={<CreateBlog />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/blog-details" element={<SingleBlog />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
           </Container>

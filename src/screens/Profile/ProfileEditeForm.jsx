@@ -1,0 +1,82 @@
+import React, { useState } from 'react'
+import { useTheme } from '../../hooks/useTheme';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+
+const ProfileEditForm = ({ initial, onCancel, onSave }) => {
+    const { theme } = useTheme();
+    const isDark = theme === "dark";
+    const [form, setForm] = useState(initial);
+
+    return (
+        <div className="space-y-4">
+            <div>
+                <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Name
+                </label>
+                <input
+                    type="text"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                        ? "bg-slate-700 border-gray-600 text-gray-200"
+                        : "bg-white border-gray-300 text-gray-900"
+                        } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                />
+            </div>
+            <div>
+                <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Bio
+                </label>
+                <textarea
+                    value={form.bio}
+                    onChange={(e) => setForm({ ...form, bio: e.target.value })}
+                    rows={3}
+                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                        ? "bg-slate-700 border-gray-600 text-gray-200"
+                        : "bg-white border-gray-300 text-gray-900"
+                        } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                />
+            </div>
+            <div>
+                <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Location
+                </label>
+                <input
+                    type="text"
+                    value={form.location}
+                    onChange={(e) => setForm({ ...form, location: e.target.value })}
+                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                        ? "bg-slate-700 border-gray-600 text-gray-200"
+                        : "bg-white border-gray-300 text-gray-900"
+                        } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                />
+            </div>
+            <div className="flex gap-3 justify-end">
+                <button
+                    onClick={onCancel}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${isDark
+                        ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
+                >
+                    <FontAwesomeIcon icon={faTimes} className="mr-2" />
+                    Cancel
+                </button>
+                <button
+                    onClick={() => onSave(form)}
+                    className={`px-4 py-2 rounded-lg font-medium text-white transition-all duration-300 ${isDark
+                        ? "bg-purple-600 hover:bg-purple-700"
+                        : "bg-violet-600 hover:bg-violet-700"
+                        }`}
+                >
+                    <FontAwesomeIcon icon={faCheck} className="mr-2" />
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    );
+};
+
+
+export default ProfileEditForm

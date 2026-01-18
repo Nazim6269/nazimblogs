@@ -19,3 +19,20 @@ export const addBlog = (blog) => {
   const blogs = getBlogs();
   localStorage.setItem("blogs", JSON.stringify([blog, ...blogs]));
 };
+
+export const updateBlog = (id, updatedBlog) => {
+  const blogs = getBlogs();
+  const updatedBlogs = blogs.map((blog) =>
+    blog.id === id ? { ...blog, ...updatedBlog } : blog
+  );
+  localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
+  return updatedBlogs;
+};
+
+export const deleteBlog = (id) => {
+  const blogs = getBlogs();
+  const filteredBlogs = blogs.filter((blog) => blog.id !== id);
+  localStorage.setItem("blogs", JSON.stringify(filteredBlogs));
+  return filteredBlogs;
+};
+

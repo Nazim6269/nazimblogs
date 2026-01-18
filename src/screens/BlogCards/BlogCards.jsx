@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { useTheme } from "../../hooks/useTheme";
 import BlogCard from "../../Components/BlogCard/BlogCard";
 import Pagination from "../../Components/Pagination/Pagination";
 import SideBar from "../../Components/SideBar/SideBar";
@@ -13,6 +14,9 @@ const BlogCards = () => {
   const searchQuery = searchParams.get("search") || "";
 
   const postsPerPage = 10;
+
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   // Filter logic
   const filteredData = useMemo(() => {

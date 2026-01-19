@@ -13,7 +13,7 @@ connectDB();
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Adjust this to your frontend URL
+    origin: 'http://localhost:5173', 
     credentials: true
 }));
 app.use(express.json());
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
     // Set static folder
 } else {
     app.get('/', (req, res) => {
-        res.send('API is running....');
+        res.send('API is running Smoothly');
     });
 }
 

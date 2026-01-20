@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import InputGroup from "../../Components/InputGroup/InputGroup";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
@@ -13,14 +13,18 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const { login, user } = useAuth();
+  const { login, user, socialLogin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the page user was trying to access, or default to home
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate(from, { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, navigate, from]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,19 +35,17 @@ const Login = () => {
     setError("");
     try {
       await login(formData.email, formData.password);
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const { socialLogin } = useAuth();
-
   const handleSocialLogin = async (provider) => {
     setError("");
     try {
       await socialLogin(provider);
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);
     }

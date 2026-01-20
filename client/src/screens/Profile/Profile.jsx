@@ -13,6 +13,7 @@ import BlogCard from "../../Components/BlogCard/BlogCard";
 import { getBlogs, deleteBlog, updateBlog } from "../../helper/localStorage";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
+import ProfileEditForm from "../Profile/ProfileEditeForm"
 
 const Profile = () => {
   const { theme } = useTheme();

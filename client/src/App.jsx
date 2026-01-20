@@ -39,6 +39,9 @@ function App() {
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Home />} />
+                <Route path="/tutorials" element={<Home />} />
+                <Route path="/design" element={<Home />} />
+                <Route path="/community" element={<Home />} />
                 <Route path="/blog-details" element={<SingleBlog />} />
 
                 {/* Auth Routes - Only accessible when NOT logged in */}

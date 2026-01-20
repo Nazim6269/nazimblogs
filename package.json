@@ -8,6 +8,10 @@
     "scripts": {
         "install:all": "npm install",
         "dev:client": "npm run dev --workspace=client",
-        "dev:backend": "npm run dev --workspace=backend"
+        "dev:backend": "npm run dev --workspace=backend",
+        "dev": "concurrently \"npm run dev:backend\" \"npm run dev:client\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.2.1"
     }
 }

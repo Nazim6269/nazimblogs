@@ -40,6 +40,21 @@ const ProfileEditForm = ({ initial, onCancel, onSave }) => {
             </div>
             <div>
                 <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Photo URL (optional)
+                </label>
+                <input
+                    type="url"
+                    value={form.photoURL || ""}
+                    onChange={(e) => setForm({ ...form, photoURL: e.target.value })}
+                    placeholder="https://example.com/photo.jpg"
+                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                        ? "bg-slate-700 border-gray-600 text-gray-200 placeholder-gray-500"
+                        : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
+                        } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                />
+            </div>
+            <div>
+                <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
                     Location
                 </label>
                 <input

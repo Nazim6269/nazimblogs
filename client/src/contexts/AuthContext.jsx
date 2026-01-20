@@ -77,8 +77,10 @@ export const AuthProvider = ({ children }) => {
             });
             localStorage.removeItem("userInfo");
             setUser(null);
+            return true; // Return success status
         } catch (error) {
             console.error(error);
+            return false; // Return failure status
         }
     };
 
@@ -114,12 +116,19 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const updateUser = (updatedData) => {
+        const updatedUser = { ...user, ...updatedData };
+        setUser(updatedUser);
+        localStorage.setItem("userInfo", JSON.stringify(updatedUser));
+    };
+
     const value = {
         user,
         login,
         register,
         logout,
-        socialLogin
+        socialLogin,
+        updateUser
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

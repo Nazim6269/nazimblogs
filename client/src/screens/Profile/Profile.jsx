@@ -12,9 +12,11 @@ import { Link, useNavigate } from "react-router-dom";
 import BlogCard from "../../Components/BlogCard/BlogCard";
 import { getBlogs, deleteBlog, updateBlog } from "../../helper/localStorage";
 import { useTheme } from "../../hooks/useTheme";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Profile = () => {
   const { theme } = useTheme();
+  const { user, updateUser } = useAuth();
   const isDark = theme === "dark";
   const navigate = useNavigate();
 
@@ -33,21 +35,34 @@ const Profile = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profile, setProfile] = useState({
-    name: "Nazim Uddin",
-    email: "nazimdev10022001@gmail.com",
-    bio:
-      "This is Nazim, who wants to be a full stack engineer though it's not easy at all. But he is always trying his best.",
-    location: "Chittagong, Bangladesh",
+    name: user?.name || "Guest User",
+    email: user?.email || "",
+    bio: user?.bio || "No bio available yet.",
+    location: user?.location || "Unknown",
+    photoURL: user?.photoURL || null
   });
 
   // Derived stats
   const totalBlogs = blogs.length;
   const totalLikes = blogs.reduce((s, b) => s + (Number(b.likes) || 0), 0);
 
+  // Sync profile with user data when user changes
   useEffect(() => {
-  const storedBlogs = getBlogs() || [];
-  setBlogs(storedBlogs);
-  setFilteredBlogs(storedBlogs);
+    if (user) {
+      setProfile({
+        name: user.name || "Guest User",
+        email: user.email || "",
+        bio: user.bio || "No bio available yet.",
+        location: user.location || "Unknown",
+        photoURL: user.photoURL || null
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const storedBlogs = getBlogs() || [];
+    setBlogs(storedBlogs);
+    setFilteredBlogs(storedBlogs);
   }, []);
 
   // Debounce search query
@@ -95,7 +110,12 @@ const Profile = () => {
   const handleToggleFollow = () => setIsFollowing((s) => !s);
 
   const handleProfileSave = (updated) => {
-    setProfile((p) => ({ ...p, ...updated }));
+    const updatedProfile = { ...profile, ...updated };
+    setProfile(updatedProfile);
+
+    // Update user context and localStorage
+    updateUser(updated);
+
     setIsEditingProfile(false);
   };
 
@@ -105,7 +125,7 @@ const Profile = () => {
     setBlogs(updatedBlogs);
     setFilteredBlogs(updatedBlogs);
     setEditingBlog(null);
-    
+
     setEditForm({ title: "", tags: "", content: "" });
   };
 
@@ -122,11 +142,19 @@ const Profile = () => {
       {/* Header: Avatar, name, actions */}
       <div className="w-full max-w-3xl flex flex-col md:flex-row items-center gap-6">
         <div className="relative">
-          <div
-            className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold transition-all duration-300 ${isDark ? "bg-gray-700 text-white" : "bg-gray-300 text-gray-800"}`}
-          >
-            {profile.name?.charAt(0).toUpperCase()}
-          </div>
+          {profile.photoURL ? (
+            <img
+              src={profile.photoURL}
+              alt={profile.name}
+              className="w-28 h-28 rounded-full object-cover shadow-lg"
+            />
+          ) : (
+            <div
+              className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold transition-all duration-300 ${isDark ? "bg-gray-700 text-white" : "bg-gray-300 text-gray-800"}`}
+            >
+              {profile.name?.charAt(0).toUpperCase()}
+            </div>
+          )}
           <button
             onClick={() => setIsEditingProfile(true)}
             title="Edit profile"
@@ -182,7 +210,7 @@ const Profile = () => {
         </div>
         <div className={`p-4 rounded-lg text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
           <div className="text-sm text-gray-400">Reading Time</div>
-          <div className="text-2xl font-bold">{Math.max(1, Math.round((totalBlogs * 5))) } min</div>
+          <div className="text-2xl font-bold">{Math.max(1, Math.round((totalBlogs * 5)))} min</div>
         </div>
       </div>
 
@@ -445,8 +473,8 @@ const Profile = () => {
                     <button
                       onClick={() => setSearchQuery("")}
                       className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${isDark
-                          ? "bg-slate-700 text-gray-200 hover:bg-slate-600"
-                          : "bg-slate-200 text-gray-700 hover:bg-slate-300"
+                        ? "bg-slate-700 text-gray-200 hover:bg-slate-600"
+                        : "bg-slate-200 text-gray-700 hover:bg-slate-300"
                         }`}
                     >
                       <FontAwesomeIcon icon={faTimes} className="mr-2" />
@@ -455,8 +483,8 @@ const Profile = () => {
                     <Link
                       to="/create-blog"
                       className={`px-6 py-3 rounded-lg font-bold text-white transition-all duration-300 ${isDark
-                          ? "bg-purple-600 hover:bg-purple-700"
-                          : "bg-violet-600 hover:bg-violet-700"
+                        ? "bg-purple-600 hover:bg-purple-700"
+                        : "bg-violet-600 hover:bg-violet-700"
                         }`}
                     >
                       <FontAwesomeIcon icon={faPen} className="mr-2" />
@@ -468,8 +496,8 @@ const Profile = () => {
                 // No Blogs at All
                 <div className="max-w-md mx-auto">
                   <div className={`w-24 h-24 mx-auto mb-6 rounded-2xl flex items-center justify-center ${isDark
-                      ? "bg-linear-to-br from-purple-600/20 to-blue-600/20 border border-purple-500/30"
-                      : "bg-linear-to-br from-violet-100 to-blue-100 border border-violet-200"
+                    ? "bg-linear-to-br from-purple-600/20 to-blue-600/20 border border-purple-500/30"
+                    : "bg-linear-to-br from-violet-100 to-blue-100 border border-violet-200"
                     }`}>
                     <FontAwesomeIcon
                       icon={faPen}
@@ -489,8 +517,8 @@ const Profile = () => {
                     <Link
                       to="/create-blog"
                       className={`px-8 py-3 rounded-lg font-bold text-white transition-all duration-300 transform hover:scale-105 ${isDark
-                          ? "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/30"
-                          : "bg-violet-600 hover:bg-violet-700 shadow-lg shadow-violet-500/30"
+                        ? "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/30"
+                        : "bg-violet-600 hover:bg-violet-700 shadow-lg shadow-violet-500/30"
                         }`}
                     >
                       <FontAwesomeIcon icon={faPen} className="mr-2" />

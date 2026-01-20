@@ -69,7 +69,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     await logout();
     setIsDropdownOpen(false);
-    navigate("/");
+    navigate("/login");
   };
 
   const navLinks = [
@@ -164,9 +164,17 @@ const Navbar = () => {
                     ${isDark ? "hover:bg-white/5" : "hover:bg-gray-100"}
                   `}
                 >
-                  <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-white font-bold shadow-md">
-                    {user.name?.charAt(0).toUpperCase() || "U"}
-                  </div>
+                  {user.photoURL ? (
+                    <img
+                      src={user.photoURL}
+                      alt={user.name || "User"}
+                      className="w-8 h-8 rounded-lg object-cover shadow-md"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold shadow-md">
+                      {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || "U"}
+                    </div>
+                  )}
                   <FontAwesomeIcon
                     icon={faChevronDown}
                     className={`text-[10px] transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""} ${isDark ? "text-gray-500" : "text-gray-400"}`}

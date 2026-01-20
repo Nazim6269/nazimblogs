@@ -14,6 +14,7 @@ import Profile from "./screens/Profile/Profile";
 import Register from "./screens/Register/Register";
 import SingleBlog from "./screens/SingleBlog/SingleBlog";
 import NotFound from "./screens/NotFound/NotFound";
+import Settings from "./screens/Settings/Settings";
 
 function App() {
   const { theme } = useTheme();
@@ -76,6 +77,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Profile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/settings"
+                  element={
+                    <ProtectedRoute>
+                      <Settings />
                     </ProtectedRoute>
                   }
                 />

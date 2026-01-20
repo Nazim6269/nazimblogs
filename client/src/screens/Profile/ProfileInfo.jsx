@@ -10,19 +10,27 @@ const ProfileInfo = ({ profile, handleToggleFollow, isFollowing, setIsFollowing 
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     return (
         <div className="w-full max-w-3xl flex flex-col md:flex-row items-center gap-6">
-            <div className="relative">
-                <div
-                    className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold transition-all duration-300 ${isDark ? "bg-gray-700 text-white" : "bg-gray-300 text-gray-800"}`}
-                >
-                    {profile.name?.charAt(0).toUpperCase()}
-                </div>
-                <button
-                    onClick={() => setIsEditingProfile(true)}
+            <div className="relative group">
+                {profile.photoURL ? (
+                    <img
+                        src={profile.photoURL}
+                        alt={profile.name}
+                        className="w-28 h-28 rounded-full object-cover border-4 border-purple-500/20 shadow-xl"
+                    />
+                ) : (
+                    <div
+                        className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold transition-all duration-300 ${isDark ? "bg-gray-700 text-white" : "bg-gray-300 text-gray-800"}`}
+                    >
+                        {profile.name?.charAt(0).toUpperCase() || "U"}
+                    </div>
+                )}
+                <Link
+                    to="/settings"
                     title="Edit profile"
-                    className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors ${isDark ? "bg-purple-600 hover:bg-purple-700" : "bg-violet-600 hover:bg-violet-700"}`}
+                    className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 ${isDark ? "bg-purple-600 hover:bg-purple-500" : "bg-purple-600 hover:bg-purple-700"}`}
                 >
                     <FontAwesomeIcon icon={faPen} className="text-white text-sm" />
-                </button>
+                </Link>
             </div>
 
             <div className="flex-1 text-center md:text-left">

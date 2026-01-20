@@ -4,13 +4,13 @@ import MetaBadge from './MetaBadge'
 import User from '../../Components/User/User'
 
 const BlogMeta = ({ blog, isDark }) => {
-    const readingTime = Math.ceil(blog.body.split(" ").length / 200); // Avg reading speed: 200 words/min
-    const views = Math.floor(Math.random() * 10000) + 1000;
-    const likes = Math.floor(Math.random() * 500) + 50;
+    const readingTime = Math.ceil((blog.body?.length || 0) / 1000) || 5;
+    const views = (blog.id * 123) + 456;
+    const likes = blog.likes || 0;
 
     return (
         <div className="flex flex-wrap items-center gap-4 mb-8">
-            <User />
+            <User author={blog.author} date={blog.date} />
 
             <MetaBadge
                 icon={faClock}

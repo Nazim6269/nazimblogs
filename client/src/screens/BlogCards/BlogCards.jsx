@@ -83,7 +83,21 @@ const BlogCards = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const jsonData = await response.json();
-        setData(jsonData);
+
+        // Enrich data with mock dynamic fields for demo
+        const enrichedData = jsonData.map(post => ({
+          ...post,
+          likes: Math.floor(Math.random() * 1000) + 100,
+          author: ["Nazim Uddin", "Saad Hasan", "Alex Rivera", "Sarah Chen"][post.userId % 4],
+          imageSrc: `https://picsum.photos/seed/${post.id}/800/600`, // Better for main feed
+          date: new Date(Date.now() - post.id * 1000000).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        }));
+
+        setData(enrichedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -122,9 +136,9 @@ const BlogCards = () => {
         )}
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8 p-5 lg:p-8">
-        {/* Blog Cards Section */}
-        <div className="flex flex-col gap-6 flex-1 order-2 lg:order-1">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-5 lg:p-8">
+        {/* Blog Cards Section - 8 columns */}
+        <div className="flex flex-col gap-6 lg:col-span-8 order-2 lg:order-1">
           {loading ? (
             <div className="flex justify-center items-center py-32">
               <div className="relative">
@@ -135,7 +149,7 @@ const BlogCards = () => {
               </div>
             </div>
           ) : currentPosts.length > 0 ? (
-            <div className="grid gap-6">
+            <div className="grid gap-8">
               {currentPosts.map((item) => (
                 <Link key={item.id} to={`/blog-details?id=${item.id}`} className="block">
                   <BlogCard data={item} />
@@ -166,9 +180,9 @@ const BlogCards = () => {
           )}
         </div>
 
-        {/* Sidebar */}
-        <div className="order-1 lg:order-2">
-          <SideBar />
+        {/* Sidebar - 4 columns */}
+        <div className="lg:col-span-4 order-1 lg:order-2">
+          <SideBar blogs={data} />
         </div>
       </div>
     </div>

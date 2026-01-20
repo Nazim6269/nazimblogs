@@ -1,36 +1,39 @@
 import PropTypes from "prop-types";
 import { useTheme } from "../../hooks/useTheme";
 
-const User = ({ comment }) => {
+const User = ({ author, date }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
   return (
-    <div className={`flex items-start space-x-3`}>
+    <div className={`flex items-center space-x-3`}>
       {/* Avatar */}
       <div className="avatar">
-        <span
+        <div
           className={`
-            p-2 rounded-full font-bold
+            w-10 h-10 rounded-full font-bold flex items-center justify-center
             ${isDark
               ? "bg-slate-800 text-gray-100"
-              : "bg-gray-200 text-black"
+              : "bg-gray-200 text-black border border-gray-300"
             }
           `}
         >
-          U
-        </span>
+          {author?.charAt(0).toUpperCase() || "U"}
+        </div>
       </div>
 
-      {/* Comment Text */}
+      {/* Info Text */}
       <div>
-        <p
+        <h4
           className={`
-            text-sm
-            ${isDark ? "text-gray-100" : "text-gray-800"}
+            text-sm font-bold leading-tight
+            ${isDark ? "text-gray-100" : "text-gray-900"}
           `}
         >
-          {comment}
+          {author || "Unknown Author"}
+        </h4>
+        <p className={`text-[11px] font-semibold opacity-50 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+          {date || "Published just now"}
         </p>
       </div>
     </div>
@@ -38,7 +41,8 @@ const User = ({ comment }) => {
 };
 
 User.propTypes = {
-  comment: PropTypes.string,
+  author: PropTypes.string,
+  date: PropTypes.string,
 };
 
 export default User;

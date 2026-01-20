@@ -87,7 +87,21 @@ const SingleBlog = () => {
         }
 
         const data = await response.json();
-        setBlog(data);
+
+        // Mocking dynamic fields for the specific blog fetched by ID
+        const enrichedBlog = {
+          ...data,
+          likes: Math.floor(Math.random() * 1000) + 100,
+          author: ["Nazim Uddin", "Saad Hasan", "Alex Rivera", "Sarah Chen"][data.userId % 4],
+          date: new Date(Date.now() - data.id * 1000000).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          imageSrc: `https://picsum.photos/seed/${data.id}/1200/600`
+        };
+
+        setBlog(enrichedBlog);
       } catch (err) {
         setError(err.message);
         toast.error(err.message || "Failed to load blog");
@@ -159,7 +173,7 @@ const SingleBlog = () => {
         <BlogMeta blog={blog} isDark={isDark} />
 
         {/* Cover Image */}
-        <BlogCoverImage id={id} title={blog.title} isDark={isDark} />
+        <BlogCoverImage id={id} title={blog.title} isDark={isDark} imageUrl={blog.imageSrc} />
 
         {/* Tags */}
         <BlogTags tags={tags} isDark={isDark} />

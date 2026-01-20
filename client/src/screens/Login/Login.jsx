@@ -4,6 +4,7 @@ import InputGroup from "../../Components/InputGroup/InputGroup";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import { googleProvider, githubProvider } from "../../firebase";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const { theme } = useTheme();
@@ -12,7 +13,6 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
   const { login, user, socialLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,22 +32,24 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    const loginToast = toast.loading("Logging in...");
     try {
       await login(formData.email, formData.password);
+      toast.success("Welcome back!", { id: loginToast });
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Login failed", { id: loginToast });
     }
   };
 
   const handleSocialLogin = async (provider) => {
-    setError("");
+    const socialToast = toast.loading("Connecting...");
     try {
       await socialLogin(provider);
+      toast.success("Login successful!", { id: socialToast });
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Social login failed", { id: socialToast });
     }
   };
 
@@ -76,7 +78,6 @@ const Login = () => {
           >
             Enter your credentials to access your account
           </p>
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
 
         {/* Form */}

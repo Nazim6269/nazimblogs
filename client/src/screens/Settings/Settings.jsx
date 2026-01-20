@@ -4,6 +4,7 @@ import { useTheme } from "../../hooks/useTheme";
 import { storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import toast from "react-hot-toast";
 import {
     faUser,
     faCamera,
@@ -29,14 +30,12 @@ const Settings = () => {
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(user?.photoURL || null);
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
 
     const fileInputRef = useRef(null);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-        setSuccess(false);
     };
 
     const handleImageChange = (e) => {
@@ -48,7 +47,6 @@ const Settings = () => {
                 setImagePreview(reader.result);
             };
             reader.readAsDataURL(file);
-            setSuccess(false);
         }
     };
 
@@ -81,7 +79,7 @@ const Settings = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setSuccess(false);
+        const updateToast = toast.loading("Updating profile...");
 
         try {
             let finalPhotoURL = formData.photoURL;
@@ -98,10 +96,11 @@ const Settings = () => {
             // Update in context and localStorage
             updateUser(updatedData);
 
-            setSuccess(true);
+            toast.success("Profile updated successfully!", { id: updateToast });
             setUploadProgress(0);
             setImageFile(null);
         } catch (error) {
+            toast.error("Failed to update profile", { id: updateToast });
             console.error("Failed to update profile", error);
         } finally {
             setLoading(false);
@@ -152,13 +151,6 @@ const Settings = () => {
                         <div className="text-center md:text-left">
                             <h1 className={`text-4xl font-black mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>Account Settings</h1>
                             <p className={`text-sm font-semibold opacity-60`}>Update your profile information and how you appear on HexaBlog.</p>
-
-                            {success && (
-                                <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-500 rounded-xl text-sm font-bold animate-in fade-in slide-in-from-left-4">
-                                    <FontAwesomeIcon icon={faCheck} />
-                                    Profile updated successfully!
-                                </div>
-                            )}
                         </div>
                     </div>
 

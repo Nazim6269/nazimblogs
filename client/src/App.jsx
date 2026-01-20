@@ -5,6 +5,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import Container from "./Components/ui/container/Container";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import PublicRoute from "./Components/PublicRoute/PublicRoute";
+import { Toaster } from "react-hot-toast";
 
 import { useTheme } from "./hooks/useTheme";
 import CreateBlog from "./screens/CreateBlog/CreateBlog";
@@ -29,6 +30,7 @@ function App() {
           }`}
       >
         <Navbar />
+        <Toaster position="top-center" reverseOrder={false} />
 
         {/* Page Content */}
         <main className="relative pt-15 flex justify-center">

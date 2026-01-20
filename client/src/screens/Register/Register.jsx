@@ -4,6 +4,7 @@ import InputGroup from "../../Components/InputGroup/InputGroup";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import { googleProvider, githubProvider } from "../../firebase";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const { theme } = useTheme();
@@ -14,8 +15,7 @@ const Register = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
-  const { register, user } = useAuth();
+  const { register, user, socialLogin } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,25 +30,25 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    const registerToast = toast.loading("Creating account...");
     try {
       const name = `${formData.firstName} ${formData.lastName}`.trim();
       await register(name, formData.email, formData.password);
+      toast.success("Account created successfully!", { id: registerToast });
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Registration failed", { id: registerToast });
     }
   };
 
-  const { socialLogin } = useAuth();
-
   const handleSocialLogin = async (provider) => {
-    setError("");
+    const socialToast = toast.loading("Connecting...");
     try {
       await socialLogin(provider);
+      toast.success("Login successful!", { id: socialToast });
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Social login failed", { id: socialToast });
     }
   };
 
@@ -77,7 +77,6 @@ const Register = () => {
           >
             Join us! Fill in the details to get started
           </p>
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
 
         {/* Form */}

@@ -10,6 +10,7 @@ import {
   faClock,
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 import Comments from "../../Components/Comments/Comments";
 import User from "../../Components/User/User";
 import { useTheme } from "../../hooks/useTheme";
@@ -89,6 +90,7 @@ const SingleBlog = () => {
         setBlog(data);
       } catch (err) {
         setError(err.message);
+        toast.error(err.message || "Failed to load blog");
       } finally {
         setLoading(false);
       }

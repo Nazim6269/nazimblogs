@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Dropzone from "../../Components/Dropzone/Dropzone";
 import { addBlog } from "../../helper/localStorage";
 import { useTheme } from "../../hooks/useTheme";
+import toast from "react-hot-toast";
 
 const CreateBlog = () => {
   const { theme } = useTheme();
@@ -27,7 +28,7 @@ const CreateBlog = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title || !content) {
-      alert("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       return;
     }
 
@@ -47,6 +48,7 @@ const CreateBlog = () => {
     };
 
     addBlog(newBlog);
+    toast.success("Blog created successfully!");
     navigate("/profile");
   };
 

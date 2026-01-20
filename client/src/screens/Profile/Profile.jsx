@@ -14,6 +14,7 @@ import { getBlogs, deleteBlog, updateBlog } from "../../helper/localStorage";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import ProfileEditForm from "../Profile/ProfileEditeForm"
+import toast from "react-hot-toast";
 
 const Profile = () => {
   const { theme } = useTheme();
@@ -95,6 +96,7 @@ const Profile = () => {
     setBlogs(updatedBlogs);
     setFilteredBlogs(updatedBlogs);
     setShowDeleteConfirm(null);
+    toast.success("Blog deleted successfully");
   };
 
   // Handle edit blog
@@ -126,6 +128,7 @@ const Profile = () => {
     setBlogs(updatedBlogs);
     setFilteredBlogs(updatedBlogs);
     setEditingBlog(null);
+    toast.success("Blog updated successfully");
 
     setEditForm({ title: "", tags: "", content: "" });
   };

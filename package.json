@@ -1,49 +1,13 @@
 {
-  "name": "vite-project",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "server": "node backend/server.js"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^7.1.0",
-    "@fortawesome/free-brands-svg-icons": "^7.1.0",
-    "@fortawesome/free-solid-svg-icons": "^7.1.0",
-    "@fortawesome/react-fontawesome": "^3.1.1",
-    "@tailwindcss/vite": "^4.1.17",
-    "bcryptjs": "^3.0.3",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.2.1",
-    "express-async-handler": "^1.2.0",
-    "firebase": "^12.8.0",
-    "gsap": "^3.13.0",
-    "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.1.4",
-    "prop-types": "^15.8.1",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-dropzone": "^14.3.8",
-    "react-router-dom": "^7.9.6",
-    "styled-components": "^6.1.19"
-  },
-  "devDependencies": {
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "autoprefixer": "^10.4.22",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.17",
-    "vite": "^7.2.6"
-  }
+    "name": "blog-app-monorepo",
+    "private": true,
+    "workspaces": [
+        "client",
+        "backend"
+    ],
+    "scripts": {
+        "install:all": "npm install",
+        "dev:client": "npm run dev --workspace=client",
+        "dev:backend": "npm run dev --workspace=backend"
+    }
 }

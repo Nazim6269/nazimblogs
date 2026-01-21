@@ -162,7 +162,7 @@ const Profile = () => {
           <button
             onClick={() => setIsEditingProfile(true)}
             title="Edit profile"
-            className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors ${isDark ? "bg-purple-600 hover:bg-purple-700" : "bg-violet-600 hover:bg-violet-700"}`}
+            className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors ${isDark ? "bg-brand-primary hover:bg-purple-700" : "bg-violet-600 hover:bg-violet-700"}`}
           >
             <FontAwesomeIcon icon={faPen} className="text-white text-sm" />
           </button>
@@ -182,7 +182,7 @@ const Profile = () => {
           >
             {isFollowing ? "Following" : "Follow"}
           </button>
-          <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-purple-600 text-white" : "bg-violet-600 text-white"}`}>Create</Link>
+          <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-brand-primary text-white" : "bg-violet-600 text-white"}`}>Create</Link>
         </div>
       </div>
 
@@ -358,7 +358,7 @@ const Profile = () => {
                         <button
                           onClick={() => handleUpdateBlog(blog.id)}
                           className={`px-4 py-2 rounded-md font-medium text-white transition-all duration-300 ${isDark
-                            ? "bg-purple-600 hover:bg-purple-700"
+                            ? "bg-brand-primary hover:bg-purple-700"
                             : "bg-violet-600 hover:bg-violet-700"
                             }`}
                         >
@@ -487,7 +487,7 @@ const Profile = () => {
                     <Link
                       to="/create-blog"
                       className={`px-6 py-3 rounded-md font-bold text-white transition-all duration-300 ${isDark
-                        ? "bg-purple-600 hover:bg-purple-700"
+                        ? "bg-brand-primary hover:bg-purple-700"
                         : "bg-violet-600 hover:bg-violet-700"
                         }`}
                     >
@@ -521,7 +521,7 @@ const Profile = () => {
                     <Link
                       to="/create-blog"
                       className={`px-8 py-3 rounded-md font-bold text-white transition-all duration-300 transform hover:scale-105 ${isDark
-                        ? "bg-purple-600 hover:bg-purple-700 shadow-md shadow-purple-500/30"
+                        ? "bg-brand-primary hover:bg-purple-700 shadow-md shadow-purple-500/30"
                         : "bg-violet-600 hover:bg-violet-700 shadow-md shadow-violet-500/30"
                         }`}
                     >

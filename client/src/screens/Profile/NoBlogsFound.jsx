@@ -36,7 +36,7 @@ const NoBlogsFound = ({ searchQuery, setSearchQuery }) => {
                 <Link
                     to="/create-blog"
                     className={`px-6 py-3 rounded-md font-bold text-white transition-all duration-300 ${isDark
-                        ? "bg-purple-600 hover:bg-purple-700"
+                        ? "bg-brand-primary hover:bg-purple-700"
                         : "bg-violet-600 hover:bg-violet-700"}`}
                 >
                     <FontAwesomeIcon icon={faPen} className="mr-2" />

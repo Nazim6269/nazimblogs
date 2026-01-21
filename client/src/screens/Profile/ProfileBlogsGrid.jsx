@@ -88,7 +88,7 @@ const ProfileBlogsGrid = ({ blogs, isSearching, searchQuery, setSearchQuery, han
                                 <Link
                                     to="/create-blog"
                                     className={`px-8 py-3 rounded-md font-bold text-white transition-all duration-300 transform hover:scale-105 ${isDark
-                                        ? "bg-purple-600 hover:bg-purple-700 shadow-md shadow-purple-500/30"
+                                        ? "bg-brand-primary hover:bg-purple-700 shadow-md shadow-purple-500/30"
                                         : "bg-violet-600 hover:bg-violet-700 shadow-md shadow-violet-500/30"}`}
                                 >
                                     <FontAwesomeIcon icon={faPen} className="mr-2" />

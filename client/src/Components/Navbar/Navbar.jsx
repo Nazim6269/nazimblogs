@@ -94,7 +94,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-2xl shadow-md group-hover:rotate-12 transition-transform duration-300">
+            <div className="w-10 h-10 bg-brand-primary rounded-md flex items-center justify-center text-white font-bold text-2xl shadow-md group-hover:rotate-12 transition-transform duration-300">
               H
             </div>
             <span
@@ -171,7 +171,7 @@ const Navbar = () => {
                       className="w-8 h-8 rounded-md object-cover shadow-md"
                     />
                   ) : (
-                    <div className="w-8 h-8 rounded-md bg-purple-600 flex items-center justify-center text-white font-bold shadow-md">
+                    <div className="w-8 h-8 rounded-md bg-brand-primary flex items-center justify-center text-white font-bold shadow-md">
                       {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || "U"}
                     </div>
                   )}
@@ -230,7 +230,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-5 py-2.5 rounded-md text-sm font-bold text-white bg-purple-600 hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300"
+                  className="px-5 py-2.5 rounded-md text-sm font-bold text-white bg-brand-primary hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300"
                 >
                   Join Hexa
                 </Link>
@@ -270,7 +270,7 @@ const Navbar = () => {
               {!user && (
                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/5 flex flex-col gap-2">
                   <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className={`px-4 py-3 rounded-md font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>Sign In</Link>
-                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 rounded-md font-bold text-white bg-purple-600 hover:bg-purple-700 text-center">Join Hexa</Link>
+                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 rounded-md font-bold text-white bg-brand-primary hover:bg-purple-700 text-center">Join Hexa</Link>
                 </div>
               )}
             </div>

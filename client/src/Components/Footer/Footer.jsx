@@ -242,7 +242,7 @@ const Footer = () => {
                   px-8 py-3 font-semibold rounded-md transition-all duration-300
                   transform hover:scale-105 active:scale-95
                   ${isDark
-                    ? "bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
+                    ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
                     : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-md hover:shadow-violet-500/50"
                   }
                 `}

@@ -135,7 +135,7 @@ const Settings = () => {
 
                             <button
                                 onClick={() => fileInputRef.current.click()}
-                                className={`absolute -bottom-4 -right-4 w-12 h-12 rounded-md flex items-center justify-center shadow-md hover:-translate-y-1 transition-all duration-300 ${isDark ? "bg-purple-600 text-white hover:bg-purple-500" : "bg-purple-600 text-white hover:bg-purple-700"}`}
+                                className={`absolute -bottom-4 -right-4 w-12 h-12 rounded-md flex items-center justify-center shadow-md hover:-translate-y-1 transition-all duration-300 ${isDark ? "bg-brand-primary text-white hover:bg-purple-500" : "bg-brand-primary text-white hover:bg-purple-700"}`}
                             >
                                 <FontAwesomeIcon icon={faCamera} />
                             </button>
@@ -223,7 +223,7 @@ const Settings = () => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className={`px-10 py-4 rounded-md font-black text-white shadow-md transition-all duration-300 flex items-center gap-3 ${loading ? "opacity-70 cursor-not-allowed" : "hover:-translate-y-1 hover:shadow-purple-500/40"} ${isDark ? "bg-purple-600" : "bg-purple-600"}`}
+                                className={`px-10 py-4 rounded-md font-black text-white shadow-md transition-all duration-300 flex items-center gap-3 ${loading ? "opacity-70 cursor-not-allowed" : "hover:-translate-y-1 hover:shadow-purple-500/40"} ${isDark ? "bg-brand-primary" : "bg-brand-primary"}`}
                             >
                                 {loading ? (
                                     <>

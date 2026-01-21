@@ -6,7 +6,7 @@ const MetaBadge = ({ icon, text, isDark, variant = "default" }) => {
             ? "bg-gray-800 text-gray-300 border border-gray-700"
             : "bg-gray-100 text-gray-700 border border-gray-200",
         accent: isDark
-            ? "bg-purple-600/20 text-purple-300 border border-purple-600/40"
+            ? "bg-brand-primary/20 text-purple-300 border border-purple-600/40"
             : "bg-purple-100 text-purple-700 border border-purple-200",
     };
 

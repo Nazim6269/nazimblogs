@@ -33,7 +33,7 @@ const BlogCard = ({ data }) => {
                 />
                 {/* Category Badge - Static for demo */}
                 <div className="absolute top-3 left-3 z-20">
-                    <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white bg-purple-600/80 backdrop-blur-md rounded-md">
+                    <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white bg-brand-primary/80 backdrop-blur-md rounded-md">
                         Technology
                     </span>
                 </div>
@@ -76,7 +76,7 @@ const BlogCard = ({ data }) => {
                     {/* Author */}
                     <div className="flex items-center gap-3">
                         <div className="relative">
-                            <div className="w-10 h-10 rounded-md bg-purple-600 flex items-center justify-center text-white font-bold shadow-md">
+                            <div className="w-10 h-10 rounded-md bg-brand-primary flex items-center justify-center text-white font-bold shadow-md">
                                 {author?.charAt(0).toUpperCase() || "N"}
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-[#0f172a] rounded-full"></div>

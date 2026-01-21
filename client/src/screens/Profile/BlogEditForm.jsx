@@ -66,7 +66,7 @@ const BlogEditForm = ({ blog, handleCancelEdit, handleUpdateBlog }) => {
                 <button
                     onClick={() => handleUpdateBlog(blog.id)}
                     className={`px-4 py-2 rounded-md font-medium text-white transition-all duration-300 ${isDark
-                        ? "bg-purple-600 hover:bg-purple-700"
+                        ? "bg-brand-primary hover:bg-purple-700"
                         : "bg-violet-600 hover:bg-violet-700"}`}
                 >
                     <FontAwesomeIcon icon={faCheck} className="mr-2" />

@@ -16,8 +16,8 @@ const NotFound = () => {
 
             <div className="relative z-10 space-y-6">
                 <div className="relative inline-block">
-                    <div className="w-32 h-32 bg-purple-600/30 rounded-md rotate-12 absolute -inset-1 blur-xl animate-pulse"></div>
-                    <div className="w-32 h-32 bg-purple-600 rounded-md flex items-center justify-center text-white text-5xl font-bold shadow-md relative">
+                    <div className="w-32 h-32 bg-brand-primary/30 rounded-md rotate-12 absolute -inset-1 blur-xl animate-pulse"></div>
+                    <div className="w-32 h-32 bg-brand-primary rounded-md flex items-center justify-center text-white text-5xl font-bold shadow-md relative">
                         ?
                     </div>
                 </div>
@@ -45,7 +45,7 @@ const NotFound = () => {
 
                     <Link
                         to="/"
-                        className="px-8 py-3 rounded-md font-bold text-white bg-purple-600 hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+                        className="px-8 py-3 rounded-md font-bold text-white bg-brand-primary hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
                     >
                         <FontAwesomeIcon icon={faHome} className="text-sm" />
                         Return Home

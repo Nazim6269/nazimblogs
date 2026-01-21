@@ -27,7 +27,7 @@ const ProfileInfo = ({ profile, handleToggleFollow, isFollowing, setIsFollowing 
                 <Link
                     to="/settings"
                     title="Edit profile"
-                    className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 ${isDark ? "bg-purple-600 hover:bg-purple-500" : "bg-purple-600 hover:bg-purple-700"}`}
+                    className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 ${isDark ? "bg-brand-primary hover:bg-purple-500" : "bg-brand-primary hover:bg-purple-700"}`}
                 >
                     <FontAwesomeIcon icon={faPen} className="text-white text-sm" />
                 </Link>
@@ -47,7 +47,7 @@ const ProfileInfo = ({ profile, handleToggleFollow, isFollowing, setIsFollowing 
                 >
                     {isFollowing ? "Following" : "Follow"}
                 </button>
-                <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-purple-600 text-white" : "bg-violet-600 text-white"}`}>Create</Link>
+                <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-brand-primary text-white" : "bg-violet-600 text-white"}`}>Create</Link>
             </div>
         </div>
     )

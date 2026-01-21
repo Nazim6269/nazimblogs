@@ -19,7 +19,7 @@ const RelatedArticleCard = ({ id, isDark }) => (
         </div>
         <div className="p-4">
             <h3
-                className={`font-bold text-lg mb-2 line-clamp-2 group-hover:text-purple-500 transition-colors ${isDark ? "text-gray-200" : "text-gray-900"
+                className={`font-bold text-lg mb-2 line-clamp-2 group-hover:text-brand-secondary transition-colors ${isDark ? "text-gray-200" : "text-gray-900"
                     }`}
             >
                 Related Article Title {id}

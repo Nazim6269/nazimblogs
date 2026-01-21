@@ -101,7 +101,7 @@ const Navbar = () => {
               className={`text-2xl font-bold tracking-tight transition-all duration-500 ${isDark ? "text-white" : "text-gray-900"
                 }`}
             >
-              Hexa<span className="text-purple-500">Blog</span>
+              Hexa<span className="text-brand-secondary">Blog</span>
             </span>
           </Link>
 
@@ -114,7 +114,7 @@ const Navbar = () => {
                 className={({ isActive }) => `
                   px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
                   ${isActive
-                    ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-brand-primary bg-purple-50")
+                    ? (isDark ? "text-brand-tertiary bg-purple-500/10" : "text-brand-primary bg-purple-50")
                     : (isDark ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100")
                   }
                 `}
@@ -128,7 +128,7 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             {/* Search - Icon only on mobile/small desktop */}
             <div className="hidden lg:flex items-center relative group">
-              <FontAwesomeIcon icon={faSearch} className={`absolute left-3 transition-colors ${isDark ? "text-gray-500 group-focus-within:text-purple-400" : "text-gray-400 group-focus-within:text-purple-500"}`} />
+              <FontAwesomeIcon icon={faSearch} className={`absolute left-3 transition-colors ${isDark ? "text-gray-500 group-focus-within:text-brand-tertiary" : "text-gray-400 group-focus-within:text-brand-secondary"}`} />
               <input
                 type="text"
                 placeholder="Search..."
@@ -196,7 +196,7 @@ const Navbar = () => {
                     </div>
 
                     <Link to="/profile" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
-                      <FontAwesomeIcon icon={faUser} className="w-4 text-purple-500" />
+                      <FontAwesomeIcon icon={faUser} className="w-4 text-brand-secondary" />
                       <span>My Profile</span>
                     </Link>
 
@@ -259,7 +259,7 @@ const Navbar = () => {
                   className={({ isActive }) => `
                       px-4 py-3 rounded-md text-base font-semibold transition-all
                       ${isActive
-                      ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-brand-primary bg-purple-50")
+                      ? (isDark ? "text-brand-tertiary bg-purple-500/10" : "text-brand-primary bg-purple-50")
                       : (isDark ? "text-gray-400" : "text-gray-600")
                     }
                     `}

@@ -14,7 +14,7 @@ const BlogContent = ({ content, isDark }) => {
                     <p
                         key={index}
                         className={`${index === 0
-                            ? "first-letter:text-6xl first-letter:font-bold first-letter:mr-3 first-letter:float-left first-letter:text-purple-500"
+                            ? "first-letter:text-6xl first-letter:font-bold first-letter:mr-3 first-letter:float-left first-letter:text-brand-secondary"
                             : ""
                             } ${isDark ? "text-gray-300" : "text-gray-700"}`}
                     >

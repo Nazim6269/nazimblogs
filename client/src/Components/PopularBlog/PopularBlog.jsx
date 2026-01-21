@@ -32,14 +32,14 @@ const PopularBlog = ({ data }) => {
 
         <div className="flex-1 min-w-0">
           <h3
-            className={`font-bold text-sm leading-tight mb-1 line-clamp-2 transition-colors duration-300 ${isDark ? "text-gray-200 group-hover:text-purple-400" : "text-gray-800 group-hover:text-brand-primary"
+            className={`font-bold text-sm leading-tight mb-1 line-clamp-2 transition-colors duration-300 ${isDark ? "text-gray-200 group-hover:text-brand-tertiary" : "text-gray-800 group-hover:text-brand-primary"
               }`}
           >
             {blog.title}
           </h3>
 
           <div className="flex items-center gap-2 text-[11px] font-semibold opacity-60">
-            <span className={isDark ? "text-purple-400" : "text-brand-primary"}>{blog.author}</span>
+            <span className={isDark ? "text-brand-tertiary" : "text-brand-primary"}>{blog.author}</span>
             <span className="w-1 h-1 rounded-full bg-current opacity-30"></span>
             <span>{blog.likes} Likes</span>
           </div>

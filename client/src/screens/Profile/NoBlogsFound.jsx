@@ -37,7 +37,7 @@ const NoBlogsFound = ({ searchQuery, setSearchQuery }) => {
                     to="/create-blog"
                     className={`px-6 py-3 rounded-md font-bold text-white transition-all duration-300 ${isDark
                         ? "bg-brand-primary hover:bg-purple-700"
-                        : "bg-violet-600 hover:bg-violet-700"}`}
+                        : "bg-alter-brand-primary hover:bg-alter-brand-secondary"}`}
                 >
                     <FontAwesomeIcon icon={faPen} className="mr-2" />
                     Create New Blog

@@ -45,7 +45,7 @@ const BlogCard = ({ data }) => {
                     {/* Meta Top */}
                     <div className="flex items-center gap-4 mb-3">
                         <div className="flex items-center gap-1.5 text-xs font-semibold opacity-60">
-                            <FontAwesomeIcon icon={faCalendarAlt} className="text-purple-500" />
+                            <FontAwesomeIcon icon={faCalendarAlt} className="text-brand-secondary" />
                             <span>{date || "Jan 18, 2026"}</span>
                         </div>
                         <div className="flex items-center gap-1.5 text-xs font-semibold opacity-60">
@@ -56,7 +56,7 @@ const BlogCard = ({ data }) => {
 
                     {/* Title */}
                     <h3
-                        className={`text-xl lg:text-2xl font-black mb-3 leading-tight transition-colors duration-300 group-hover:text-purple-500 ${isDark ? "text-white" : "text-gray-900"
+                        className={`text-xl lg:text-2xl font-black mb-3 leading-tight transition-colors duration-300 group-hover:text-brand-secondary ${isDark ? "text-white" : "text-gray-900"
                             }`}
                     >
                         {title}

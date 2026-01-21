@@ -120,7 +120,7 @@ const CreateBlog = () => {
           type="submit"
           className={`w-full py-3 md:py-2 px-2 rounded-md font-bold text-white text-center transition-all duration-300 cursor-pointer ${isDark
             ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
-            : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-md hover:shadow-violet-500/50"
+            : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
             }`}
         >
           Create Blog

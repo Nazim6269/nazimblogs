@@ -100,7 +100,7 @@ const Login = () => {
             type="submit"
             className={`w-full py-3 font-bold transition-all duration-500 ${isDark
               ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
-              : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-md hover:shadow-violet-500/50"
+              : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
               }`}
           >
             Login{" "}
@@ -115,7 +115,7 @@ const Login = () => {
           <Link
             to="/register"
             className={`underline font-medium transition-colors duration-500 ${isDark
-              ? "text-purple-400 hover:text-purple-300"
+              ? "text-brand-tertiary hover:text-purple-300"
               : "text-indigo-600 hover:text-indigo-800"
               }`}
           >

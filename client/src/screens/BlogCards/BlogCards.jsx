@@ -117,8 +117,8 @@ const BlogCards = () => {
               Search Results
             </h2>
             <p className={`text-sm font-semibold opacity-60 flex items-center gap-2 mt-1`}>
-              Found {filteredData.length} articles for <span className="text-purple-500 underline decoration-purple-500/30 underline-offset-4">"{searchQuery}"</span>
-              {currentCategory !== "Explore" && <span> in <span className="text-purple-500 font-bold">{currentCategory}</span></span>}
+              Found {filteredData.length} articles for <span className="text-brand-secondary underline decoration-purple-500/30 underline-offset-4">"{searchQuery}"</span>
+              {currentCategory !== "Explore" && <span> in <span className="text-brand-secondary font-bold">{currentCategory}</span></span>}
             </p>
           </div>
         ) : (

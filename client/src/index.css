@@ -2,7 +2,13 @@
 
 
 @theme {
-  --color-brand-primary: #9810fa
+  --color-brand-primary: #9810fa;
+  --color-brand-secondary: #ad46ff;
+  --color-brand-tertiary: #c27aff;
+
+  --color-alter-brand-primary: #7f22fe;
+  --color-alter-brand-secondary: #7008e7;
+
 }
 
 @layer base {

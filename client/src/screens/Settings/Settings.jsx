@@ -118,7 +118,7 @@ const Settings = () => {
                                 {imagePreview ? (
                                     <img src={imagePreview} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className={`w-full h-full flex items-center justify-center text-5xl font-bold ${isDark ? "bg-white/5 text-purple-400" : "bg-purple-50 text-brand-primary"}`}>
+                                    <div className={`w-full h-full flex items-center justify-center text-5xl font-bold ${isDark ? "bg-white/5 text-brand-tertiary" : "bg-purple-50 text-brand-primary"}`}>
                                         {formData.name?.charAt(0).toUpperCase() || "U"}
                                     </div>
                                 )}
@@ -159,7 +159,7 @@ const Settings = () => {
                             {/* Name */}
                             <div className="space-y-3">
                                 <label className={`text-sm font-bold flex items-center gap-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                                    <FontAwesomeIcon icon={faUser} className="text-purple-500" />
+                                    <FontAwesomeIcon icon={faUser} className="text-brand-secondary" />
                                     Full Name
                                 </label>
                                 <input

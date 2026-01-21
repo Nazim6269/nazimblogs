@@ -75,7 +75,7 @@ const ProfileBlogsGrid = ({ blogs, isSearching, searchQuery, setSearchQuery, han
                                 : "bg-linear-to-br from-violet-100 to-blue-100 border border-violet-200"}`}>
                                 <FontAwesomeIcon
                                     icon={faPen}
-                                    className={`text-5xl ${isDark ? "text-purple-400" : "text-violet-600"}`}
+                                    className={`text-5xl ${isDark ? "text-brand-tertiary" : "text-alter-brand-secondary"}`}
                                 />
                             </div>
                             <h3 className={`text-2xl font-bold mb-3 ${isDark ? "text-gray-200" : "text-gray-900"}`}>
@@ -89,7 +89,7 @@ const ProfileBlogsGrid = ({ blogs, isSearching, searchQuery, setSearchQuery, han
                                     to="/create-blog"
                                     className={`px-8 py-3 rounded-md font-bold text-white transition-all duration-300 transform hover:scale-105 ${isDark
                                         ? "bg-brand-primary hover:bg-purple-700 shadow-md shadow-purple-500/30"
-                                        : "bg-violet-600 hover:bg-violet-700 shadow-md shadow-violet-500/30"}`}
+                                        : "bg-alter-brand-primary hover:bg-alter-brand-secondary shadow-md shadow-violet-500/30"}`}
                                 >
                                     <FontAwesomeIcon icon={faPen} className="mr-2" />
                                     Create Your First Blog

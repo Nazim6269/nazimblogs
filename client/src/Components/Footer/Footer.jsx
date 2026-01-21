@@ -125,8 +125,8 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <h2
               className={`text-4xl font-bold mb-4 transition-all duration-500 ${isDark
-                ? "text-purple-500"
-                : "text-violet-600"
+                ? "text-brand-secondary"
+                : "text-alter-brand-secondary"
                 }`}
             >
               HexaBlog
@@ -143,7 +143,7 @@ const Footer = () => {
                   <FontAwesomeIcon
                     icon={item.icon}
                     className={`w-5 h-5 transition-colors duration-300 ${isDark
-                      ? "text-purple-400 group-hover:text-purple-300"
+                      ? "text-brand-tertiary group-hover:text-purple-300"
                       : "text-brand-primary group-hover:text-purple-700"
                       }`}
                   />
@@ -179,7 +179,7 @@ const Footer = () => {
                         text-sm transition-all duration-300 inline-block
                         hover:translate-x-1
                         ${isDark
-                          ? "text-gray-400 hover:text-purple-400"
+                          ? "text-gray-400 hover:text-brand-tertiary"
                           : "text-gray-600 hover:text-blue-600"
                         }
                       `}
@@ -243,7 +243,7 @@ const Footer = () => {
                   transform hover:scale-105 active:scale-95
                   ${isDark
                     ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
-                    : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-md hover:shadow-violet-500/50"
+                    : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
                   }
                 `}
                 aria-label="Subscribe to newsletter"

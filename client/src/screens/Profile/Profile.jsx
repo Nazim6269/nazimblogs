@@ -162,7 +162,7 @@ const Profile = () => {
           <button
             onClick={() => setIsEditingProfile(true)}
             title="Edit profile"
-            className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors ${isDark ? "bg-brand-primary hover:bg-purple-700" : "bg-violet-600 hover:bg-violet-700"}`}
+            className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors ${isDark ? "bg-brand-primary hover:bg-purple-700" : "bg-alter-brand-primary hover:bg-alter-brand-secondary"}`}
           >
             <FontAwesomeIcon icon={faPen} className="text-white text-sm" />
           </button>
@@ -178,11 +178,11 @@ const Profile = () => {
         <div className="flex flex-col items-center gap-3">
           <button
             onClick={handleToggleFollow}
-            className={`px-4 py-2 rounded-md font-semibold transition-all duration-200 ${isFollowing ? "bg-gray-200 text-gray-900" : "bg-violet-600 text-white"}`}
+            className={`px-4 py-2 rounded-md font-semibold transition-all duration-200 ${isFollowing ? "bg-gray-200 text-gray-900" : "bg-alter-brand-primary text-white"}`}
           >
             {isFollowing ? "Following" : "Follow"}
           </button>
-          <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-brand-primary text-white" : "bg-violet-600 text-white"}`}>Create</Link>
+          <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-brand-primary text-white" : "bg-alter-brand-primary text-white"}`}>Create</Link>
         </div>
       </div>
 
@@ -359,7 +359,7 @@ const Profile = () => {
                           onClick={() => handleUpdateBlog(blog.id)}
                           className={`px-4 py-2 rounded-md font-medium text-white transition-all duration-300 ${isDark
                             ? "bg-brand-primary hover:bg-purple-700"
-                            : "bg-violet-600 hover:bg-violet-700"
+                            : "bg-alter-brand-primary hover:bg-alter-brand-secondary"
                             }`}
                         >
                           <FontAwesomeIcon icon={faCheck} className="mr-2" />
@@ -488,7 +488,7 @@ const Profile = () => {
                       to="/create-blog"
                       className={`px-6 py-3 rounded-md font-bold text-white transition-all duration-300 ${isDark
                         ? "bg-brand-primary hover:bg-purple-700"
-                        : "bg-violet-600 hover:bg-violet-700"
+                        : "bg-alter-brand-primary hover:bg-alter-brand-secondary"
                         }`}
                     >
                       <FontAwesomeIcon icon={faPen} className="mr-2" />
@@ -505,7 +505,7 @@ const Profile = () => {
                     }`}>
                     <FontAwesomeIcon
                       icon={faPen}
-                      className={`text-5xl ${isDark ? "text-purple-400" : "text-violet-600"
+                      className={`text-5xl ${isDark ? "text-brand-tertiary" : "text-alter-brand-secondary"
                         }`}
                     />
                   </div>
@@ -522,7 +522,7 @@ const Profile = () => {
                       to="/create-blog"
                       className={`px-8 py-3 rounded-md font-bold text-white transition-all duration-300 transform hover:scale-105 ${isDark
                         ? "bg-brand-primary hover:bg-purple-700 shadow-md shadow-purple-500/30"
-                        : "bg-violet-600 hover:bg-violet-700 shadow-md shadow-violet-500/30"
+                        : "bg-alter-brand-primary hover:bg-alter-brand-secondary shadow-md shadow-violet-500/30"
                         }`}
                     >
                       <FontAwesomeIcon icon={faPen} className="mr-2" />
@@ -540,19 +540,19 @@ const Profile = () => {
                     <ul className={`space-y-2 text-sm ${isDark ? "text-gray-400" : "text-gray-600"
                       }`}>
                       <li className="flex items-start gap-2">
-                        <span className={isDark ? "text-purple-400" : "text-violet-600"}>•</span>
+                        <span className={isDark ? "text-brand-tertiary" : "text-alter-brand-secondary"}>•</span>
                         <span>Choose a topic you're passionate about</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className={isDark ? "text-purple-400" : "text-violet-600"}>•</span>
+                        <span className={isDark ? "text-brand-tertiary" : "text-alter-brand-secondary"}>•</span>
                         <span>Write a catchy title to grab attention</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className={isDark ? "text-purple-400" : "text-violet-600"}>•</span>
+                        <span className={isDark ? "text-brand-tertiary" : "text-alter-brand-secondary"}>•</span>
                         <span>Add relevant tags to help others find your content</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className={isDark ? "text-purple-400" : "text-violet-600"}>•</span>
+                        <span className={isDark ? "text-brand-tertiary" : "text-alter-brand-secondary"}>•</span>
                         <span>Include images to make your blog more engaging</span>
                       </li>
                     </ul>

@@ -46,7 +46,7 @@ const SideBar = ({ blogs = [] }) => {
             <FontAwesomeIcon icon={faFire} className="text-orange-500" />
             Popular Posts
           </h3>
-          <button className="text-[10px] font-black uppercase tracking-widest text-purple-500 hover:text-purple-400 transition-colors">
+          <button className="text-[10px] font-black uppercase tracking-widest text-brand-secondary hover:text-brand-tertiary transition-colors">
             See All
           </button>
         </div>

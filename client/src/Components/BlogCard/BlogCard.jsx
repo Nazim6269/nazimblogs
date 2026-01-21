@@ -12,19 +12,19 @@ const BlogCard = ({ data }) => {
     return (
         <div
             className={`
-        group relative flex flex-col md:flex-row gap-6 p-4 rounded-3xl border transition-all duration-500
+        group relative flex flex-col md:flex-row gap-6 p-4 rounded-md border transition-all duration-500
         hover:-translate-y-1 overflow-hidden
         ${isDark
-                    ? "bg-[#0f172a]/40 border-white/5 hover:border-purple-500/30 hover:shadow-[0_20px_50px_rgba(139,92,246,0.1)] shadow-2xl backdrop-blur-md"
-                    : "bg-white border-black/5 hover:border-purple-500/20 hover:shadow-[0_20px_50px_rgba(139,92,246,0.08)] shadow-lg"
+                    ? "bg-[#0f172a]/40 border-white/5 hover:border-purple-500/30 hover:shadow-[0_20px_50px_rgba(139,92,246,0.1)] shadow-md backdrop-blur-md"
+                    : "bg-white border-black/5 hover:border-purple-500/20 hover:shadow-[0_20px_50px_rgba(139,92,246,0.08)] shadow-md"
                 }
       `}
         >
             {/* Visual Accent - subtle glow on hover */}
-            <div className={`absolute -inset-px bg-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl`}></div>
+            <div className={`absolute -inset-px bg-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-md`}></div>
 
             {/* Image Section */}
-            <div className="relative w-full md:w-56 lg:w-72 h-52 md:h-auto overflow-hidden rounded-2xl shrink-0">
+            <div className="relative w-full md:w-56 lg:w-72 h-52 md:h-auto overflow-hidden rounded-md shrink-0">
                 <div className="absolute inset-0 bg-black/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <img
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -33,7 +33,7 @@ const BlogCard = ({ data }) => {
                 />
                 {/* Category Badge - Static for demo */}
                 <div className="absolute top-3 left-3 z-20">
-                    <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white bg-purple-600/80 backdrop-blur-md rounded-lg">
+                    <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white bg-purple-600/80 backdrop-blur-md rounded-md">
                         Technology
                     </span>
                 </div>
@@ -76,7 +76,7 @@ const BlogCard = ({ data }) => {
                     {/* Author */}
                     <div className="flex items-center gap-3">
                         <div className="relative">
-                            <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
+                            <div className="w-10 h-10 rounded-md bg-purple-600 flex items-center justify-center text-white font-bold shadow-md">
                                 {author?.charAt(0).toUpperCase() || "N"}
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-[#0f172a] rounded-full"></div>
@@ -92,7 +92,7 @@ const BlogCard = ({ data }) => {
 
                     {/* Engagement */}
                     <div className="flex items-center gap-2">
-                        <button className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${isDark ? "bg-white/5 hover:bg-white/10" : "bg-gray-100 hover:bg-gray-200"}`}>
+                        <button className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-300 ${isDark ? "bg-white/5 hover:bg-white/10" : "bg-gray-100 hover:bg-gray-200"}`}>
                             <FontAwesomeIcon icon={faHeart} className="text-red-500" />
                             <span className="text-xs font-bold">{likes || 124}</span>
                         </button>

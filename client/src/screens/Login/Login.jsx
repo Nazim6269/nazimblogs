@@ -58,7 +58,7 @@ const Login = () => {
       className={`flex min-h-screen w-full items-start justify-center transition-colors duration-500 `}
     >
       <div
-        className={`w-full max-w-lg px-10 py-12 rounded-3xl shadow-2xl space-y-8 transition-all duration-500
+        className={`w-full max-w-lg px-10 py-12 rounded-md shadow-md space-y-8 transition-all duration-500
         ${isDark
             ? "bg-gray-900/90 border border-gray-700 text-gray-200"
             : "bg-white border border-gray-200 text-gray-900"
@@ -99,8 +99,8 @@ const Login = () => {
           <button
             type="submit"
             className={`w-full py-3 font-bold transition-all duration-500 ${isDark
-              ? "bg-purple-600 text-white hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/50"
-              : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-lg hover:shadow-violet-500/50"
+              ? "bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
+              : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-md hover:shadow-violet-500/50"
               }`}
           >
             Login{" "}
@@ -128,7 +128,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() => handleSocialLogin(googleProvider)}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-500 ${isDark
+            className={`px-4 py-2 rounded-md text-sm font-semibold transition-all duration-500 ${isDark
               ? "bg-gray-800 hover:bg-gray-700 text-gray-200"
               : "bg-gray-100 hover:bg-gray-200 text-gray-800"
               }`}
@@ -138,7 +138,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() => handleSocialLogin(githubProvider)}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-500 ${isDark
+            className={`px-4 py-2 rounded-md text-sm font-semibold transition-all duration-500 ${isDark
               ? "bg-gray-800 hover:bg-gray-700 text-gray-200"
               : "bg-gray-100 hover:bg-gray-200 text-gray-800"
               }`}

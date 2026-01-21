@@ -35,8 +35,8 @@ const SideBar = ({ blogs = [] }) => {
     <aside className="w-full lg:w-[380px] flex flex-col gap-8 shrink-0 lg:sticky lg:top-24 h-fit">
       {/* Popular Section */}
       <section
-        className={`p-6 rounded-3xl border transition-all duration-500 overflow-hidden relative group
-        ${isDark ? "bg-[#0f172a]/40 border-white/5 shadow-2xl backdrop-blur-md" : "bg-white border-black/5 shadow-xl"}
+        className={`p-6 rounded-md border transition-all duration-500 overflow-hidden relative group
+        ${isDark ? "bg-[#0f172a]/40 border-white/5 shadow-md backdrop-blur-md" : "bg-white border-black/5 shadow-md"}
       `}
       >
         <div className={`absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/20 transition-colors duration-500`}></div>
@@ -59,7 +59,7 @@ const SideBar = ({ blogs = [] }) => {
           ) : (
             // Skeleton while loading
             [1, 2, 3].map(i => (
-              <div key={i} className="h-16 animate-pulse bg-gray-500/10 rounded-xl" />
+              <div key={i} className="h-16 animate-pulse bg-gray-500/10 rounded-md" />
             ))
           )}
         </div>
@@ -67,8 +67,8 @@ const SideBar = ({ blogs = [] }) => {
 
       {/* Recommended Section */}
       <section
-        className={`p-6 rounded-3xl border transition-all duration-500 overflow-hidden relative group
-        ${isDark ? "bg-[#0f172a]/40 border-white/5 shadow-2xl backdrop-blur-md" : "bg-white border-black/5 shadow-xl"}
+        className={`p-6 rounded-md border transition-all duration-500 overflow-hidden relative group
+        ${isDark ? "bg-[#0f172a]/40 border-white/5 shadow-md backdrop-blur-md" : "bg-white border-black/5 shadow-md"}
       `}
       >
         <div className={`absolute top-0 right-0 w-32 h-32 bg-pink-500/10 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-pink-500/20 transition-colors duration-500`}></div>
@@ -90,12 +90,12 @@ const SideBar = ({ blogs = [] }) => {
             ))
           ) : (
             [1, 2, 3].map(i => (
-              <div key={i} className="h-20 animate-pulse bg-gray-500/10 rounded-xl" />
+              <div key={i} className="h-20 animate-pulse bg-gray-500/10 rounded-md" />
             ))
           )}
         </div>
 
-        <button className={`w-full mt-6 py-3 rounded-xl flex items-center justify-center gap-2 text-xs font-bold transition-all duration-300 ${isDark ? "bg-white/5 hover:bg-white/10 text-gray-300" : "bg-gray-50 hover:bg-gray-100 text-gray-600"}`}>
+        <button className={`w-full mt-6 py-3 rounded-md flex items-center justify-center gap-2 text-xs font-bold transition-all duration-300 ${isDark ? "bg-white/5 hover:bg-white/10 text-gray-300" : "bg-gray-50 hover:bg-gray-100 text-gray-600"}`}>
           View More Articles
           <FontAwesomeIcon icon={faArrowRight} className="text-xs" />
         </button>

@@ -8,7 +8,7 @@ const SingleComment = () => {
   return (
     <div
       className={`
-        group flex flex-col lg:flex-row gap-5 p-6 rounded-2xl border
+        group flex flex-col lg:flex-row gap-5 p-6 rounded-md border
         ${isDark
           ? "bg-slate-800 border-gray-700 text-gray-200 hover:shadow-purple-500/20"
           : "bg-slate-100 border-gray-300 text-gray-900 hover:shadow-purple-300/30"

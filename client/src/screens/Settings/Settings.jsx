@@ -109,12 +109,12 @@ const Settings = () => {
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4">
-            <div className={`rounded-3xl shadow-2xl overflow-hidden transition-all duration-500 ${isDark ? "bg-gray-900 border border-white/5" : "bg-white border border-black/5"}`}>
+            <div className={`rounded-md shadow-md overflow-hidden transition-all duration-500 ${isDark ? "bg-gray-900 border border-white/5" : "bg-white border border-black/5"}`}>
                 <div className="p-8 md:p-12">
                     <div className="flex flex-col md:flex-row items-center gap-10 mb-12">
                         {/* Avatar Section */}
                         <div className="relative group">
-                            <div className={`w-40 h-40 rounded-3xl overflow-hidden border-4 ${isDark ? "border-purple-500/30" : "border-purple-100"} shadow-2xl relative transition-transform duration-500 group-hover:scale-[1.02]`}>
+                            <div className={`w-40 h-40 rounded-md overflow-hidden border-4 ${isDark ? "border-purple-500/30" : "border-purple-100"} shadow-md relative transition-transform duration-500 group-hover:scale-[1.02]`}>
                                 {imagePreview ? (
                                     <img src={imagePreview} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (
@@ -135,7 +135,7 @@ const Settings = () => {
 
                             <button
                                 onClick={() => fileInputRef.current.click()}
-                                className={`absolute -bottom-4 -right-4 w-12 h-12 rounded-2xl flex items-center justify-center shadow-xl hover:-translate-y-1 transition-all duration-300 ${isDark ? "bg-purple-600 text-white hover:bg-purple-500" : "bg-purple-600 text-white hover:bg-purple-700"}`}
+                                className={`absolute -bottom-4 -right-4 w-12 h-12 rounded-md flex items-center justify-center shadow-md hover:-translate-y-1 transition-all duration-300 ${isDark ? "bg-purple-600 text-white hover:bg-purple-500" : "bg-purple-600 text-white hover:bg-purple-700"}`}
                             >
                                 <FontAwesomeIcon icon={faCamera} />
                             </button>
@@ -168,7 +168,7 @@ const Settings = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                     placeholder="e.g. John Doe"
-                                    className={`w-full px-5 py-4 rounded-2xl outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
+                                    className={`w-full px-5 py-4 rounded-md outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
                                 />
                             </div>
 
@@ -182,7 +182,7 @@ const Settings = () => {
                                     type="email"
                                     value={user?.email || ""}
                                     disabled
-                                    className={`w-full px-5 py-4 rounded-2xl opacity-50 cursor-not-allowed border ${isDark ? "bg-white/5 border-white/10 text-gray-500" : "bg-gray-100 border-transparent text-gray-500"}`}
+                                    className={`w-full px-5 py-4 rounded-md opacity-50 cursor-not-allowed border ${isDark ? "bg-white/5 border-white/10 text-gray-500" : "bg-gray-100 border-transparent text-gray-500"}`}
                                 />
                             </div>
 
@@ -198,7 +198,7 @@ const Settings = () => {
                                     value={formData.location}
                                     onChange={handleChange}
                                     placeholder="e.g. New York, USA"
-                                    className={`w-full px-5 py-4 rounded-2xl outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
+                                    className={`w-full px-5 py-4 rounded-md outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
                                 />
                             </div>
 
@@ -214,7 +214,7 @@ const Settings = () => {
                                     onChange={handleChange}
                                     rows="4"
                                     placeholder="Tell us about yourself..."
-                                    className={`w-full px-5 py-4 rounded-2xl outline-none transition-all duration-300 border resize-none ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
+                                    className={`w-full px-5 py-4 rounded-md outline-none transition-all duration-300 border resize-none ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
                                 ></textarea>
                             </div>
                         </div>
@@ -223,7 +223,7 @@ const Settings = () => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className={`px-10 py-4 rounded-2xl font-black text-white shadow-2xl transition-all duration-300 flex items-center gap-3 ${loading ? "opacity-70 cursor-not-allowed" : "hover:-translate-y-1 hover:shadow-purple-500/40"} ${isDark ? "bg-purple-600" : "bg-purple-600"}`}
+                                className={`px-10 py-4 rounded-md font-black text-white shadow-md transition-all duration-300 flex items-center gap-3 ${loading ? "opacity-70 cursor-not-allowed" : "hover:-translate-y-1 hover:shadow-purple-500/40"} ${isDark ? "bg-purple-600" : "bg-purple-600"}`}
                             >
                                 {loading ? (
                                     <>

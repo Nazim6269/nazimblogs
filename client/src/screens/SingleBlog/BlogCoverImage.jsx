@@ -1,5 +1,5 @@
 const BlogCoverImage = ({ id, title, isDark }) => (
-    <div className="relative mb-10 overflow-hidden rounded-3xl group shadow-2xl">
+    <div className="relative mb-10 overflow-hidden rounded-md group shadow-md">
         <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <img
             src={`https://picsum.photos/seed/${id}/1200/600`}

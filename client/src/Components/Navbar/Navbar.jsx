@@ -84,9 +84,9 @@ const Navbar = () => {
       <nav
         className={`
           max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
-          rounded-2xl transition-all duration-500
+          rounded-md transition-all duration-500
           ${isScrolled
-            ? (isDark ? "bg-[#0f172a]/80 backdrop-blur-xl border border-white/10 shadow-2xl" : "bg-white/80 backdrop-blur-xl border border-black/5 shadow-xl")
+            ? (isDark ? "bg-[#0f172a]/80 backdrop-blur-xl border border-white/10 shadow-md" : "bg-white/80 backdrop-blur-xl border border-black/5 shadow-md")
             : "bg-transparent"
           }
         `}
@@ -94,7 +94,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg group-hover:rotate-12 transition-transform duration-300">
+            <div className="w-10 h-10 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-2xl shadow-md group-hover:rotate-12 transition-transform duration-300">
               H
             </div>
             <span
@@ -112,7 +112,7 @@ const Navbar = () => {
                 key={link.name}
                 to={link.path}
                 className={({ isActive }) => `
-                  px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200
+                  px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
                   ${isActive
                     ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-purple-600 bg-purple-50")
                     : (isDark ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100")
@@ -135,7 +135,7 @@ const Navbar = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={`
-                  pl-10 pr-4 py-2 rounded-xl text-sm w-48 focus:w-64 transition-all duration-300 outline-none
+                  pl-10 pr-4 py-2 rounded-md text-sm w-48 focus:w-64 transition-all duration-300 outline-none
                   ${isDark
                     ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50"
                     : "bg-gray-100 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30 shadow-sm"}
@@ -147,7 +147,7 @@ const Navbar = () => {
             <button
               onClick={toggleTheme}
               className={`
-                w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300
+                w-10 h-10 rounded-md flex items-center justify-center transition-all duration-300
                 ${isDark ? "bg-white/5 text-yellow-400 hover:bg-white/10" : "bg-gray-100 text-purple-600 hover:bg-gray-200"}
               `}
             >
@@ -160,7 +160,7 @@ const Navbar = () => {
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className={`
-                    flex items-center gap-2 p-1 pr-3 rounded-xl transition-all duration-300
+                    flex items-center gap-2 p-1 pr-3 rounded-md transition-all duration-300
                     ${isDark ? "hover:bg-white/5" : "hover:bg-gray-100"}
                   `}
                 >
@@ -168,10 +168,10 @@ const Navbar = () => {
                     <img
                       src={user.photoURL}
                       alt={user.name || "User"}
-                      className="w-8 h-8 rounded-lg object-cover shadow-md"
+                      className="w-8 h-8 rounded-md object-cover shadow-md"
                     />
                   ) : (
-                    <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold shadow-md">
+                    <div className="w-8 h-8 rounded-md bg-purple-600 flex items-center justify-center text-white font-bold shadow-md">
                       {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || "U"}
                     </div>
                   )}
@@ -185,7 +185,7 @@ const Navbar = () => {
                 {isDropdownOpen && (
                   <div
                     className={`
-                      absolute right-0 mt-3 w-56 rounded-2xl shadow-2xl border p-2
+                      absolute right-0 mt-3 w-56 rounded-md shadow-md border p-2
                       animate-in fade-in zoom-in duration-200
                       ${isDark ? "bg-[#0f172a] border-white/10" : "bg-white border-gray-100"}
                     `}
@@ -195,24 +195,24 @@ const Navbar = () => {
                       <p className={`text-xs ${isDark ? "text-gray-500" : "text-gray-400"} truncate`}>{user.email}</p>
                     </div>
 
-                    <Link to="/profile" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
+                    <Link to="/profile" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
                       <FontAwesomeIcon icon={faUser} className="w-4 text-purple-500" />
                       <span>My Profile</span>
                     </Link>
 
-                    <Link to="/create-blog" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
+                    <Link to="/create-blog" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
                       <FontAwesomeIcon icon={faPenNib} className="w-4 text-blue-500" />
                       <span>Write a Post</span>
                     </Link>
 
-                    <Link to="/settings" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
+                    <Link to="/settings" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
                       <FontAwesomeIcon icon={faGear} className="w-4 text-gray-400" />
                       <span>Settings</span>
                     </Link>
 
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-red-500 hover:bg-red-500/5 transition-colors mt-2 border-t border-gray-100 dark:border-white/5 pt-3"
+                      className="w-full flex items-center gap-3 px-4 py-2.5 rounded-md text-sm text-red-500 hover:bg-red-500/5 transition-colors mt-2 border-t border-gray-100 dark:border-white/5 pt-3"
                     >
                       <FontAwesomeIcon icon={faSignOutAlt} className="w-4" />
                       <span>Logout</span>
@@ -230,7 +230,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-purple-600 hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300"
+                  className="px-5 py-2.5 rounded-md text-sm font-bold text-white bg-purple-600 hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300"
                 >
                   Join Hexa
                 </Link>
@@ -240,7 +240,7 @@ const Navbar = () => {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`md:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isDark ? "bg-white/5 text-white" : "bg-gray-100 text-gray-900"}`}
+              className={`md:hidden w-10 h-10 rounded-md flex items-center justify-center transition-colors ${isDark ? "bg-white/5 text-white" : "bg-gray-100 text-gray-900"}`}
             >
               <FontAwesomeIcon icon={isMobileMenuOpen ? faClose : faBars} />
             </button>
@@ -257,7 +257,7 @@ const Navbar = () => {
                   to={link.path}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={({ isActive }) => `
-                      px-4 py-3 rounded-xl text-base font-semibold transition-all
+                      px-4 py-3 rounded-md text-base font-semibold transition-all
                       ${isActive
                       ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-purple-600 bg-purple-50")
                       : (isDark ? "text-gray-400" : "text-gray-600")
@@ -269,8 +269,8 @@ const Navbar = () => {
               ))}
               {!user && (
                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/5 flex flex-col gap-2">
-                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className={`px-4 py-3 rounded-xl font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>Sign In</Link>
-                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 rounded-xl font-bold text-white bg-purple-600 hover:bg-purple-700 text-center">Join Hexa</Link>
+                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className={`px-4 py-3 rounded-md font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>Sign In</Link>
+                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 rounded-md font-bold text-white bg-purple-600 hover:bg-purple-700 text-center">Join Hexa</Link>
                 </div>
               )}
             </div>

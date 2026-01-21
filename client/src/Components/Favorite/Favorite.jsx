@@ -13,7 +13,7 @@ const Favorite = ({ data }) => {
 
     return (
         <div
-            className={`group rounded-2xl transition-all duration-300 relative overflow-hidden p-3
+            className={`group rounded-md transition-all duration-300 relative overflow-hidden p-3
         ${isDark ? "hover:bg-white/5" : "hover:bg-gray-50"}
       `}
         >
@@ -30,8 +30,8 @@ const Favorite = ({ data }) => {
                         <span
                             key={tag}
                             className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md transition-colors ${isDark
-                                    ? "bg-white/5 text-gray-500 group-hover:bg-pink-500/10 group-hover:text-pink-400"
-                                    : "bg-gray-100 text-gray-400 group-hover:bg-pink-50 group-hover:text-pink-600"
+                                ? "bg-white/5 text-gray-500 group-hover:bg-pink-500/10 group-hover:text-pink-400"
+                                : "bg-gray-100 text-gray-400 group-hover:bg-pink-50 group-hover:text-pink-600"
                                 }`}
                         >
                             #{tag}

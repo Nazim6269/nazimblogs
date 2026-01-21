@@ -12,7 +12,7 @@ const Modal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       {/* Modal Box */}
-      <div className="bg-white  text-black w-64 xsm:w-96 rounded-lg shadow-lg p-6 relative">
+      <div className="bg-white  text-black w-64 xsm:w-96 rounded-md shadow-md p-6 relative">
         {/* modal list item */}
         <div className="flex flex-col items-center justify-center">
           <ul className="my-1">

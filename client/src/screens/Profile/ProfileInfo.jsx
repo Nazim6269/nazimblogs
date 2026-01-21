@@ -15,7 +15,7 @@ const ProfileInfo = ({ profile, handleToggleFollow, isFollowing, setIsFollowing 
                     <img
                         src={profile.photoURL}
                         alt={profile.name}
-                        className="w-28 h-28 rounded-full object-cover border-4 border-purple-500/20 shadow-xl"
+                        className="w-28 h-28 rounded-full object-cover border-4 border-purple-500/20 shadow-md"
                     />
                 ) : (
                     <div
@@ -43,11 +43,11 @@ const ProfileInfo = ({ profile, handleToggleFollow, isFollowing, setIsFollowing 
             <div className="flex flex-col items-center gap-3">
                 <button
                     onClick={handleToggleFollow}
-                    className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${isFollowing ? "bg-gray-200 text-gray-900" : "bg-violet-600 text-white"}`}
+                    className={`px-4 py-2 rounded-md font-semibold transition-all duration-200 ${isFollowing ? "bg-gray-200 text-gray-900" : "bg-violet-600 text-white"}`}
                 >
                     {isFollowing ? "Following" : "Follow"}
                 </button>
-                <Link to="/create-blog" className={`px-4 py-2 rounded-lg font-semibold ${isDark ? "bg-purple-600 text-white" : "bg-violet-600 text-white"}`}>Create</Link>
+                <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-purple-600 text-white" : "bg-violet-600 text-white"}`}>Create</Link>
             </div>
         </div>
     )

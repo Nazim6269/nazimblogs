@@ -15,7 +15,7 @@ const InputGroup = ({ name, label, className, ...props }) => {
         name={name}
         id={name}
         {...props}
-        className={`w-full rounded-lg px-4 transition-all duration-300 ${theme === "dark"
+        className={`w-full rounded-md px-4 transition-all duration-300 ${theme === "dark"
           ? "bg-gray-500 text-white placeholder-gray-400"
           : "bg-gray-100 text-gray-900 placeholder-gray-500"
           } ${className || "h-10"}`} // default height 48px

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const RelatedArticleCard = ({ id, isDark }) => (
     <Link
         to={`/blog-details?id=${id}`}
-        className={`group rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl ${isDark
+        className={`group rounded-md overflow-hidden transition-all duration-300 hover:shadow-md ${isDark
             ? "bg-gray-800 hover:bg-gray-750"
             : "bg-white hover:bg-gray-50 border border-gray-200"
             }`}

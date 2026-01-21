@@ -5,7 +5,7 @@ const TipSection = () => {
     const { theme } = useTheme();
     const isDark = theme === "dark";
     return (
-        <div className={`mt-10 p-6 rounded-xl text-left ${isDark ? "bg-slate-800/50 border border-slate-700" : "bg-slate-50 border border-slate-200"}`}>
+        <div className={`mt-10 p-6 rounded-md text-left ${isDark ? "bg-slate-800/50 border border-slate-700" : "bg-slate-50 border border-slate-200"}`}>
             <h4 className={`text-lg font-semibold mb-4 ${isDark ? "text-gray-200" : "text-gray-900"}`}>
                 💡 Quick Tips for Your First Blog
             </h4>

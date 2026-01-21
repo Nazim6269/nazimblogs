@@ -129,7 +129,7 @@ const SingleBlog = () => {
         <div className="mt-8 text-center">
           <Link
             to="/"
-            className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 ${isDark
+            className={`inline-flex items-center gap-2 px-6 py-3 rounded-md font-bold transition-all duration-300 transform hover:scale-105 ${isDark
               ? "bg-purple-600 text-white hover:bg-purple-700"
               : "bg-purple-600 text-white hover:bg-purple-700"
               }`}

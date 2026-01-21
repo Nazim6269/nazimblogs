@@ -20,7 +20,7 @@ const LoadingSkeleton = ({ isDark }) => (
             </div>
 
             {/* Image skeleton */}
-            <div className={`h-96 w-full rounded-3xl ${isDark ? "bg-gray-700" : "bg-gray-200"}`} />
+            <div className={`h-96 w-full rounded-md ${isDark ? "bg-gray-700" : "bg-gray-200"}`} />
 
             {/* Content skeleton */}
             <div className="space-y-4">

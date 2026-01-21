@@ -26,7 +26,7 @@ const NoBlogsFound = ({ searchQuery, setSearchQuery }) => {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
                     onClick={() => setSearchQuery("")}
-                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${isDark
+                    className={`px-6 py-3 rounded-md font-medium transition-all duration-300 ${isDark
                         ? "bg-slate-700 text-gray-200 hover:bg-slate-600"
                         : "bg-slate-200 text-gray-700 hover:bg-slate-300"}`}
                 >
@@ -35,7 +35,7 @@ const NoBlogsFound = ({ searchQuery, setSearchQuery }) => {
                 </button>
                 <Link
                     to="/create-blog"
-                    className={`px-6 py-3 rounded-lg font-bold text-white transition-all duration-300 ${isDark
+                    className={`px-6 py-3 rounded-md font-bold text-white transition-all duration-300 ${isDark
                         ? "bg-purple-600 hover:bg-purple-700"
                         : "bg-violet-600 hover:bg-violet-700"}`}
                 >

@@ -150,7 +150,7 @@ const Profile = () => {
             <img
               src={profile.photoURL}
               alt={profile.name}
-              className="w-28 h-28 rounded-full object-cover shadow-lg"
+              className="w-28 h-28 rounded-full object-cover shadow-md"
             />
           ) : (
             <div
@@ -178,17 +178,17 @@ const Profile = () => {
         <div className="flex flex-col items-center gap-3">
           <button
             onClick={handleToggleFollow}
-            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${isFollowing ? "bg-gray-200 text-gray-900" : "bg-violet-600 text-white"}`}
+            className={`px-4 py-2 rounded-md font-semibold transition-all duration-200 ${isFollowing ? "bg-gray-200 text-gray-900" : "bg-violet-600 text-white"}`}
           >
             {isFollowing ? "Following" : "Follow"}
           </button>
-          <Link to="/create-blog" className={`px-4 py-2 rounded-lg font-semibold ${isDark ? "bg-purple-600 text-white" : "bg-violet-600 text-white"}`}>Create</Link>
+          <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-purple-600 text-white" : "bg-violet-600 text-white"}`}>Create</Link>
         </div>
       </div>
 
       {/* Bio Section */}
       {/* Editable Bio Section */}
-      <div className={`relative w-full max-w-3xl rounded-xl p-6 shadow-md transition-colors duration-500 ${isDark ? "bg-slate-800 text-gray-200" : "bg-slate-100 border-gray-300 text-gray-900 shadow-lg"}`}>
+      <div className={`relative w-full max-w-3xl rounded-md p-6 shadow-md transition-colors duration-500 ${isDark ? "bg-slate-800 text-gray-200" : "bg-slate-100 border-gray-300 text-gray-900 shadow-md"}`}>
         {isEditingProfile ? (
           <ProfileEditForm
             initial={profile}
@@ -204,15 +204,15 @@ const Profile = () => {
 
       {/* Quick Stats */}
       <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className={`p-4 rounded-lg text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
+        <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
           <div className="text-sm text-gray-400">Blogs</div>
           <div className="text-2xl font-bold">{totalBlogs}</div>
         </div>
-        <div className={`p-4 rounded-lg text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
+        <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
           <div className="text-sm text-gray-400">Likes</div>
           <div className="text-2xl font-bold">{totalLikes}</div>
         </div>
-        <div className={`p-4 rounded-lg text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
+        <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
           <div className="text-sm text-gray-400">Reading Time</div>
           <div className="text-2xl font-bold">{Math.max(1, Math.round((totalBlogs * 5)))} min</div>
         </div>
@@ -220,7 +220,7 @@ const Profile = () => {
 
       {/* Blogs Section */}
       <div
-        className={`w-full max-w-6xl border rounded-xl ${isDark ? "border-gray-600" : "border-gray-300"
+        className={`w-full max-w-6xl border rounded-md ${isDark ? "border-gray-600" : "border-gray-300"
           }`}
       >
         {/* Header with Search */}
@@ -240,7 +240,7 @@ const Profile = () => {
                 placeholder="Search your blogs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full px-4 py-2 pl-10 rounded-lg border transition-all duration-300 ${isDark
+                className={`w-full px-4 py-2 pl-10 rounded-md border transition-all duration-300 ${isDark
                   ? "bg-slate-700 border-gray-600 text-gray-200 placeholder-gray-400 focus:border-purple-500"
                   : "bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-violet-500"
                   } focus:outline-none focus:ring-2 ${isDark ? "focus:ring-purple-500/50" : "focus:ring-violet-500/50"
@@ -291,7 +291,7 @@ const Profile = () => {
               {filteredBlogs.map((blog) => (
                 <div
                   key={blog.id}
-                  className={`relative rounded-2xl border transition-all duration-300 ${isDark
+                  className={`relative rounded-md border transition-all duration-300 ${isDark
                     ? "bg-slate-800 border-gray-700 hover:border-purple-500/50"
                     : "bg-white border-gray-300 hover:border-violet-500/50"
                     }`}
@@ -307,7 +307,7 @@ const Profile = () => {
                           type="text"
                           value={editForm.title}
                           onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                          className={`w-full px-4 py-2 rounded-lg border ${isDark
+                          className={`w-full px-4 py-2 rounded-md border ${isDark
                             ? "bg-slate-700 border-gray-600 text-gray-200"
                             : "bg-white border-gray-300 text-gray-900"
                             } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -322,7 +322,7 @@ const Profile = () => {
                           type="text"
                           value={editForm.tags}
                           onChange={(e) => setEditForm({ ...editForm, tags: e.target.value })}
-                          className={`w-full px-4 py-2 rounded-lg border ${isDark
+                          className={`w-full px-4 py-2 rounded-md border ${isDark
                             ? "bg-slate-700 border-gray-600 text-gray-200"
                             : "bg-white border-gray-300 text-gray-900"
                             } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -337,7 +337,7 @@ const Profile = () => {
                           value={editForm.content}
                           onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
                           rows={6}
-                          className={`w-full px-4 py-2 rounded-lg border ${isDark
+                          className={`w-full px-4 py-2 rounded-md border ${isDark
                             ? "bg-slate-700 border-gray-600 text-gray-200"
                             : "bg-white border-gray-300 text-gray-900"
                             } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -347,7 +347,7 @@ const Profile = () => {
                       <div className="flex gap-3 justify-end">
                         <button
                           onClick={handleCancelEdit}
-                          className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${isDark
+                          className={`px-4 py-2 rounded-md font-medium transition-all duration-300 ${isDark
                             ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
                             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                             }`}
@@ -357,7 +357,7 @@ const Profile = () => {
                         </button>
                         <button
                           onClick={() => handleUpdateBlog(blog.id)}
-                          className={`px-4 py-2 rounded-lg font-medium text-white transition-all duration-300 ${isDark
+                          className={`px-4 py-2 rounded-md font-medium text-white transition-all duration-300 ${isDark
                             ? "bg-purple-600 hover:bg-purple-700"
                             : "bg-violet-600 hover:bg-violet-700"
                             }`}
@@ -381,7 +381,7 @@ const Profile = () => {
                       <div className="flex md:flex-col gap-2 justify-end md:justify-start">
                         <button
                           onClick={() => handleEditClick(blog)}
-                          className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center gap-2 ${isDark
+                          className={`px-4 py-2 rounded-md font-medium transition-all duration-300 flex items-center gap-2 ${isDark
                             ? "bg-blue-600 text-white hover:bg-blue-700"
                             : "bg-blue-500 text-white hover:bg-blue-600"
                             }`}
@@ -393,7 +393,7 @@ const Profile = () => {
 
                         <button
                           onClick={() => setShowDeleteConfirm(blog.id)}
-                          className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center gap-2 ${isDark
+                          className={`px-4 py-2 rounded-md font-medium transition-all duration-300 flex items-center gap-2 ${isDark
                             ? "bg-red-600 text-white hover:bg-red-700"
                             : "bg-red-500 text-white hover:bg-red-600"
                             }`}
@@ -408,9 +408,9 @@ const Profile = () => {
 
                   {/* Delete Confirmation Modal */}
                   {showDeleteConfirm === blog.id && (
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-2xl flex items-center justify-center z-50">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-md flex items-center justify-center z-50">
                       <div
-                        className={`p-6 rounded-xl shadow-2xl max-w-md mx-4 ${isDark ? "bg-slate-800" : "bg-white"
+                        className={`p-6 rounded-md shadow-md max-w-md mx-4 ${isDark ? "bg-slate-800" : "bg-white"
                           }`}
                       >
                         <h3
@@ -428,7 +428,7 @@ const Profile = () => {
                         <div className="flex gap-3 justify-end">
                           <button
                             onClick={() => setShowDeleteConfirm(null)}
-                            className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${isDark
+                            className={`px-4 py-2 rounded-md font-medium transition-all duration-300 ${isDark
                               ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
                               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                               }`}
@@ -437,7 +437,7 @@ const Profile = () => {
                           </button>
                           <button
                             onClick={() => handleDeleteBlog(blog.id)}
-                            className="px-4 py-2 rounded-lg font-medium bg-red-600 text-white hover:bg-red-700 transition-all duration-300"
+                            className="px-4 py-2 rounded-md font-medium bg-red-600 text-white hover:bg-red-700 transition-all duration-300"
                           >
                             Delete
                           </button>
@@ -476,7 +476,7 @@ const Profile = () => {
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <button
                       onClick={() => setSearchQuery("")}
-                      className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${isDark
+                      className={`px-6 py-3 rounded-md font-medium transition-all duration-300 ${isDark
                         ? "bg-slate-700 text-gray-200 hover:bg-slate-600"
                         : "bg-slate-200 text-gray-700 hover:bg-slate-300"
                         }`}
@@ -486,7 +486,7 @@ const Profile = () => {
                     </button>
                     <Link
                       to="/create-blog"
-                      className={`px-6 py-3 rounded-lg font-bold text-white transition-all duration-300 ${isDark
+                      className={`px-6 py-3 rounded-md font-bold text-white transition-all duration-300 ${isDark
                         ? "bg-purple-600 hover:bg-purple-700"
                         : "bg-violet-600 hover:bg-violet-700"
                         }`}
@@ -499,7 +499,7 @@ const Profile = () => {
               ) : (
                 // No Blogs at All
                 <div className="max-w-md mx-auto">
-                  <div className={`w-24 h-24 mx-auto mb-6 rounded-2xl flex items-center justify-center ${isDark
+                  <div className={`w-24 h-24 mx-auto mb-6 rounded-md flex items-center justify-center ${isDark
                     ? "bg-linear-to-br from-purple-600/20 to-blue-600/20 border border-purple-500/30"
                     : "bg-linear-to-br from-violet-100 to-blue-100 border border-violet-200"
                     }`}>
@@ -520,9 +520,9 @@ const Profile = () => {
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <Link
                       to="/create-blog"
-                      className={`px-8 py-3 rounded-lg font-bold text-white transition-all duration-300 transform hover:scale-105 ${isDark
-                        ? "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/30"
-                        : "bg-violet-600 hover:bg-violet-700 shadow-lg shadow-violet-500/30"
+                      className={`px-8 py-3 rounded-md font-bold text-white transition-all duration-300 transform hover:scale-105 ${isDark
+                        ? "bg-purple-600 hover:bg-purple-700 shadow-md shadow-purple-500/30"
+                        : "bg-violet-600 hover:bg-violet-700 shadow-md shadow-violet-500/30"
                         }`}
                     >
                       <FontAwesomeIcon icon={faPen} className="mr-2" />
@@ -531,7 +531,7 @@ const Profile = () => {
                   </div>
 
                   {/* Tips Section */}
-                  <div className={`mt-10 p-6 rounded-xl text-left ${isDark ? "bg-slate-800/50 border border-slate-700" : "bg-slate-50 border border-slate-200"
+                  <div className={`mt-10 p-6 rounded-md text-left ${isDark ? "bg-slate-800/50 border border-slate-700" : "bg-slate-50 border border-slate-200"
                     }`}>
                     <h4 className={`text-lg font-semibold mb-4 ${isDark ? "text-gray-200" : "text-gray-900"
                       }`}>

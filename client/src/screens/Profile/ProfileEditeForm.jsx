@@ -18,7 +18,7 @@ const ProfileEditForm = ({ initial, onCancel, onSave }) => {
                     type="text"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                    className={`w-full px-4 py-2 rounded-md border ${isDark
                         ? "bg-slate-700 border-gray-600 text-gray-200"
                         : "bg-white border-gray-300 text-gray-900"
                         } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -32,7 +32,7 @@ const ProfileEditForm = ({ initial, onCancel, onSave }) => {
                     value={form.bio}
                     onChange={(e) => setForm({ ...form, bio: e.target.value })}
                     rows={3}
-                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                    className={`w-full px-4 py-2 rounded-md border ${isDark
                         ? "bg-slate-700 border-gray-600 text-gray-200"
                         : "bg-white border-gray-300 text-gray-900"
                         } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -47,7 +47,7 @@ const ProfileEditForm = ({ initial, onCancel, onSave }) => {
                     value={form.photoURL || ""}
                     onChange={(e) => setForm({ ...form, photoURL: e.target.value })}
                     placeholder="https://example.com/photo.jpg"
-                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                    className={`w-full px-4 py-2 rounded-md border ${isDark
                         ? "bg-slate-700 border-gray-600 text-gray-200 placeholder-gray-500"
                         : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
                         } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -61,7 +61,7 @@ const ProfileEditForm = ({ initial, onCancel, onSave }) => {
                     type="text"
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
-                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                    className={`w-full px-4 py-2 rounded-md border ${isDark
                         ? "bg-slate-700 border-gray-600 text-gray-200"
                         : "bg-white border-gray-300 text-gray-900"
                         } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -70,7 +70,7 @@ const ProfileEditForm = ({ initial, onCancel, onSave }) => {
             <div className="flex gap-3 justify-end">
                 <button
                     onClick={onCancel}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${isDark
+                    className={`px-4 py-2 rounded-md font-medium transition-all duration-300 ${isDark
                         ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                         }`}
@@ -80,7 +80,7 @@ const ProfileEditForm = ({ initial, onCancel, onSave }) => {
                 </button>
                 <button
                     onClick={() => onSave(form)}
-                    className={`px-4 py-2 rounded-lg font-medium text-white transition-all duration-300 ${isDark
+                    className={`px-4 py-2 rounded-md font-medium text-white transition-all duration-300 ${isDark
                         ? "bg-purple-600 hover:bg-purple-700"
                         : "bg-violet-600 hover:bg-violet-700"
                         }`}

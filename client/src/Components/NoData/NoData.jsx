@@ -8,7 +8,7 @@ const NoData = ({ message = "No data found", subMessage = "Try adjusting your fi
     const isDark = theme === "dark";
 
     return (
-        <div className={`flex flex-col items-center justify-center py-20 px-4 text-center rounded-3xl border-2 border-dashed transition-all duration-300 ${isDark ? "border-white/5 bg-white/2" : "border-black/5 bg-black/2"
+        <div className={`flex flex-col items-center justify-center py-20 px-4 text-center rounded-md border-2 border-dashed transition-all duration-300 ${isDark ? "border-white/5 bg-white/2" : "border-black/5 bg-black/2"
             }`}>
             <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${isDark ? "bg-white/5 text-gray-500" : "bg-black/5 text-gray-400"
                 }`}>

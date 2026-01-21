@@ -194,7 +194,7 @@ const Footer = () => {
         </div>
 
         {/* Newsletter Section */}
-        <div className={`max-w-2xl mx-auto p-8 rounded-2xl backdrop-blur-sm mb-12 ${isDark ? "bg-white/5" : "bg-gray-100/50"
+        <div className={`max-w-2xl mx-auto p-8 rounded-md backdrop-blur-sm mb-12 ${isDark ? "bg-white/5" : "bg-gray-100/50"
           }`}>
           <div className="text-center mb-6">
             <h3 className={`text-2xl font-bold mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
@@ -218,7 +218,7 @@ const Footer = () => {
                   }}
                   placeholder="Enter your email address"
                   className={`
-                    w-full px-5 py-3 rounded-lg transition-all duration-300
+                    w-full px-5 py-3 rounded-md transition-all duration-300
                     ${isDark
                       ? "bg-gray-800/80 text-white placeholder-gray-500 border border-gray-700"
                       : "bg-white text-gray-900 placeholder-gray-400 border border-gray-300"
@@ -239,11 +239,11 @@ const Footer = () => {
               <button
                 type="submit"
                 className={`
-                  px-8 py-3 font-semibold rounded-lg transition-all duration-300
+                  px-8 py-3 font-semibold rounded-md transition-all duration-300
                   transform hover:scale-105 active:scale-95
                   ${isDark
-                    ? "bg-purple-600 text-white hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/50"
-                    : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-lg hover:shadow-violet-500/50"
+                    ? "bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
+                    : "bg-violet-600 text-white hover:bg-violet-700 hover:shadow-md hover:shadow-violet-500/50"
                   }
                 `}
                 aria-label="Subscribe to newsletter"
@@ -272,7 +272,7 @@ const Footer = () => {
           <button
             onClick={scrollToTop}
             className={`
-              group flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm
+              group flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm
               transition-all duration-300 transform hover:scale-105
               ${isDark
                 ? "bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white"

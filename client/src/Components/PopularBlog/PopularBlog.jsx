@@ -16,13 +16,13 @@ const PopularBlog = ({ data }) => {
 
   return (
     <div
-      className={`group rounded-2xl transition-all duration-300 relative overflow-hidden
+      className={`group rounded-md transition-all duration-300 relative overflow-hidden
         ${isDark ? "hover:bg-white/5" : "hover:bg-gray-50"}
       `}
     >
       <Link to={`/blog-details?id=${blog.id}`} className="flex gap-4 p-3 items-center">
         {/* Thumbnail */}
-        <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 shadow-sm">
+        <div className="w-16 h-16 rounded-md overflow-hidden shrink-0 shadow-sm">
           <img
             src={blog.image || `https://picsum.photos/seed/${blog.id}/100/100`}
             alt={blog.title}

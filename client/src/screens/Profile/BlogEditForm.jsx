@@ -16,7 +16,7 @@ const BlogEditForm = ({ blog, handleCancelEdit, handleUpdateBlog }) => {
                     type="text"
                     value={blog.title}
                     onChange={(e) => handleUpdateBlog({ ...blog, title: e.target.value })}
-                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                    className={`w-full px-4 py-2 rounded-md border ${isDark
                         ? "bg-slate-700 border-gray-600 text-gray-200"
                         : "bg-white border-gray-300 text-gray-900"
                         } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -31,7 +31,7 @@ const BlogEditForm = ({ blog, handleCancelEdit, handleUpdateBlog }) => {
                     type="text"
                     value={blog.tags}
                     onChange={(e) => handleUpdateBlog({ ...blog, tags: e.target.value })}
-                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                    className={`w-full px-4 py-2 rounded-md border ${isDark
                         ? "bg-slate-700 border-gray-600 text-gray-200"
                         : "bg-white border-gray-300 text-gray-900"
                         } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -46,7 +46,7 @@ const BlogEditForm = ({ blog, handleCancelEdit, handleUpdateBlog }) => {
                     value={blog.content}
                     onChange={(e) => handleUpdateBlog({ ...blog, content: e.target.value })}
                     rows={6}
-                    className={`w-full px-4 py-2 rounded-lg border ${isDark
+                    className={`w-full px-4 py-2 rounded-md border ${isDark
                         ? "bg-slate-700 border-gray-600 text-gray-200"
                         : "bg-white border-gray-300 text-gray-900"
                         } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -56,7 +56,7 @@ const BlogEditForm = ({ blog, handleCancelEdit, handleUpdateBlog }) => {
             <div className="flex gap-3 justify-end">
                 <button
                     onClick={handleCancelEdit}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${isDark
+                    className={`px-4 py-2 rounded-md font-medium transition-all duration-300 ${isDark
                         ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
                 >
@@ -65,7 +65,7 @@ const BlogEditForm = ({ blog, handleCancelEdit, handleUpdateBlog }) => {
                 </button>
                 <button
                     onClick={() => handleUpdateBlog(blog.id)}
-                    className={`px-4 py-2 rounded-lg font-medium text-white transition-all duration-300 ${isDark
+                    className={`px-4 py-2 rounded-md font-medium text-white transition-all duration-300 ${isDark
                         ? "bg-purple-600 hover:bg-purple-700"
                         : "bg-violet-600 hover:bg-violet-700"}`}
                 >

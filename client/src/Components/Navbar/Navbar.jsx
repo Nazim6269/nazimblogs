@@ -114,7 +114,7 @@ const Navbar = () => {
                 className={({ isActive }) => `
                   px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
                   ${isActive
-                    ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-purple-600 bg-purple-50")
+                    ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-brand-primary bg-purple-50")
                     : (isDark ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100")
                   }
                 `}
@@ -148,7 +148,7 @@ const Navbar = () => {
               onClick={toggleTheme}
               className={`
                 w-10 h-10 rounded-md flex items-center justify-center transition-all duration-300
-                ${isDark ? "bg-white/5 text-yellow-400 hover:bg-white/10" : "bg-gray-100 text-purple-600 hover:bg-gray-200"}
+                ${isDark ? "bg-white/5 text-yellow-400 hover:bg-white/10" : "bg-gray-100 text-brand-primary hover:bg-gray-200"}
               `}
             >
               {isDark ? <FontAwesomeIcon icon={faSun} /> : <FontAwesomeIcon icon={faMoon} />}
@@ -259,7 +259,7 @@ const Navbar = () => {
                   className={({ isActive }) => `
                       px-4 py-3 rounded-md text-base font-semibold transition-all
                       ${isActive
-                      ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-purple-600 bg-purple-50")
+                      ? (isDark ? "text-purple-400 bg-purple-500/10" : "text-brand-primary bg-purple-50")
                       : (isDark ? "text-gray-400" : "text-gray-600")
                     }
                     `}

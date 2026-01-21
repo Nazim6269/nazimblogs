@@ -144,7 +144,7 @@ const Footer = () => {
                     icon={item.icon}
                     className={`w-5 h-5 transition-colors duration-300 ${isDark
                       ? "text-purple-400 group-hover:text-purple-300"
-                      : "text-purple-600 group-hover:text-purple-700"
+                      : "text-brand-primary group-hover:text-purple-700"
                       }`}
                   />
                   <span className={`text-sm transition-colors duration-300 ${isDark ? "text-gray-400 group-hover:text-gray-300" : "text-gray-600 group-hover:text-gray-700"

@@ -118,7 +118,7 @@ const Settings = () => {
                                 {imagePreview ? (
                                     <img src={imagePreview} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className={`w-full h-full flex items-center justify-center text-5xl font-bold ${isDark ? "bg-white/5 text-purple-400" : "bg-purple-50 text-purple-600"}`}>
+                                    <div className={`w-full h-full flex items-center justify-center text-5xl font-bold ${isDark ? "bg-white/5 text-purple-400" : "bg-purple-50 text-brand-primary"}`}>
                                         {formData.name?.charAt(0).toUpperCase() || "U"}
                                     </div>
                                 )}

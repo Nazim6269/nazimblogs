@@ -80,12 +80,12 @@ const Navbar = () => {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-100 transition-all duration-300 ${isScrolled ? "py-2" : "py-4"}`}>
+    <header className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${isScrolled ? "py-2" : "py-4"}`}>
       <nav
         className={`
           max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
           rounded-md transition-all duration-500
-          ${isScrolled
+          ${(isScrolled || isMobileMenuOpen)
             ? (isDark ? "bg-[#0f172a]/80 backdrop-blur-xl border border-white/10 shadow-md" : "bg-white/80 backdrop-blur-xl border border-black/5 shadow-md")
             : "bg-transparent"
           }
@@ -98,7 +98,7 @@ const Navbar = () => {
               H
             </div>
             <span
-              className={`text-2xl font-bold tracking-tight transition-all duration-500 ${isDark ? "text-white" : "text-gray-900"
+              className={`text-2xl font-bold tracking-tight transition-all duration-500 md:hidden lg:block ${isDark ? "text-white" : "text-gray-900"
                 }`}
             >
               Hexa<span className="text-brand-secondary">Blog</span>
@@ -127,7 +127,7 @@ const Navbar = () => {
           {/* Right Section */}
           <div className="flex items-center gap-3">
             {/* Search - Icon only on mobile/small desktop */}
-            <div className="hidden lg:flex items-center relative group">
+            <div className="hidden md:flex items-center relative group">
               <FontAwesomeIcon icon={faSearch} className={`absolute left-3 transition-colors ${isDark ? "text-gray-500 group-focus-within:text-brand-tertiary" : "text-gray-400 group-focus-within:text-brand-secondary"}`} />
               <input
                 type="text"
@@ -135,7 +135,7 @@ const Navbar = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={`
-                  pl-10 pr-4 py-2 rounded-md text-sm w-48 focus:w-64 transition-all duration-300 outline-none
+                  pl-10 pr-4 py-2 rounded-md text-sm w-32 lg:w-48 focus:w-64 transition-all duration-300 outline-none
                   ${isDark
                     ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50"
                     : "bg-gray-100 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30 shadow-sm"}
@@ -249,8 +249,27 @@ const Navbar = () => {
 
         {/* Mobile Menu Content */}
         {isMobileMenuOpen && (
-          <div className={`md:hidden py-4 border-t ${isDark ? "border-white/5" : "border-gray-100"} transition-all animate-in slide-in-from-top duration-300`}>
+          <div className={`md:hidden py-4 border-t ${isDark ? "border-white/5" : "border-gray-100"} transition-all animate-in slide-in-from-top duration-300 max-h-[calc(100vh-5rem)] overflow-y-auto`}>
             <div className="flex flex-col gap-2">
+              {/* Mobile Search */}
+              <div className="px-4 mb-2">
+                <div className="relative group">
+                  <FontAwesomeIcon icon={faSearch} className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${isDark ? "text-gray-500" : "text-gray-400"}`} />
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className={`
+                      w-full pl-10 pr-4 py-2.5 rounded-md text-sm outline-none transition-all duration-300
+                      ${isDark
+                        ? "bg-white/5 border border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50"
+                        : "bg-gray-100 border border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30 shadow-sm"}
+                    `}
+                  />
+                </div>
+              </div>
+
               {navLinks.map((link) => (
                 <NavLink
                   key={link.name}

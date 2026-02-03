@@ -15,8 +15,13 @@ const app = express();
 
 
 
+const allowedOrigins = [
+    'http://localhost:5173',
+    process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://blog-app-client-five-sandy.vercel.app'],
+    origin: allowedOrigins,
     credentials: true
 }));
 app.use(express.json());

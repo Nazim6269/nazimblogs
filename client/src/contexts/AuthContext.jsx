@@ -5,6 +5,8 @@ import { auth } from "../firebase";
 
 const AuthContext = createContext();
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 export const useAuth = () => {
     return useContext(AuthContext);
 };
@@ -22,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const response = await fetch("http://localhost:3000/api/users/auth", {
+            const response = await fetch(`${API_URL}/api/users/auth`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -47,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (name, email, password) => {
         try {
-            const response = await fetch("http://localhost:3000/api/users", {
+            const response = await fetch(`${API_URL}/api/users`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +74,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await fetch("http://localhost:3000/api/users/logout", {
+            await fetch(`${API_URL}/api/users/logout`, {
                 method: "POST",
             });
             localStorage.removeItem("userInfo");
@@ -90,7 +92,7 @@ export const AuthProvider = ({ children }) => {
             const user = result.user;
 
             // Sync with backend
-            const response = await fetch("http://localhost:3000/api/users/social", {
+            const response = await fetch(`${API_URL}/api/users/social`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

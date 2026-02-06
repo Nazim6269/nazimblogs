@@ -157,10 +157,18 @@ const Navbar = () => {
             {/* Auth States */}
             {user ? (
               <div className="relative" ref={dropdownRef}>
+                {/* Avatar button: toggles mobile menu on small screens, dropdown on md+ */}
                 <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  onClick={() => {
+                    if (window.innerWidth < 768) {
+                      setIsMobileMenuOpen(!isMobileMenuOpen);
+                      setIsDropdownOpen(false);
+                    } else {
+                      setIsDropdownOpen(!isDropdownOpen);
+                    }
+                  }}
                   className={`
-                    flex items-center gap-2 p-1 pr-3 rounded-md transition-all duration-300
+                    flex items-center gap-2 p-1 md:pr-3 rounded-md transition-all duration-300
                     ${isDark ? "hover:bg-white/5" : "hover:bg-gray-100"}
                   `}
                 >
@@ -177,15 +185,15 @@ const Navbar = () => {
                   )}
                   <FontAwesomeIcon
                     icon={faChevronDown}
-                    className={`text-[10px] transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""} ${isDark ? "text-gray-500" : "text-gray-400"}`}
+                    className={`text-[10px] hidden md:block transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""} ${isDark ? "text-gray-500" : "text-gray-400"}`}
                   />
                 </button>
 
-                {/* Dropdown Menu */}
+                {/* Dropdown Menu - desktop only */}
                 {isDropdownOpen && (
                   <div
                     className={`
-                      absolute right-0 mt-3 w-56 rounded-md shadow-md border p-2
+                      absolute right-0 mt-3 w-56 rounded-md shadow-md border p-2 hidden md:block
                       animate-in fade-in zoom-in duration-200
                       ${isDark ? "bg-[#0f172a] border-white/10" : "bg-white border-gray-100"}
                     `}
@@ -230,7 +238,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-5 py-2.5 rounded-md text-sm font-bold text-white bg-brand-primary hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300"
+                  className="px-3 sm:px-5 py-2.5 rounded-md text-xs sm:text-sm font-bold text-white bg-brand-primary hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
                 >
                   Join Hexa
                 </Link>
@@ -286,10 +294,46 @@ const Navbar = () => {
                   {link.name}
                 </NavLink>
               ))}
-              {!user && (
+              {/* Mobile User Section */}
+              {user ? (
+                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/5 flex flex-col gap-1">
+                  <div className="px-4 py-2 mb-2 flex items-center gap-3">
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt={user.name} className="w-10 h-10 rounded-md object-cover" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-md bg-brand-primary flex items-center justify-center text-white font-bold">
+                        {user.name?.charAt(0).toUpperCase() || "U"}
+                      </div>
+                    )}
+                    <div>
+                      <p className={`text-sm font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{user.name}</p>
+                      <p className={`text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}>{user.email}</p>
+                    </div>
+                  </div>
+                  <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-md text-base ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                    <FontAwesomeIcon icon={faUser} className="w-5 text-brand-secondary" />
+                    <span>My Profile</span>
+                  </Link>
+                  <Link to="/create-blog" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-md text-base ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                    <FontAwesomeIcon icon={faPenNib} className="w-5 text-blue-500" />
+                    <span>Write a Post</span>
+                  </Link>
+                  <Link to="/settings" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-md text-base ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                    <FontAwesomeIcon icon={faGear} className="w-5 text-gray-400" />
+                    <span>Settings</span>
+                  </Link>
+                  <button
+                    onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
+                    className="flex items-center gap-3 px-4 py-3 rounded-md text-base text-red-500"
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} className="w-5" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              ) : (
                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/5 flex flex-col gap-2">
                   <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className={`px-4 py-3 rounded-md font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>Sign In</Link>
-                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 rounded-md font-bold text-white bg-brand-primary hover:bg-purple-700 text-center">Join Hexa</Link>
+                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 rounded-md font-bold text-white bg-brand-primary hover:bg-purple-700 text-center mx-2">Join Hexa</Link>
                 </div>
               )}
             </div>

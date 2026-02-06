@@ -20,10 +20,23 @@ const allowedOrigins = [
     process.env.CLIENT_URL,
 ].filter(Boolean);
 
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
-}));
+const corsOptions = {
+    origin: (origin, callback) => {
+        // allow requests with no origin (mobile apps, curl, server-to-server)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        // allow any Vercel preview/production deployment
+        if (origin.endsWith('.vercel.app')) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'), false);
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+};
+
+// explicitly handle preflight for Vercel serverless
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

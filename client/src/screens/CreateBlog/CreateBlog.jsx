@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import Dropzone from "../../Components/Dropzone/Dropzone";
 import { createBlog } from "../../helper/blogApi";
 import { useTheme } from "../../hooks/useTheme";
 import toast from "react-hot-toast";
+import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
+import { stripHTML } from "../../utils/stripHTML";
 
 const CreateBlog = () => {
   const { theme } = useTheme();
@@ -16,6 +20,18 @@ const CreateBlog = () => {
   const [category, setCategory] = useState("Community");
   const [imageSrc, setImageSrc] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const quillModules = useMemo(() => ({
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline"],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      ["clean"],
+    ],
+  }), []);
 
   const handleFileChange = (file) => {
     const reader = new FileReader();
@@ -27,15 +43,26 @@ const CreateBlog = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!title || !content) {
+  const validateForm = () => {
+    if (!title || !stripHTML(content).trim()) {
       toast.error("Please fill in all required fields");
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    setShowConfirm(true);
+  };
+
+  const handleSave = async (status) => {
+    if (!validateForm()) return;
 
     setLoading(true);
-    const createToast = toast.loading("Creating blog...");
+    const toastMsg = status === "draft" ? "Saving draft..." : "Publishing blog...";
+    const saveToast = toast.loading(toastMsg);
 
     try {
       await createBlog({
@@ -44,12 +71,15 @@ const CreateBlog = () => {
         tags: tags.split(",").map((tag) => tag.trim()).filter(Boolean),
         imageSrc: imageSrc || "",
         category,
+        status,
       });
 
-      toast.success("Blog created successfully!", { id: createToast });
+      const successMsg = status === "draft" ? "Draft saved!" : "Blog published!";
+      toast.success(successMsg, { id: saveToast });
+      setShowConfirm(false);
       navigate("/profile");
     } catch (error) {
-      toast.error(error.message || "Failed to create blog", { id: createToast });
+      toast.error(error.message || "Failed to save blog", { id: saveToast });
     } finally {
       setLoading(false);
     }
@@ -120,30 +150,53 @@ const CreateBlog = () => {
             }`}
         />
 
-        {/* Blog Content */}
-        <textarea
-          rows={8}
-          placeholder="Write your blog content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className={`w-full text-sm sm:text-lg px-4 py-3 rounded-md border focus:outline-none transition-colors duration-300 ${isDark
-            ? "bg-slate-800 border-gray-700 text-gray-100 placeholder-gray-400 focus:border-purple-500"
-            : "bg-gray-200/40 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-indigo-600"
-            }`}
-        ></textarea>
+        {/* Rich Text Editor */}
+        <div className={`quill-wrapper ${isDark ? "quill-dark" : "quill-light"}`}>
+          <ReactQuill
+            theme="snow"
+            value={content}
+            onChange={setContent}
+            modules={quillModules}
+            placeholder="Write your blog content..."
+          />
+        </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-3 px-2 rounded-md font-bold text-white text-center transition-all duration-300 cursor-pointer ${loading ? "opacity-70 cursor-not-allowed" : ""} ${isDark
-            ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
-            : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
-            }`}
-        >
-          {loading ? "Creating..." : "Create Blog"}
-        </button>
+        {/* Action Buttons */}
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => handleSave("draft")}
+            disabled={loading}
+            className={`flex-1 py-3 px-2 rounded-md font-bold text-center transition-all duration-300 cursor-pointer ${loading ? "opacity-70 cursor-not-allowed" : ""} ${isDark
+              ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+          >
+            {loading ? "Saving..." : "Save as Draft"}
+          </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`flex-1 py-3 px-2 rounded-md font-bold text-white text-center transition-all duration-300 cursor-pointer ${loading ? "opacity-70 cursor-not-allowed" : ""} ${isDark
+              ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
+              : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
+              }`}
+          >
+            {loading ? "Publishing..." : "Publish"}
+          </button>
+        </div>
       </form>
+
+      <ConfirmModal
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={() => handleSave("published")}
+        title="Publish this blog?"
+        message="Your blog will be published and visible to all users."
+        confirmText="Publish"
+        confirmColor="brand"
+        loading={loading}
+      />
     </div>
   );
 };

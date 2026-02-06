@@ -1,5 +1,28 @@
 import mongoose from 'mongoose';
 
+const commentSchema = mongoose.Schema(
+    {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
+        text: {
+            type: String,
+            required: true,
+        },
+        parentComment: {
+            type: mongoose.Schema.Types.ObjectId,
+            default: null,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
+    },
+    { _id: true }
+);
+
 const blogSchema = mongoose.Schema(
     {
         title: {
@@ -20,15 +43,27 @@ const blogSchema = mongoose.Schema(
             enum: ['Tutorials', 'Design', 'Community'],
             default: 'Community',
         },
+        status: {
+            type: String,
+            enum: ['draft', 'published'],
+            default: 'draft',
+        },
         author: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
         },
-        likes: {
+        likes: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        ],
+        views: {
             type: Number,
             default: 0,
         },
+        comments: [commentSchema],
     },
     {
         timestamps: true,

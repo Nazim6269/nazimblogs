@@ -6,6 +6,7 @@ import Pagination from "../../Components/Pagination/Pagination";
 import SideBar from "../../Components/SideBar/SideBar";
 import NoData from "../../Components/NoData/NoData";
 import { fetchBlogs } from "../../helper/blogApi";
+import { stripHTML } from "../../utils/stripHTML";
 
 const BlogCards = () => {
   const [data, setData] = useState([]);
@@ -32,7 +33,7 @@ const BlogCards = () => {
     if (!searchQuery) return data;
     return data.filter(post =>
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.body.toLowerCase().includes(searchQuery.toLowerCase())
+      stripHTML(post.body).toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [data, searchQuery]);
 

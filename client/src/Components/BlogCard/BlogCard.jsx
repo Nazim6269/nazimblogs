@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faCalendarAlt, faClock } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faCalendarAlt, faClock, faEye, faComment } from "@fortawesome/free-solid-svg-icons";
+import { stripHTML } from "../../utils/stripHTML";
 
 const formatDate = (dateStr) => {
     if (!dateStr) return "Unknown";
@@ -13,11 +15,12 @@ const formatDate = (dateStr) => {
 };
 
 const BlogCard = ({ data }) => {
-    const { _id, id, title, imageSrc, body, author, date, createdAt, likes, category } = data;
+    const { _id, id, title, imageSrc, body, author, date, createdAt, likes, category, views, comments } = data;
     const { theme } = useTheme();
     const isDark = theme === "dark";
 
     const authorName = typeof author === "object" ? author?.name : author;
+    const authorId = typeof author === "object" ? author?._id : null;
     const displayDate = date || formatDate(createdAt);
     const blogId = _id || id;
 
@@ -79,7 +82,7 @@ const BlogCard = ({ data }) => {
                         className={`line-clamp-2 md:line-clamp-3 leading-relaxed text-sm md:text-base mb-6 ${isDark ? "text-gray-400" : "text-gray-600"
                             }`}
                     >
-                        {body || "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
+                        {stripHTML(body)?.substring(0, 200) || "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
                     </p>
                 </div>
 
@@ -95,19 +98,37 @@ const BlogCard = ({ data }) => {
                         </div>
 
                         <div className="flex flex-col">
-                            <span className={`text-sm font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
+                            {authorId ? (
+                              <Link
+                                to={`/author/${authorId}`}
+                                onClick={(e) => e.stopPropagation()}
+                                className={`text-sm font-bold hover:text-brand-secondary transition-colors ${isDark ? "text-white" : "text-gray-900"}`}
+                              >
                                 {authorName || "Nazim Uddin"}
-                            </span>
-                            <span className="text-[10px] uppercase font-black tracking-widest opacity-40">Editor</span>
+                              </Link>
+                            ) : (
+                              <span className={`text-sm font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
+                                {authorName || "Nazim Uddin"}
+                              </span>
+                            )}
+                            <span className="text-[10px] uppercase font-black tracking-widest opacity-40">{category || "Community"}</span>
                         </div>
                     </div>
 
                     {/* Engagement */}
                     <div className="flex items-center gap-2">
-                        <button className={`flex items-center gap-2 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-md transition-all duration-300 ${isDark ? "bg-white/5 hover:bg-white/10" : "bg-gray-100 hover:bg-gray-200"}`}>
-                            <FontAwesomeIcon icon={faHeart} className="text-red-500" />
-                            <span className="text-xs font-bold">{likes || 0}</span>
-                        </button>
+                        <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-bold ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
+                            <FontAwesomeIcon icon={faEye} className="text-blue-400 text-[10px]" />
+                            <span>{views || 0}</span>
+                        </div>
+                        <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-bold ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
+                            <FontAwesomeIcon icon={faComment} className="text-gray-400 text-[10px]" />
+                            <span>{comments?.length || 0}</span>
+                        </div>
+                        <div className={`flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-md ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
+                            <FontAwesomeIcon icon={faHeart} className="text-red-500 text-[10px]" />
+                            <span className="text-xs font-bold">{Array.isArray(likes) ? likes.length : (likes || 0)}</span>
+                        </div>
                     </div>
                 </div>
             </div>

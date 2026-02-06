@@ -15,6 +15,8 @@ import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import ProfileEditForm from "../Profile/ProfileEditeForm"
 import toast from "react-hot-toast";
+import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
+import { stripHTML } from "../../utils/stripHTML";
 
 const Profile = () => {
   const { theme } = useTheme();
@@ -35,7 +37,6 @@ const Profile = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
   const [loadingBlogs, setLoadingBlogs] = useState(true);
   // Profile related state
-  const [isFollowing, setIsFollowing] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profile, setProfile] = useState({
     name: user?.name || "Guest User",
@@ -97,7 +98,7 @@ const Profile = () => {
     } else {
       const filtered = blogs.filter((blog) =>
         blog.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
-        (blog.body && blog.body.toLowerCase().includes(debouncedSearchQuery.toLowerCase())) ||
+        (blog.body && stripHTML(blog.body).toLowerCase().includes(debouncedSearchQuery.toLowerCase())) ||
         (blog.tags && blog.tags.join(" ").toLowerCase().includes(debouncedSearchQuery.toLowerCase()))
       );
       setFilteredBlogs(filtered);
@@ -129,8 +130,6 @@ const Profile = () => {
   };
 
   // Profile edit handlers
-  const handleToggleFollow = () => setIsFollowing((s) => !s);
-
   const handleProfileSave = (updated) => {
     const updatedProfile = { ...profile, ...updated };
     setProfile(updatedProfile);
@@ -200,12 +199,6 @@ const Profile = () => {
         </div>
 
         <div className="flex flex-col items-center gap-3">
-          <button
-            onClick={handleToggleFollow}
-            className={`px-4 py-2 rounded-md font-semibold transition-all duration-200 ${isFollowing ? "bg-gray-200 text-gray-900" : "bg-alter-brand-primary text-white"}`}
-          >
-            {isFollowing ? "Following" : "Follow"}
-          </button>
           <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-brand-primary text-white" : "bg-alter-brand-primary text-white"}`}>Create</Link>
         </div>
       </div>
@@ -226,7 +219,7 @@ const Profile = () => {
       </div>
 
       {/* Quick Stats */}
-      <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+      <div className="w-full max-w-3xl grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
         <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
           <div className="text-sm text-gray-400">Blogs</div>
           <div className="text-2xl font-bold">{totalBlogs}</div>
@@ -236,8 +229,12 @@ const Profile = () => {
           <div className="text-2xl font-bold">{totalLikes}</div>
         </div>
         <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
-          <div className="text-sm text-gray-400">Reading Time</div>
-          <div className="text-2xl font-bold">{Math.max(1, Math.round((totalBlogs * 5)))} min</div>
+          <div className="text-sm text-gray-400">Followers</div>
+          <div className="text-2xl font-bold">{user?.followers?.length || 0}</div>
+        </div>
+        <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
+          <div className="text-sm text-gray-400">Following</div>
+          <div className="text-2xl font-bold">{user?.following?.length || 0}</div>
         </div>
       </div>
 
@@ -394,15 +391,39 @@ const Profile = () => {
                   ) : (
                     // View Mode
                     <div className="flex flex-col md:flex-row gap-4 p-4">
-                      <Link
-                        to={`/blog-details/${blog._id}`}
-                        className="flex-1"
-                      >
-                        <BlogCard data={blog} />
-                      </Link>
+                      <div className="flex-1 relative">
+                        {blog.status === "draft" && (
+                          <span className="absolute top-2 right-2 z-10 px-2.5 py-1 text-xs font-bold rounded-md bg-yellow-500 text-white">
+                            Draft
+                          </span>
+                        )}
+                        <Link to={`/blog-details/${blog._id}`}>
+                          <BlogCard data={blog} />
+                        </Link>
+                      </div>
 
                       {/* Action Buttons */}
                       <div className="flex flex-row md:flex-col gap-1.5 sm:gap-2 justify-end md:justify-start">
+                        {blog.status === "draft" && (
+                          <button
+                            onClick={async () => {
+                              try {
+                                await apiUpdateBlog(blog._id, { status: "published" });
+                                const updatedBlogs = blogs.map((b) => b._id === blog._id ? { ...b, status: "published" } : b);
+                                setBlogs(updatedBlogs);
+                                setFilteredBlogs(updatedBlogs);
+                                toast.success("Blog published!");
+                              } catch (err) {
+                                toast.error(err.message || "Failed to publish");
+                              }
+                            }}
+                            className="px-4 py-2 rounded-md font-medium transition-all duration-300 flex items-center gap-2 bg-brand-primary text-white hover:bg-purple-700"
+                            title="Publish Blog"
+                          >
+                            <FontAwesomeIcon icon={faCheck} />
+                            <span className="hidden sm:inline">Publish</span>
+                          </button>
+                        )}
                         <button
                           onClick={() => handleEditClick(blog)}
                           className={`px-4 py-2 rounded-md font-medium transition-all duration-300 flex items-center gap-2 ${isDark
@@ -431,44 +452,15 @@ const Profile = () => {
                   )}
 
                   {/* Delete Confirmation Modal */}
-                  {showDeleteConfirm === blog._id && (
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-md flex items-center justify-center z-50">
-                      <div
-                        className={`p-6 rounded-md shadow-md max-w-md mx-4 ${isDark ? "bg-slate-800" : "bg-white"
-                          }`}
-                      >
-                        <h3
-                          className={`text-xl font-bold mb-4 ${isDark ? "text-gray-200" : "text-gray-900"
-                            }`}
-                        >
-                          Delete Blog?
-                        </h3>
-                        <p
-                          className={`mb-6 ${isDark ? "text-gray-400" : "text-gray-600"
-                            }`}
-                        >
-                          Are you sure you want to delete &quot;{blog.title}&quot;? This action cannot be undone.
-                        </p>
-                        <div className="flex gap-3 justify-end">
-                          <button
-                            onClick={() => setShowDeleteConfirm(null)}
-                            className={`px-4 py-2 rounded-md font-medium transition-all duration-300 ${isDark
-                              ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
-                              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                              }`}
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            onClick={() => handleDeleteBlog(blog._id)}
-                            className="px-4 py-2 rounded-md font-medium bg-red-600 text-white hover:bg-red-700 transition-all duration-300"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  <ConfirmModal
+                    isOpen={showDeleteConfirm === blog._id}
+                    onClose={() => setShowDeleteConfirm(null)}
+                    onConfirm={() => handleDeleteBlog(blog._id)}
+                    title="Delete Blog?"
+                    message={`Are you sure you want to delete "${blog.title}"? This action cannot be undone.`}
+                    confirmText="Delete"
+                    confirmColor="red"
+                  />
                 </div>
               ))}
             </div>

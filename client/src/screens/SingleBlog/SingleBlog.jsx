@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
-import Comments from "../../Components/Comments/Comments";
-import User from "../../Components/User/User";
 import { useTheme } from "../../hooks/useTheme";
+import { useAuth } from "../../contexts/AuthContext";
 import NoData from "../../Components/NoData/NoData";
 import BlogHeader from "./BlogHeader";
 import BlogMeta from "./BlogMeta";
@@ -16,12 +15,13 @@ import RelatedArticles from "./RelatedArticles";
 import CommentsSection from "./CommentsSection";
 import BlogActionBar from "./BlogActionBar";
 import LoadingSkeleton from "./LoadingSkeleton";
-import { fetchBlogById } from "../../helper/blogApi";
+import { fetchBlogById, likeBlog as likeBlogApi, addComment as addCommentApi, deleteComment as deleteCommentApi } from "../../helper/blogApi";
 
 const SingleBlog = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const { id } = useParams();
+  const { user } = useAuth();
 
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,10 +40,9 @@ const SingleBlog = () => {
         setError(null);
         const data = await fetchBlogById(id);
 
-        // Format for display
         const formattedBlog = {
           ...data,
-          author: typeof data.author === "object" ? data.author.name : data.author,
+          authorObj: typeof data.author === "object" ? data.author : { name: data.author },
           date: new Date(data.createdAt).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
@@ -61,6 +60,57 @@ const SingleBlog = () => {
     };
 
     fetchBlog();
+  }, [id]);
+
+  const handleLike = useCallback(async () => {
+    if (!user) {
+      toast.error("Please login to like");
+      return;
+    }
+    if (user.isBanned) {
+      toast.error("Your account is suspended");
+      return;
+    }
+    try {
+      const data = await likeBlogApi(id);
+      setBlog((prev) => ({ ...prev, likes: data.likes }));
+    } catch (err) {
+      toast.error(err.message || "Failed to like");
+    }
+  }, [id, user]);
+
+  const handleAddComment = useCallback(async (text, parentComment) => {
+    if (!user) {
+      toast.error("Please login to comment");
+      return;
+    }
+    if (user.isBanned) {
+      toast.error("Your account is suspended");
+      return;
+    }
+    try {
+      const newComment = await addCommentApi(id, text, parentComment);
+      setBlog((prev) => ({
+        ...prev,
+        comments: [newComment, ...(prev.comments || [])],
+      }));
+      toast.success(parentComment ? "Reply added" : "Comment added");
+    } catch (err) {
+      toast.error(err.message || "Failed to add comment");
+    }
+  }, [id, user]);
+
+  const handleDeleteComment = useCallback(async (commentId) => {
+    try {
+      await deleteCommentApi(id, commentId);
+      setBlog((prev) => ({
+        ...prev,
+        comments: (prev.comments || []).filter((c) => c._id !== commentId),
+      }));
+      toast.success("Comment deleted");
+    } catch (err) {
+      toast.error(err.message || "Failed to delete comment");
+    }
   }, [id]);
 
   if (loading) {
@@ -91,8 +141,9 @@ const SingleBlog = () => {
   }
 
   const tags = blog.tags || [];
-  const likes = blog.likes || 0;
-  const commentCount = Math.floor(Math.random() * 50) + 5;
+  const likes = blog.likes || [];
+  const comments = blog.comments || [];
+  const commentCount = comments.length;
 
   return (
     <div
@@ -132,11 +183,26 @@ const SingleBlog = () => {
         <RelatedArticles currentId={id} isDark={isDark} />
 
         {/* Comments Section */}
-        <CommentsSection isDark={isDark} count={commentCount} />
+        <CommentsSection
+          isDark={isDark}
+          comments={comments}
+          user={user}
+          blogAuthorId={blog.authorObj?._id}
+          onAddComment={handleAddComment}
+          onDeleteComment={handleDeleteComment}
+        />
       </div>
 
       {/* Sticky Action Bar */}
-      <BlogActionBar isDark={isDark} likes={likes} comments={commentCount} />
+      <BlogActionBar
+        isDark={isDark}
+        blogId={id}
+        likes={likes}
+        comments={commentCount}
+        user={user}
+        onLike={handleLike}
+        blogTitle={blog.title}
+      />
     </div>
   );
 };

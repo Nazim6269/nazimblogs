@@ -5,7 +5,7 @@ import { auth } from "../firebase";
 
 const AuthContext = createContext();
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export const useAuth = () => {
     return useContext(AuthContext);
@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }) => {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({ email, password }),
             });
 
@@ -54,6 +55,7 @@ export const AuthProvider = ({ children }) => {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({ name, email, password }),
             });
 
@@ -76,6 +78,7 @@ export const AuthProvider = ({ children }) => {
         try {
             await fetch(`${API_URL}/api/users/logout`, {
                 method: "POST",
+                credentials: "include",
             });
             localStorage.removeItem("userInfo");
             setUser(null);
@@ -97,6 +100,7 @@ export const AuthProvider = ({ children }) => {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     name: user.displayName || user.email.split('@')[0],
                     email: user.email,

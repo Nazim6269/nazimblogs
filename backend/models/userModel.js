@@ -20,6 +20,40 @@ const userSchema = mongoose.Schema(
             type: Boolean,
             default: false,
         },
+        isBanned: {
+            type: Boolean,
+            default: false,
+        },
+        bio: {
+            type: String,
+            default: '',
+        },
+        location: {
+            type: String,
+            default: '',
+        },
+        photoURL: {
+            type: String,
+            default: '',
+        },
+        followers: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+        following: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+        bookmarks: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Blog',
+        }],
+        otp: {
+            type: String,
+        },
+        otpExpiry: {
+            type: Date,
+        },
     },
     {
         timestamps: true,

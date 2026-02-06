@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../hooks/useTheme";
 import { storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { updateProfile } from "../../helper/userApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import toast from "react-hot-toast";
 import {
@@ -92,6 +93,9 @@ const Settings = () => {
                 ...formData,
                 photoURL: finalPhotoURL
             };
+
+            // Persist to backend
+            await updateProfile(updatedData);
 
             // Update in context and localStorage
             updateUser(updatedData);

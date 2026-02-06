@@ -78,3 +78,75 @@ export const deleteBlog = async (id) => {
     }
     return res.json();
 };
+
+export const likeBlog = async (id) => {
+    const res = await fetch(`${API_URL}/api/blogs/${id}/like`, {
+        method: 'PUT',
+        credentials: 'include',
+    });
+
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Failed to like blog');
+    }
+    return res.json();
+};
+
+export const addComment = async (blogId, text, parentComment) => {
+    const body = { text };
+    if (parentComment) body.parentComment = parentComment;
+
+    const res = await fetch(`${API_URL}/api/blogs/${blogId}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Failed to add comment');
+    }
+    return res.json();
+};
+
+export const fetchTrendingBlogs = async () => {
+    const res = await fetch(`${API_URL}/api/blogs/trending`, {
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch trending blogs');
+    return res.json();
+};
+
+export const toggleBookmark = async (blogId) => {
+    const res = await fetch(`${API_URL}/api/blogs/${blogId}/bookmark`, {
+        method: 'PUT',
+        credentials: 'include',
+    });
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Failed to toggle bookmark');
+    }
+    return res.json();
+};
+
+export const fetchBookmarks = async () => {
+    const res = await fetch(`${API_URL}/api/users/bookmarks`, {
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch bookmarks');
+    return res.json();
+};
+
+export const deleteComment = async (blogId, commentId) => {
+    const res = await fetch(`${API_URL}/api/blogs/${blogId}/comments/${commentId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Failed to delete comment');
+    }
+    return res.json();
+};

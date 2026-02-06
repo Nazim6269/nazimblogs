@@ -9,18 +9,19 @@ import { useTheme } from "../../hooks/useTheme";
 
 library.add(fab);
 
-const Social = () => {
+const Social = ({ links }) => {
   const { theme } = useTheme();
   const iconColor = theme === "dark" ? "text-gray-200" : "text-gray-800";
+  const icons = links || socialIcons;
 
   return (
     <div
       className={`flex justify-center items-center text-2xl gap-4 ${iconColor}`}
     >
-      {socialIcons.map((item) => (
+      {icons.map((item, idx) => (
         <Link
           to={`${item.link}`}
-          key={item.id}
+          key={item.id || idx}
           className={`transition-colors duration-300 hover:text-violet-400`}
         >
           <FontAwesomeIcon icon={["fab", item.icon]} />

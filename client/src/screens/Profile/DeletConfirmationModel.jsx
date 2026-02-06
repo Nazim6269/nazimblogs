@@ -26,7 +26,7 @@ const DeletConfirmationModel = ({ blog, setShowDeleteConfirm, handleDeleteBlog, 
                         Cancel
                     </button>
                     <button
-                        onClick={() => handleDeleteBlog(blog.id)}
+                        onClick={() => handleDeleteBlog(blog._id || blog.id)}
                         className="px-4 py-2 rounded-md font-medium bg-red-600 text-white hover:bg-red-700 transition-all duration-300"
                     >
                         Delete

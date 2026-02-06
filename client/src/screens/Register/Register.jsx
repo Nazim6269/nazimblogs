@@ -57,7 +57,7 @@ const Register = () => {
       className={`flex w-full min-h-screen items-start justify-center transition-colors duration-500 `}
     >
       <div
-        className={`w-full max-w-lg px-10 py-12 rounded-md shadow-md space-y-8 transition-all duration-500
+        className={`w-full max-w-lg px-6 py-8 sm:px-10 sm:py-12 rounded-md shadow-md space-y-8 transition-all duration-500
         ${isDark
             ? "bg-gray-900/90 border border-gray-700 text-gray-200"
             : "bg-white border border-gray-200 text-gray-900"
@@ -66,7 +66,7 @@ const Register = () => {
         {/* Title + Subtitle */}
         <div className="text-center space-y-2">
           <h1
-            className={`text-4xl font-extrabold transition-colors duration-500 ${isDark ? "text-gray-100" : "text-gray-900"
+            className={`text-2xl sm:text-3xl md:text-4xl font-extrabold transition-colors duration-500 ${isDark ? "text-gray-100" : "text-gray-900"
               }`}
           >
             Create Account
@@ -135,7 +135,7 @@ const Register = () => {
         </div>
 
         {/* Optional Social Login */}
-        <div className="flex justify-center gap-4 mt-2">
+        <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mt-2">
           <button
             type="button"
             onClick={() => handleSocialLogin(googleProvider)}

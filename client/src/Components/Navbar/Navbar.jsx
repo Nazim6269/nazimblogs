@@ -15,12 +15,15 @@ import { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
+import { useSiteConfig } from "../../contexts/SiteConfigContext";
 import { useDebounce } from "../../hooks/useDebounce";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
+  const { siteConfig } = useSiteConfig();
   const isDark = theme === "dark";
+  const { siteNamePrefix, siteNameAccent, logoIcon, navLinks } = siteConfig.navbar;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -72,13 +75,6 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const navLinks = [
-    { name: "Explore", path: "/" },
-    { name: "Tutorials", path: "/tutorials" },
-    { name: "Design", path: "/design" },
-    { name: "Community", path: "/community" },
-  ];
-
   return (
     <header className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${isScrolled ? "py-2" : "py-4"}`}>
       <nav
@@ -95,13 +91,13 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 bg-brand-primary rounded-md flex items-center justify-center text-white font-bold text-2xl shadow-md group-hover:rotate-12 transition-transform duration-300">
-              H
+              {logoIcon}
             </div>
             <span
-              className={`text-2xl font-bold tracking-tight transition-all duration-500 md:hidden lg:block ${isDark ? "text-white" : "text-gray-900"
+              className={`text-2xl font-bold tracking-tight transition-all duration-500 hidden sm:block ${isDark ? "text-white" : "text-gray-900"
                 }`}
             >
-              Hexa<span className="text-brand-secondary">Blog</span>
+              {siteNamePrefix}<span className="text-brand-secondary">{siteNameAccent}</span>
             </span>
           </Link>
 
@@ -135,7 +131,7 @@ const Navbar = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={`
-                  pl-10 pr-4 py-2 rounded-md text-sm w-32 lg:w-48 focus:w-64 transition-all duration-300 outline-none
+                  pl-10 pr-4 py-2 rounded-md text-sm w-32 md:w-40 lg:w-48 focus:w-64 transition-all duration-300 outline-none
                   ${isDark
                     ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50"
                     : "bg-gray-100 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30 shadow-sm"}
@@ -218,6 +214,13 @@ const Navbar = () => {
                       <span>Settings</span>
                     </Link>
 
+                    {user?.isAdmin && (
+                      <Link to="/admin" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
+                        <FontAwesomeIcon icon={faGear} className="w-4 text-orange-500" />
+                        <span>Admin Panel</span>
+                      </Link>
+                    )}
+
                     <button
                       onClick={handleLogout}
                       className="w-full flex items-center gap-3 px-4 py-2.5 rounded-md text-sm text-red-500 hover:bg-red-500/5 transition-colors mt-2 border-t border-gray-100 dark:border-white/5 pt-3"
@@ -240,7 +243,7 @@ const Navbar = () => {
                   to="/register"
                   className="px-3 sm:px-5 py-2.5 rounded-md text-xs sm:text-sm font-bold text-white bg-brand-primary hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
                 >
-                  Join Hexa
+                  Join {siteNamePrefix}
                 </Link>
               </div>
             )}
@@ -322,6 +325,12 @@ const Navbar = () => {
                     <FontAwesomeIcon icon={faGear} className="w-5 text-gray-400" />
                     <span>Settings</span>
                   </Link>
+                  {user?.isAdmin && (
+                    <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-md text-base ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                      <FontAwesomeIcon icon={faGear} className="w-5 text-orange-500" />
+                      <span>Admin Panel</span>
+                    </Link>
+                  )}
                   <button
                     onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
                     className="flex items-center gap-3 px-4 py-3 rounded-md text-base text-red-500"
@@ -333,7 +342,7 @@ const Navbar = () => {
               ) : (
                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/5 flex flex-col gap-2">
                   <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className={`px-4 py-3 rounded-md font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>Sign In</Link>
-                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 rounded-md font-bold text-white bg-brand-primary hover:bg-purple-700 text-center mx-2">Join Hexa</Link>
+                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 rounded-md font-bold text-white bg-brand-primary hover:bg-purple-700 text-center mx-2">Join {siteNamePrefix}</Link>
                 </div>
               )}
             </div>

@@ -16,6 +16,8 @@ import Register from "./screens/Register/Register";
 import SingleBlog from "./screens/SingleBlog/SingleBlog";
 import NotFound from "./screens/NotFound/NotFound";
 import Settings from "./screens/Settings/Settings";
+import Admin from "./screens/Admin/Admin";
+import AdminRoute from "./Components/AdminRoute/AdminRoute";
 
 function App() {
   const { theme } = useTheme();
@@ -33,11 +35,11 @@ function App() {
         <Toaster position="top-center" reverseOrder={false} />
 
         {/* Page Content */}
-        <main className="relative pt-15 flex justify-center">
+        <main className="relative pt-16 flex justify-center">
 
           <Container>
             <div
-              className={`relative rounded-md px-6 md:p-1 transition-all duration-300 `}
+              className={`relative rounded-md px-4 sm:px-6 transition-all duration-300 `}
             >
               <Routes>
                 {/* Public Routes */}
@@ -45,7 +47,7 @@ function App() {
                 <Route path="/tutorials" element={<Home />} />
                 <Route path="/design" element={<Home />} />
                 <Route path="/community" element={<Home />} />
-                <Route path="/blog-details" element={<SingleBlog />} />
+                <Route path="/blog-details/:id" element={<SingleBlog />} />
 
                 {/* Auth Routes - Only accessible when NOT logged in */}
                 <Route
@@ -88,6 +90,16 @@ function App() {
                     <ProtectedRoute>
                       <Settings />
                     </ProtectedRoute>
+                  }
+                />
+
+                {/* Admin Route */}
+                <Route
+                  path="/admin"
+                  element={
+                    <AdminRoute>
+                      <Admin />
+                    </AdminRoute>
                   }
                 />
 

@@ -20,7 +20,7 @@ const BlogCardActions = ({ blog, handleEditClick, setShowDeleteConfirm }) => {
             </button>
 
             <button
-                onClick={() => setShowDeleteConfirm(blog.id)}
+                onClick={() => setShowDeleteConfirm(blog._id || blog.id)}
                 className={`px-4 py-2 rounded-md font-medium transition-all duration-300 flex items-center gap-2 ${isDark
                     ? "bg-red-600 text-white hover:bg-red-700"
                     : "bg-red-500 text-white hover:bg-red-600"}`}

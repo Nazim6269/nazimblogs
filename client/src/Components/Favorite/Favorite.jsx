@@ -6,10 +6,12 @@ const Favorite = ({ data }) => {
     const isDark = theme === "dark";
 
     const blog = data || {
-        id: 3,
+        _id: "3",
         title: "Mastering Modern CSS Layouts with Grid and Flexbox",
         tags: ["css", "frontend", "design"],
     };
+
+    const blogId = blog._id || blog.id;
 
     return (
         <div
@@ -17,7 +19,7 @@ const Favorite = ({ data }) => {
         ${isDark ? "hover:bg-white/5" : "hover:bg-gray-50"}
       `}
         >
-            <Link to={`/blog-details?id=${blog.id}`}>
+            <Link to={`/blog-details/${blogId}`}>
                 <h3
                     className={`text-[13px] font-bold leading-snug mb-2 line-clamp-2 transition-colors duration-300 ${isDark ? "text-gray-300 group-hover:text-pink-400" : "text-gray-700 group-hover:text-pink-600"
                         }`}

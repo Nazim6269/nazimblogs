@@ -17,6 +17,7 @@ const authUser = asyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            isAdmin: user.isAdmin,
         });
     } else {
         res.status(401);
@@ -37,10 +38,14 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error('User already exists');
     }
 
+    // First registered user becomes admin
+    const userCount = await User.countDocuments({});
+
     const user = await User.create({
         name,
         email,
         password,
+        isAdmin: userCount === 0,
     });
 
     if (user) {
@@ -50,6 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            isAdmin: user.isAdmin,
         });
     } else {
         res.status(400);
@@ -83,16 +89,20 @@ const socialAuth = asyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            isAdmin: user.isAdmin,
         });
     } else {
         // Create new user
-        // Generate a random password since they are using social login
         const randomPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+
+        // First registered user becomes admin
+        const userCount = await User.countDocuments({});
 
         user = await User.create({
             name,
             email,
             password: randomPassword,
+            isAdmin: userCount === 0,
         });
 
         if (user) {
@@ -101,6 +111,7 @@ const socialAuth = asyncHandler(async (req, res) => {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
+                isAdmin: user.isAdmin,
             });
         } else {
             res.status(400);

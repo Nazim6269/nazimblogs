@@ -1,7 +1,23 @@
+import { useEffect, useState } from "react";
 import RelatedArticleCard from "./RelatedArticleCard";
+import { fetchBlogs } from "../../helper/blogApi";
 
 const RelatedArticles = ({ currentId, isDark }) => {
-    const relatedIds = [1, 2, 3].filter((id) => id !== parseInt(currentId));
+    const [related, setRelated] = useState([]);
+
+    useEffect(() => {
+        const loadRelated = async () => {
+            try {
+                const blogs = await fetchBlogs({ limit: 4 });
+                setRelated(blogs.filter(b => (b._id || b.id) !== currentId).slice(0, 3));
+            } catch {
+                setRelated([]);
+            }
+        };
+        loadRelated();
+    }, [currentId]);
+
+    if (related.length === 0) return null;
 
     return (
         <div className="mt-16 pt-12 border-t border-gray-200 dark:border-gray-700">
@@ -12,8 +28,8 @@ const RelatedArticles = ({ currentId, isDark }) => {
                 Related Articles
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {relatedIds.map((id) => (
-                    <RelatedArticleCard key={id} id={id} isDark={isDark} />
+                {related.map((blog) => (
+                    <RelatedArticleCard key={blog._id || blog.id} blog={blog} isDark={isDark} />
                 ))}
             </div>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
+import { useSiteConfig } from "../../contexts/SiteConfigContext";
 import Social from "../Social/Social";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,66 +12,30 @@ import {
   faExclamationCircle
 } from "@fortawesome/free-solid-svg-icons";
 
+const iconMap = { faEnvelope, faPhone, faLocationDot };
+
 const Footer = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const { siteConfig } = useSiteConfig();
+  const {
+    brandName,
+    brandDescription,
+    contactInfo: configContactInfo,
+    footerLinks: configFooterLinks,
+    socialLinks,
+    copyrightText,
+  } = siteConfig.footer;
 
   const [email, setEmail] = useState("");
-  const [subscribeStatus, setSubscribeStatus] = useState(null); // null, 'success', 'error'
+  const [subscribeStatus, setSubscribeStatus] = useState(null);
   const [emailError, setEmailError] = useState("");
 
-  const footerLinks = [
-    {
-      title: "Quick Links",
-      links: [
-        { name: "Home", path: "/" },
-        { name: "All Blogs", path: "/blogs" },
-        { name: "Categories", path: "/categories" },
-        { name: "About Us", path: "/about" }
-      ]
-    },
-    {
-      title: "Resources",
-      links: [
-        { name: "Write for Us", path: "/write" },
-        { name: "Guidelines", path: "/guidelines" },
-        { name: "FAQs", path: "/faq" },
-        { name: "Sitemap", path: "/sitemap" }
-      ]
-    },
-    {
-      title: "Community",
-      links: [
-        { name: "Authors", path: "/authors" },
-        { name: "Contributors", path: "/contributors" },
-        { name: "Forum", path: "/forum" },
-        { name: "Events", path: "/events" }
-      ]
-    },
-    {
-      title: "Legal",
-      links: [
-        { name: "Terms of Service", path: "/terms" },
-        { name: "Privacy Policy", path: "/privacy" },
-        { name: "Cookie Policy", path: "/cookies" },
-        { name: "Disclaimer", path: "/disclaimer" }
-      ]
-    },
-  ];
-
-  const contactInfo = [
-    { icon: faEnvelope, text: "nazimdev10022001@gmail.com", type: "email" },
-    { icon: faPhone, text: "+880 1518-373269", type: "phone" },
-    { icon: faLocationDot, text: "Baddha,Dhaka, Bangladesh", type: "location" },
-  ];
-
-  // Email validation
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
-  // Handle newsletter subscription
   const handleSubscribe = (e) => {
     e.preventDefault();
     setEmailError("");
@@ -86,19 +51,15 @@ const Footer = () => {
       return;
     }
 
-    // Simulate API call
     setTimeout(() => {
       setSubscribeStatus("success");
       setEmail("");
-
-      // Reset success message after 5 seconds
       setTimeout(() => {
         setSubscribeStatus(null);
       }, 5000);
     }, 500);
   };
 
-  // Scroll to top function
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -121,27 +82,26 @@ const Footer = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 py-12">
 
         {/* Top Section: Brand + Description + Social */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 pb-12 border-b border-white/10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12 pb-12 border-b border-white/10">
           <div className="lg:col-span-2">
             <h2
-              className={`text-4xl font-bold mb-4 transition-all duration-500 ${isDark
+              className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 transition-all duration-500 ${isDark
                 ? "text-brand-secondary"
                 : "text-alter-brand-secondary"
                 }`}
             >
-              HexaBlog
+              {brandName}
             </h2>
             <p className={`text-base leading-relaxed max-w-xl mb-6 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-              Your go-to platform for insightful articles, trending topics, and expert perspectives.
-              Join our community of readers and writers sharing knowledge across diverse subjects.
+              {brandDescription}
             </p>
 
             {/* Contact Info */}
             <div className="space-y-3">
-              {contactInfo.map((item, idx) => (
+              {configContactInfo.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-3 group">
                   <FontAwesomeIcon
-                    icon={item.icon}
+                    icon={iconMap[item.icon] || faEnvelope}
                     className={`w-5 h-5 transition-colors duration-300 ${isDark
                       ? "text-brand-tertiary group-hover:text-purple-300"
                       : "text-brand-primary group-hover:text-purple-700"
@@ -159,13 +119,13 @@ const Footer = () => {
           {/* Social Media */}
           <div className="flex flex-col items-start lg:items-end justify-start">
             <h3 className="font-semibold mb-4 text-lg">Follow Us</h3>
-            <Social />
+            <Social links={socialLinks} />
           </div>
         </div>
 
         {/* Footer Links Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-          {footerLinks.map((section, idx) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-12">
+          {configFooterLinks.map((section, idx) => (
             <div key={idx} className="space-y-4">
               <h3 className={`font-bold text-lg mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
                 {section.title}
@@ -194,11 +154,11 @@ const Footer = () => {
         </div>
 
         {/* Newsletter Section */}
-        <div className={`max-w-2xl mx-auto p-8 rounded-md backdrop-blur-sm mb-12 ${isDark ? "bg-white/5" : "bg-gray-100/50"
+        <div className={`max-w-2xl mx-auto p-4 sm:p-6 md:p-8 rounded-md backdrop-blur-sm mb-12 ${isDark ? "bg-white/5" : "bg-gray-100/50"
           }`}>
           <div className="text-center mb-6">
-            <h3 className={`text-2xl font-bold mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-              📬 Stay Updated
+            <h3 className={`text-xl sm:text-2xl font-bold mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+              Stay Updated
             </h3>
             <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
               Subscribe to our newsletter and never miss our latest articles and updates.
@@ -222,7 +182,7 @@ const Footer = () => {
                     ${isDark
                       ? "bg-gray-800/80 text-white placeholder-gray-500 border border-gray-700"
                       : "bg-white text-gray-900 placeholder-gray-400 border border-gray-300"
-                    } 
+                    }
                     focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                     ${emailError ? "ring-2 ring-red-500" : ""}
                   `}
@@ -252,7 +212,6 @@ const Footer = () => {
               </button>
             </div>
 
-            {/* Success Message */}
             {subscribeStatus === "success" && (
               <div className="flex items-center justify-center gap-2 text-green-500 animate-fade-in">
                 <FontAwesomeIcon icon={faCheckCircle} className="w-5 h-5" />
@@ -265,10 +224,9 @@ const Footer = () => {
         {/* Bottom Section: Copyright + Back to Top */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-white/10">
           <p className={`text-sm ${isDark ? "text-gray-500" : "text-gray-600"}`}>
-            &copy; {new Date().getFullYear()} HexaBlog. All rights reserved. Crafted with ❤️ by Nazim.
+            &copy; {new Date().getFullYear()} {copyrightText}
           </p>
 
-          {/* Back to Top Button */}
           <button
             onClick={scrollToTop}
             className={`

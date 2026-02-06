@@ -5,14 +5,17 @@ const PopularBlog = ({ data }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // Mock data if none provided
   const blog = data || {
-    id: 1,
+    _id: "1",
     title: "How to Auto Deploy a Next.js App on Ubuntu from GitHub",
     author: "Saad Hasan",
     likes: 124,
-    image: "https://picsum.photos/seed/tech/100/100"
+    imageSrc: "https://picsum.photos/seed/tech/100/100"
   };
+
+  const blogId = blog._id || blog.id;
+  const authorName = typeof blog.author === "object" ? blog.author?.name : blog.author;
+  const image = blog.imageSrc || blog.image || `https://picsum.photos/seed/${blogId}/100/100`;
 
   return (
     <div
@@ -20,11 +23,11 @@ const PopularBlog = ({ data }) => {
         ${isDark ? "hover:bg-white/5" : "hover:bg-gray-50"}
       `}
     >
-      <Link to={`/blog-details?id=${blog.id}`} className="flex gap-4 p-3 items-center">
+      <Link to={`/blog-details/${blogId}`} className="flex gap-4 p-3 items-center">
         {/* Thumbnail */}
         <div className="w-16 h-16 rounded-md overflow-hidden shrink-0 shadow-sm">
           <img
-            src={blog.image || `https://picsum.photos/seed/${blog.id}/100/100`}
+            src={image}
             alt={blog.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
@@ -39,9 +42,9 @@ const PopularBlog = ({ data }) => {
           </h3>
 
           <div className="flex items-center gap-2 text-[11px] font-semibold opacity-60">
-            <span className={isDark ? "text-brand-tertiary" : "text-brand-primary"}>{blog.author}</span>
+            <span className={isDark ? "text-brand-tertiary" : "text-brand-primary"}>{authorName || "Unknown"}</span>
             <span className="w-1 h-1 rounded-full bg-current opacity-30"></span>
-            <span>{blog.likes} Likes</span>
+            <span>{blog.likes || 0} Likes</span>
           </div>
         </div>
       </Link>
@@ -50,4 +53,3 @@ const PopularBlog = ({ data }) => {
 };
 
 export default PopularBlog;
-

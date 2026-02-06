@@ -31,19 +31,19 @@ const ProfileBlogsGrid = ({ blogs, isSearching, searchQuery, setSearchQuery, han
                 <div className="grid grid-cols-1 gap-6">
                     {blogs.map((blog) => (
                         <div
-                            key={blog.id}
+                            key={blog._id || blog.id}
                             className={`relative rounded-md border transition-all duration-300 ${isDark
                                 ? "bg-slate-800 border-gray-700 hover:border-purple-500/50"
                                 : "bg-white border-gray-300 hover:border-violet-500/50"}`}
                         >
-                            {editingBlog === blog.id ? (
+                            {editingBlog === (blog._id || blog.id) ? (
                                 // Edit Mode
                                 <BlogEditForm blog={blog} handleCancelEdit={() => setEditingBlog(null)} handleUpdateBlog={handleUpdateBlog} />
                             ) : (
                                 // View Mode
                                 <div className="flex flex-col md:flex-row gap-4 p-4">
                                     <Link
-                                        to={`/blog-details?id=${blog.id}`}
+                                        to={`/blog-details/${blog._id || blog.id}`}
                                         className="flex-1"
                                     >
                                         <BlogCard data={blog} />
@@ -55,7 +55,7 @@ const ProfileBlogsGrid = ({ blogs, isSearching, searchQuery, setSearchQuery, han
                             )}
 
                             {/* Delete Confirmation Modal */}
-                            {showDeleteConfirm === blog.id && (
+                            {showDeleteConfirm === (blog._id || blog.id) && (
                                 <DeletConfirmationModel blog={blog} setShowDeleteConfirm={setShowDeleteConfirm} handleDeleteBlog={handleDeleteBlog} isDark={isDark} />
                             )}
                         </div>

@@ -43,8 +43,8 @@ const BlogEditForm = ({ blog, handleCancelEdit, handleUpdateBlog }) => {
                     Content
                 </label>
                 <textarea
-                    value={blog.content}
-                    onChange={(e) => handleUpdateBlog({ ...blog, content: e.target.value })}
+                    value={blog.body || blog.content}
+                    onChange={(e) => handleUpdateBlog({ ...blog, body: e.target.value })}
                     rows={6}
                     className={`w-full px-4 py-2 rounded-md border ${isDark
                         ? "bg-slate-700 border-gray-600 text-gray-200"
@@ -64,7 +64,7 @@ const BlogEditForm = ({ blog, handleCancelEdit, handleUpdateBlog }) => {
                     Cancel
                 </button>
                 <button
-                    onClick={() => handleUpdateBlog(blog.id)}
+                    onClick={() => handleUpdateBlog(blog._id || blog.id)}
                     className={`px-4 py-2 rounded-md font-medium text-white transition-all duration-300 ${isDark
                         ? "bg-brand-primary hover:bg-purple-700"
                         : "bg-alter-brand-primary hover:bg-alter-brand-secondary"}`}

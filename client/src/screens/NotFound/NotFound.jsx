@@ -10,7 +10,7 @@ const NotFound = () => {
     return (
         <div className={`min-h-[80vh] flex flex-col items-center justify-center text-center px-4`}>
             {/* 404 Text Background */}
-            <h1 className={`text-[12rem] md:text-[18rem] font-black opacity-10 leading-none absolute select-none ${isDark ? "text-brand-secondary" : "text-purple-200"}`}>
+            <h1 className={`text-[8rem] sm:text-[12rem] md:text-[18rem] font-black opacity-10 leading-none absolute select-none ${isDark ? "text-brand-secondary" : "text-purple-200"}`}>
                 404
             </h1>
 
@@ -23,7 +23,7 @@ const NotFound = () => {
                 </div>
 
                 <div className="space-y-2">
-                    <h2 className={`text-4xl font-extrabold tracking-tight ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <h2 className={`text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight ${isDark ? "text-white" : "text-gray-900"}`}>
                         Page Not Found
                     </h2>
                     <p className={`text-lg max-w-md mx-auto ${isDark ? "text-gray-400" : "text-gray-600"}`}>

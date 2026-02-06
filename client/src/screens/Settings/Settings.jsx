@@ -111,7 +111,7 @@ const Settings = () => {
         <div className="max-w-4xl mx-auto py-12 px-4">
             <div className={`rounded-md shadow-md overflow-hidden transition-all duration-500 ${isDark ? "bg-gray-900 border border-white/5" : "bg-white border border-black/5"}`}>
                 <div className="p-8 md:p-12">
-                    <div className="flex flex-col md:flex-row items-center gap-10 mb-12">
+                    <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-10 mb-6 sm:mb-12">
                         {/* Avatar Section */}
                         <div className="relative group">
                             <div className={`w-40 h-40 rounded-md overflow-hidden border-4 ${isDark ? "border-purple-500/30" : "border-purple-100"} shadow-md relative transition-transform duration-500 group-hover:scale-[1.02]`}>
@@ -149,13 +149,13 @@ const Settings = () => {
                         </div>
 
                         <div className="text-center md:text-left">
-                            <h1 className={`text-4xl font-black mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>Account Settings</h1>
+                            <h1 className={`text-2xl sm:text-3xl md:text-4xl font-black mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>Account Settings</h1>
                             <p className={`text-sm font-semibold opacity-60`}>Update your profile information and how you appear on HexaBlog.</p>
                         </div>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                             {/* Name */}
                             <div className="space-y-3">
                                 <label className={`text-sm font-bold flex items-center gap-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
@@ -168,7 +168,7 @@ const Settings = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                     placeholder="e.g. John Doe"
-                                    className={`w-full px-5 py-4 rounded-md outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
+                                    className={`w-full px-4 py-3 sm:px-5 sm:py-4 rounded-md outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
                                 />
                             </div>
 
@@ -198,7 +198,7 @@ const Settings = () => {
                                     value={formData.location}
                                     onChange={handleChange}
                                     placeholder="e.g. New York, USA"
-                                    className={`w-full px-5 py-4 rounded-md outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
+                                    className={`w-full px-4 py-3 sm:px-5 sm:py-4 rounded-md outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
                                 />
                             </div>
 

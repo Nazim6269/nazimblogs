@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { useSiteConfig } from "../../contexts/SiteConfigContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash, faSave, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash, faSave, faSpinner, faBan, faCheck, faUsers, faNewspaper, faEnvelope, faChartBar } from "@fortawesome/free-solid-svg-icons";
+import { fetchDashboardStats, banUser as banUserApi, unbanUser as unbanUserApi, fetchAdminMessages, markMessageRead as markMessageReadApi } from "../../helper/adminApi";
 import toast from "react-hot-toast";
+import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -12,8 +14,16 @@ const Admin = () => {
   const isDark = theme === "dark";
   const { siteConfig, refreshConfig } = useSiteConfig();
 
-  const [activeTab, setActiveTab] = useState("navbar");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [saving, setSaving] = useState(false);
+
+  // Dashboard state
+  const [stats, setStats] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [loadingStats, setLoadingStats] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [banTarget, setBanTarget] = useState(null);
+  const [banLoading, setBanLoading] = useState(false);
 
   // Form states
   const [navbarForm, setNavbarForm] = useState(siteConfig.navbar);
@@ -50,7 +60,53 @@ const Admin = () => {
     }
   };
 
+  // Fetch stats when Dashboard or Users tab is active
+  useEffect(() => {
+    if (activeTab === "dashboard" || activeTab === "users") {
+      setLoadingStats(true);
+      fetchDashboardStats()
+        .then((data) => setStats(data))
+        .catch((err) => toast.error(err.message))
+        .finally(() => setLoadingStats(false));
+    }
+    if (activeTab === "messages") {
+      setLoadingMessages(true);
+      fetchAdminMessages()
+        .then((data) => setMessages(data))
+        .catch((err) => toast.error(err.message))
+        .finally(() => setLoadingMessages(false));
+    }
+  }, [activeTab]);
+
+  const handleBanToggle = async (u) => {
+    try {
+      if (u.isBanned) {
+        await unbanUserApi(u._id);
+        toast.success(`${u.name} has been unbanned`);
+      } else {
+        await banUserApi(u._id);
+        toast.success(`${u.name} has been banned`);
+      }
+      const data = await fetchDashboardStats();
+      setStats(data);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleMarkRead = async (msgId) => {
+    try {
+      await markMessageReadApi(msgId);
+      setMessages((prev) => prev.map((m) => m._id === msgId ? { ...m, read: true } : m));
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const tabs = [
+    { id: "dashboard", label: "Dashboard" },
+    { id: "users", label: "Users" },
+    { id: "messages", label: "Messages" },
     { id: "navbar", label: "Navbar" },
     { id: "hero", label: "Hero" },
     { id: "footer", label: "Footer" },
@@ -72,7 +128,7 @@ const Admin = () => {
         Admin Panel
       </h1>
       <p className={`text-sm mb-8 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-        Manage your site content — navbar, hero section, and footer.
+        Manage users, view stats, and configure your site.
       </p>
 
       {/* Tabs */}
@@ -93,6 +149,203 @@ const Admin = () => {
           </button>
         ))}
       </div>
+
+      {/* Dashboard Tab */}
+      {activeTab === "dashboard" && (
+        <div className="space-y-6">
+          {loadingStats ? (
+            <div className="flex justify-center py-12">
+              <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-brand-primary" />
+            </div>
+          ) : stats ? (
+            <>
+              {/* Summary Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className={cardClass}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-md bg-brand-primary/10 flex items-center justify-center">
+                      <FontAwesomeIcon icon={faUsers} className="text-brand-primary" />
+                    </div>
+                    <div>
+                      <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>Total Users</p>
+                      <p className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{stats.totalUsers}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className={cardClass}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-md bg-brand-primary/10 flex items-center justify-center">
+                      <FontAwesomeIcon icon={faNewspaper} className="text-brand-primary" />
+                    </div>
+                    <div>
+                      <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>Total Blogs</p>
+                      <p className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{stats.totalBlogs}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className={cardClass}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-md bg-brand-primary/10 flex items-center justify-center">
+                      <FontAwesomeIcon icon={faChartBar} className="text-brand-primary" />
+                    </div>
+                    <div>
+                      <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>Avg Blogs/User</p>
+                      <p className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
+                        {stats.totalUsers > 0 ? (stats.totalBlogs / stats.totalUsers).toFixed(1) : 0}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* User Blog Counts Table */}
+              <div className={cardClass}>
+                <h2 className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>Users & Blog Counts</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className={`border-b ${isDark ? "border-gray-700" : "border-gray-200"}`}>
+                        <th className={`text-left py-2.5 px-3 font-semibold ${isDark ? "text-gray-300" : "text-gray-700"}`}>Name</th>
+                        <th className={`text-left py-2.5 px-3 font-semibold ${isDark ? "text-gray-300" : "text-gray-700"}`}>Email</th>
+                        <th className={`text-center py-2.5 px-3 font-semibold ${isDark ? "text-gray-300" : "text-gray-700"}`}>Blogs</th>
+                        <th className={`text-center py-2.5 px-3 font-semibold ${isDark ? "text-gray-300" : "text-gray-700"}`}>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stats.users.map((u) => (
+                        <tr key={u._id} className={`border-b ${isDark ? "border-gray-800" : "border-gray-100"}`}>
+                          <td className={`py-2.5 px-3 ${isDark ? "text-gray-200" : "text-gray-900"}`}>{u.name}</td>
+                          <td className={`py-2.5 px-3 ${isDark ? "text-gray-400" : "text-gray-500"}`}>{u.email}</td>
+                          <td className="py-2.5 px-3 text-center">
+                            <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${isDark ? "bg-white/10 text-gray-300" : "bg-gray-100 text-gray-700"}`}>
+                              {u.blogCount}
+                            </span>
+                          </td>
+                          <td className="py-2.5 px-3 text-center">
+                            {u.isAdmin ? (
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700">Admin</span>
+                            ) : u.isBanned ? (
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-red-100 text-red-700">Banned</span>
+                            ) : (
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-green-100 text-green-700">Active</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </>
+          ) : null}
+        </div>
+      )}
+
+      {/* Users Tab */}
+      {activeTab === "users" && (
+        <div className="space-y-6">
+          <div className={cardClass}>
+            <h2 className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>User Management</h2>
+            {loadingStats ? (
+              <div className="flex justify-center py-8">
+                <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xl text-brand-primary" />
+              </div>
+            ) : stats ? (
+              <div className="space-y-3">
+                {stats.users.map((u) => (
+                  <div key={u._id} className={`flex items-center justify-between p-3 rounded-md ${isDark ? "bg-white/5" : "bg-gray-50"}`}>
+                    <div className="min-w-0">
+                      <p className={`font-semibold truncate ${isDark ? "text-white" : "text-gray-900"}`}>{u.name}</p>
+                      <p className={`text-xs truncate ${isDark ? "text-gray-400" : "text-gray-500"}`}>{u.email}</p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0 ml-3">
+                      <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${
+                        u.isAdmin ? "bg-purple-100 text-purple-700" :
+                        u.isBanned ? "bg-red-100 text-red-700" :
+                        "bg-green-100 text-green-700"
+                      }`}>
+                        {u.isAdmin ? "Admin" : u.isBanned ? "Banned" : "Active"}
+                      </span>
+                      {!u.isAdmin && (
+                        <button
+                          onClick={() => setBanTarget(u)}
+                          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+                            u.isBanned
+                              ? "bg-green-600 text-white hover:bg-green-700"
+                              : "bg-red-600 text-white hover:bg-red-700"
+                          }`}
+                        >
+                          <FontAwesomeIcon icon={u.isBanned ? faCheck : faBan} className="mr-1" />
+                          {u.isBanned ? "Unban" : "Ban"}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
+
+      {/* Messages Tab */}
+      {activeTab === "messages" && (
+        <div className="space-y-6">
+          <div className={cardClass}>
+            <h2 className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>User Messages</h2>
+            {loadingMessages ? (
+              <div className="flex justify-center py-8">
+                <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xl text-brand-primary" />
+              </div>
+            ) : messages.length === 0 ? (
+              <div className="text-center py-12">
+                <FontAwesomeIcon icon={faEnvelope} className={`text-3xl mb-3 ${isDark ? "text-gray-600" : "text-gray-300"}`} />
+                <p className={`text-sm ${isDark ? "text-gray-500" : "text-gray-400"}`}>No messages yet.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {messages.map((msg) => (
+                  <div
+                    key={msg._id}
+                    className={`p-4 rounded-md border transition-colors ${
+                      msg.read
+                        ? isDark ? "border-gray-700/50 bg-gray-800/20" : "border-gray-100 bg-gray-50"
+                        : isDark ? "border-purple-500/30 bg-purple-900/10" : "border-purple-200 bg-purple-50"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className={`text-sm font-bold ${isDark ? "text-gray-200" : "text-gray-900"}`}>
+                            {msg.from?.name || "Unknown User"}
+                          </p>
+                          {!msg.read && (
+                            <span className="w-2 h-2 rounded-full bg-brand-primary shrink-0"></span>
+                          )}
+                        </div>
+                        <p className={`text-xs mb-2 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+                          {msg.from?.email} &middot; {new Date(msg.createdAt).toLocaleDateString()}
+                        </p>
+                        <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                          {msg.text}
+                        </p>
+                      </div>
+                      {!msg.read && (
+                        <button
+                          onClick={() => handleMarkRead(msg._id)}
+                          className="shrink-0 px-3 py-1.5 rounded-md text-xs font-semibold bg-brand-primary text-white hover:bg-purple-700 transition-colors"
+                        >
+                          Mark Read
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Navbar Tab */}
       {activeTab === "navbar" && (
@@ -506,6 +759,28 @@ const Admin = () => {
           </button>
         </div>
       )}
+      <ConfirmModal
+        isOpen={!!banTarget}
+        onClose={() => setBanTarget(null)}
+        onConfirm={async () => {
+          setBanLoading(true);
+          try {
+            await handleBanToggle(banTarget);
+            setBanTarget(null);
+          } finally {
+            setBanLoading(false);
+          }
+        }}
+        title={banTarget?.isBanned ? `Unban ${banTarget?.name}?` : `Ban ${banTarget?.name}?`}
+        message={
+          banTarget?.isBanned
+            ? `This will restore ${banTarget?.name}'s ability to create blogs, comment, and like posts.`
+            : `This will prevent ${banTarget?.name} from creating blogs, commenting, and liking posts.`
+        }
+        confirmText={banTarget?.isBanned ? "Unban" : "Ban"}
+        confirmColor={banTarget?.isBanned ? "brand" : "red"}
+        loading={banLoading}
+      />
     </div>
   );
 };

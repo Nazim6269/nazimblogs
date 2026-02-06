@@ -5,25 +5,17 @@ import { useTheme } from "../../hooks/useTheme";
 import { useEffect } from "react";
 
 const ProtectedRoute = ({ children }) => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const location = useLocation();
-    const { theme } = useTheme();
-    const isDark = theme === "dark";
 
-    useEffect(() => {
-        // Show a message when user tries to access protected route without auth
-        if (!user) {
-            console.log("Please login to access this page");
-        }
-    }, [user]);
+    if (loading) {
+        return null;
+    }
 
-    // If no user is authenticated, redirect to login
-    // Save the attempted location so we can redirect back after login
     if (!user) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    // If user is authenticated, render the protected component
     return children;
 };
 

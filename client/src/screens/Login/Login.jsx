@@ -93,6 +93,7 @@ const Login = () => {
             name="password"
             label="Password"
             type="password"
+            togglePassword
             value={formData.password}
             onChange={handleChange}
           />
@@ -105,6 +106,17 @@ const Login = () => {
           >
             Login{" "}
           </button>
+          <div className="text-right -mt-2">
+            <Link
+              to="/forgot-password"
+              className={`text-sm font-medium transition-colors duration-500 ${isDark
+                ? "text-brand-tertiary hover:text-purple-300"
+                : "text-indigo-600 hover:text-indigo-800"
+                }`}
+            >
+              Forgot Password?
+            </Link>
+          </div>
         </form>
 
         {/* Divider */}

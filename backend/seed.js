@@ -13,7 +13,7 @@ const sampleBlogs = [
         tags: ['React', 'JavaScript', 'Hooks', 'Frontend'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/react-hooks/800/600',
-        likes: 342,
+        views:342,
     },
     {
         title: 'Modern CSS Grid Layout Techniques',
@@ -21,7 +21,7 @@ const sampleBlogs = [
         tags: ['CSS', 'Grid', 'Layout', 'Design'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/css-grid/800/600',
-        likes: 218,
+        views:218,
     },
     {
         title: 'Building RESTful APIs with Express.js',
@@ -29,7 +29,7 @@ const sampleBlogs = [
         tags: ['Node.js', 'Express', 'API', 'Backend'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/express-api/800/600',
-        likes: 456,
+        views:456,
     },
     {
         title: 'UI Design Principles Every Developer Should Know',
@@ -37,7 +37,7 @@ const sampleBlogs = [
         tags: ['UI', 'Design', 'UX', 'Typography'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/ui-design/800/600',
-        likes: 567,
+        views:567,
     },
     {
         title: 'Understanding MongoDB Aggregation Pipeline',
@@ -45,7 +45,7 @@ const sampleBlogs = [
         tags: ['MongoDB', 'Database', 'NoSQL', 'Backend'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/mongodb-agg/800/600',
-        likes: 289,
+        views:289,
     },
     {
         title: 'Creating Accessible Web Applications',
@@ -53,7 +53,7 @@ const sampleBlogs = [
         tags: ['Accessibility', 'A11y', 'HTML', 'Web Standards'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/accessibility/800/600',
-        likes: 321,
+        views:321,
     },
     {
         title: 'Tailwind CSS Tips and Tricks for Faster Development',
@@ -61,7 +61,7 @@ const sampleBlogs = [
         tags: ['Tailwind', 'CSS', 'Frontend', 'Styling'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/tailwind-tips/800/600',
-        likes: 412,
+        views:412,
     },
     {
         title: 'Authentication Best Practices for Web Apps',
@@ -69,7 +69,7 @@ const sampleBlogs = [
         tags: ['Security', 'Authentication', 'JWT', 'OAuth'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/auth-best/800/600',
-        likes: 534,
+        views:534,
     },
     {
         title: 'Open Source Contribution Guide for Beginners',
@@ -77,7 +77,7 @@ const sampleBlogs = [
         tags: ['Open Source', 'Git', 'GitHub', 'Community'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/opensource/800/600',
-        likes: 267,
+        views:267,
     },
     {
         title: 'Responsive Design Patterns with Flexbox',
@@ -85,7 +85,7 @@ const sampleBlogs = [
         tags: ['CSS', 'Flexbox', 'Responsive', 'Layout'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/flexbox/800/600',
-        likes: 345,
+        views:345,
     },
     {
         title: 'Introduction to TypeScript for JavaScript Developers',
@@ -93,7 +93,7 @@ const sampleBlogs = [
         tags: ['TypeScript', 'JavaScript', 'Types', 'Frontend'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/typescript/800/600',
-        likes: 478,
+        views:478,
     },
     {
         title: 'Color Theory in Web Design: A Practical Guide',
@@ -101,7 +101,7 @@ const sampleBlogs = [
         tags: ['Design', 'Color Theory', 'UI', 'Branding'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/color-theory/800/600',
-        likes: 234,
+        views:234,
     },
     {
         title: 'Setting Up a CI/CD Pipeline with GitHub Actions',
@@ -109,7 +109,7 @@ const sampleBlogs = [
         tags: ['CI/CD', 'GitHub Actions', 'DevOps', 'Automation'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/cicd/800/600',
-        likes: 312,
+        views:312,
     },
     {
         title: 'Building a Developer Community: Lessons Learned',
@@ -117,7 +117,7 @@ const sampleBlogs = [
         tags: ['Community', 'Leadership', 'Networking', 'Culture'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/dev-community/800/600',
-        likes: 189,
+        views:189,
     },
     {
         title: 'State Management in React: Context vs Redux vs Zustand',
@@ -125,7 +125,7 @@ const sampleBlogs = [
         tags: ['React', 'State Management', 'Redux', 'Zustand'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/state-mgmt/800/600',
-        likes: 523,
+        views:523,
     },
     {
         title: 'Designing Effective Dashboard Interfaces',
@@ -133,7 +133,7 @@ const sampleBlogs = [
         tags: ['Dashboard', 'UI', 'Data Visualization', 'Design'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/dashboard/800/600',
-        likes: 387,
+        views:387,
     },
     {
         title: 'The Art of Writing Clean Code',
@@ -141,7 +141,7 @@ const sampleBlogs = [
         tags: ['Clean Code', 'Best Practices', 'JavaScript', 'Architecture'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/clean-code/800/600',
-        likes: 601,
+        views:601,
     },
     {
         title: 'Docker for Frontend Developers',
@@ -149,7 +149,7 @@ const sampleBlogs = [
         tags: ['Docker', 'DevOps', 'Frontend', 'Containers'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/docker-fe/800/600',
-        likes: 276,
+        views:276,
     },
     {
         title: 'Growing as a Self-Taught Developer',
@@ -157,7 +157,7 @@ const sampleBlogs = [
         tags: ['Career', 'Learning', 'Self-Taught', 'Growth'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/self-taught/800/600',
-        likes: 445,
+        views:445,
     },
     {
         title: 'Micro-Animations That Improve UX',
@@ -165,46 +165,54 @@ const sampleBlogs = [
         tags: ['Animation', 'UX', 'CSS', 'Framer Motion'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/micro-anim/800/600',
-        likes: 356,
+        views:356,
     },
+];
+
+const sampleAuthors = [
+    { name: 'Nazim Uddin', email: 'nazimdev10022001@gmail.com', password: 'admin123456', isAdmin: true },
+    { name: 'Sarah Chen', email: 'sarah.chen@example.com', password: 'password123' },
+    { name: 'Alex Rivera', email: 'alex.rivera@example.com', password: 'password123' },
+    { name: 'Priya Sharma', email: 'priya.sharma@example.com', password: 'password123' },
+    { name: 'James Mitchell', email: 'james.mitchell@example.com', password: 'password123' },
 ];
 
 const seedDatabase = async () => {
     try {
         await connectDB();
 
-        // Find or create admin user
-        let adminUser = await User.findOne({ email: 'nazimdev10022001@gmail.com' });
-
-        if (adminUser) {
-            adminUser.isAdmin = true;
-            await adminUser.save();
-            console.log(`Admin user updated: ${adminUser.name} (${adminUser.email})`);
-        } else {
-            adminUser = await User.create({
-                name: 'Nazim Uddin',
-                email: 'nazimdev10022001@gmail.com',
-                password: 'admin123456',
-                isAdmin: true,
-            });
-            console.log(`Admin user created: ${adminUser.name} (${adminUser.email})`);
-        }
-
         // Clear existing blogs
         await Blog.deleteMany({});
         console.log('Existing blogs cleared');
 
-        // Create blogs with the admin as author
-        const blogsWithAuthor = sampleBlogs.map((blog) => ({
+        // Create or find all authors
+        const authors = [];
+        for (const authorData of sampleAuthors) {
+            let user = await User.findOne({ email: authorData.email });
+            if (user) {
+                if (authorData.isAdmin) {
+                    user.isAdmin = true;
+                    await user.save();
+                }
+                console.log(`Author found: ${user.name} (${user.email})`);
+            } else {
+                user = await User.create(authorData);
+                console.log(`Author created: ${user.name} (${user.email})`);
+            }
+            authors.push(user);
+        }
+
+        // Distribute blogs across authors
+        const blogsWithAuthor = sampleBlogs.map((blog, index) => ({
             ...blog,
-            author: adminUser._id,
+            author: authors[index % authors.length]._id,
         }));
 
         const createdBlogs = await Blog.insertMany(blogsWithAuthor);
-        console.log(`Seeded ${createdBlogs.length} blog posts`);
+        console.log(`\nSeeded ${createdBlogs.length} blog posts across ${authors.length} authors`);
 
         console.log('\nSeed completed successfully!');
-        console.log(`Admin: ${adminUser.email} (isAdmin: true)`);
+        authors.forEach((a) => console.log(`  ${a.name} (${a.email})${a.isAdmin ? ' [ADMIN]' : ''}`));
         console.log(`Blogs: ${createdBlogs.length} posts created`);
 
         process.exit(0);

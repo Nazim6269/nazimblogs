@@ -13,7 +13,7 @@ const SideBar = ({ blogs = [] }) => {
   const trendingPosts = useMemo(() => {
     if (!blogs || blogs.length === 0) return [];
     return [...blogs]
-      .sort((a, b) => (b.likes || 0) - (a.likes || 0))
+      .sort((a, b) => (Array.isArray(b.likes) ? b.likes.length : (b.likes || 0)) - (Array.isArray(a.likes) ? a.likes.length : (a.likes || 0)))
       .slice(0, 3);
   }, [blogs]);
 

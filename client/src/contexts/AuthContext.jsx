@@ -13,13 +13,14 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Check if user is logged in (e.g., check localStorage)
         const storedUser = localStorage.getItem("userInfo");
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
+        setLoading(false);
     }, []);
 
     const login = async (email, password) => {
@@ -122,6 +123,86 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const sendRegisterOTP = async (name, email, password) => {
+        try {
+            const response = await fetch(`${API_URL}/api/users/send-register-otp`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ name, email, password }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to send OTP");
+            }
+            return data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
+    const verifyRegisterOTP = async (email, otp) => {
+        try {
+            const response = await fetch(`${API_URL}/api/users/verify-register-otp`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ email, otp }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || "OTP verification failed");
+            }
+            localStorage.setItem("userInfo", JSON.stringify(data));
+            setUser(data);
+            return data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
+    const forgotPassword = async (email) => {
+        try {
+            const response = await fetch(`${API_URL}/api/users/forgot-password`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ email }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to send OTP");
+            }
+            return data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
+    const resetPassword = async (email, otp, newPassword) => {
+        try {
+            const response = await fetch(`${API_URL}/api/users/reset-password`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ email, otp, newPassword }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || "Password reset failed");
+            }
+            localStorage.setItem("userInfo", JSON.stringify(data));
+            setUser(data);
+            return data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
     const updateUser = (updatedData) => {
         const updatedUser = { ...user, ...updatedData };
         setUser(updatedUser);
@@ -130,11 +211,16 @@ export const AuthProvider = ({ children }) => {
 
     const value = {
         user,
+        loading,
         login,
         register,
         logout,
         socialLogin,
-        updateUser
+        updateUser,
+        sendRegisterOTP,
+        verifyRegisterOTP,
+        forgotPassword,
+        resetPassword,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

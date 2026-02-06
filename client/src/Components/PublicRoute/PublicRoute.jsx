@@ -3,14 +3,16 @@ import { useAuth } from "../../contexts/AuthContext";
 import PropTypes from "prop-types";
 
 const PublicRoute = ({ children }) => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
 
-    // If user is already authenticated, redirect to home or profile
+    if (loading) {
+        return null;
+    }
+
     if (user) {
         return <Navigate to="/" replace />;
     }
 
-    // If not authenticated, render the public component (login/register)
     return children;
 };
 

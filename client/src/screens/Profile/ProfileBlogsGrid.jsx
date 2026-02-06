@@ -5,7 +5,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import BlogEditForm from './BlogEditForm';
 import BlogCard from '../../Components/BlogCard/BlogCard';
 import BlogCardActions from './BlogCardActions';
-import DeletConfirmationModel from './DeletConfirmationModel';
+import ConfirmModal from '../../Components/ConfirmModal/ConfirmModal';
 import NoBlogsFound from './NoBlogsFound';
 import TipSection from './TipSection';
 import { Link } from 'react-router-dom';
@@ -55,9 +55,15 @@ const ProfileBlogsGrid = ({ blogs, isSearching, searchQuery, setSearchQuery, han
                             )}
 
                             {/* Delete Confirmation Modal */}
-                            {showDeleteConfirm === (blog._id || blog.id) && (
-                                <DeletConfirmationModel blog={blog} setShowDeleteConfirm={setShowDeleteConfirm} handleDeleteBlog={handleDeleteBlog} isDark={isDark} />
-                            )}
+                            <ConfirmModal
+                                isOpen={showDeleteConfirm === (blog._id || blog.id)}
+                                onClose={() => setShowDeleteConfirm(null)}
+                                onConfirm={() => handleDeleteBlog(blog._id || blog.id)}
+                                title="Delete Blog?"
+                                message={`Are you sure you want to delete "${blog.title}"? This action cannot be undone.`}
+                                confirmText="Delete"
+                                confirmColor="red"
+                            />
                         </div>
                     ))}
                 </div>

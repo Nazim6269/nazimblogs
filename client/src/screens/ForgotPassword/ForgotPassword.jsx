@@ -4,29 +4,26 @@ import InputGroup from "../../Components/InputGroup/InputGroup";
 import OTPInput from "../../Components/OTPInput/OTPInput";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
-import { googleProvider, githubProvider } from "../../firebase";
 import toast from "react-hot-toast";
 
-const RESEND_COOLDOWN = 30; // seconds
-const OTP_EXPIRY = 600; // 10 minutes in seconds
+const RESEND_COOLDOWN = 30;
+const OTP_EXPIRY = 600;
 
-const Register = () => {
+const ForgotPassword = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const [step, setStep] = useState(1); // 1 = form, 2 = OTP
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
-  const [sendingOTP, setSendingOTP] = useState(false);
-  const [verifying, setVerifying] = useState(false);
+  const [step, setStep] = useState(1); // 1 = email, 2 = OTP + new password
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [sending, setSending] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [expiryCountdown, setExpiryCountdown] = useState(0);
   const countdownRef = useRef(null);
   const expiryRef = useRef(null);
-  const { user, socialLogin, sendRegisterOTP, verifyRegisterOTP } = useAuth();
+  const { user, forgotPassword, resetPassword } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +32,6 @@ const Register = () => {
     }
   }, [user, navigate]);
 
-  // Cleanup timers
   useEffect(() => {
     return () => {
       if (countdownRef.current) clearInterval(countdownRef.current);
@@ -71,71 +67,71 @@ const Register = () => {
     }, 1000);
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleSendOTP = async (e) => {
     e.preventDefault();
-    if (!formData.firstName.trim() || !formData.email.trim() || !formData.password.trim()) {
-      toast.error("Please fill in all required fields");
+    if (!email.trim()) {
+      toast.error("Please enter your email");
       return;
     }
-    setSendingOTP(true);
-    const otpToast = toast.loading("Sending OTP to your email...");
+    setSending(true);
+    const otpToast = toast.loading("Sending reset code...");
     try {
-      const name = `${formData.firstName} ${formData.lastName}`.trim();
-      await sendRegisterOTP(name, formData.email, formData.password);
-      toast.success("OTP sent! Check your email", { id: otpToast });
+      await forgotPassword(email);
+      toast.success("Reset code sent! Check your email", { id: otpToast });
       setStep(2);
       startResendCooldown();
       startExpiryTimer();
     } catch (err) {
-      toast.error(err.message || "Failed to send OTP", { id: otpToast });
+      toast.error(err.message || "Failed to send reset code", { id: otpToast });
     } finally {
-      setSendingOTP(false);
+      setSending(false);
     }
   };
 
   const handleResendOTP = async () => {
     if (countdown > 0) return;
-    setSendingOTP(true);
-    const otpToast = toast.loading("Resending OTP...");
+    setSending(true);
+    const otpToast = toast.loading("Resending code...");
     try {
-      const name = `${formData.firstName} ${formData.lastName}`.trim();
-      await sendRegisterOTP(name, formData.email, formData.password);
-      toast.success("New OTP sent!", { id: otpToast });
+      await forgotPassword(email);
+      toast.success("New code sent!", { id: otpToast });
       startResendCooldown();
       startExpiryTimer();
     } catch (err) {
-      toast.error(err.message || "Failed to resend OTP", { id: otpToast });
+      toast.error(err.message || "Failed to resend code", { id: otpToast });
     } finally {
-      setSendingOTP(false);
+      setSending(false);
     }
   };
 
-  const handleVerifyOTP = async (otp) => {
-    setVerifying(true);
-    const verifyToast = toast.loading("Verifying OTP...");
-    try {
-      await verifyRegisterOTP(formData.email, otp);
-      toast.success("Account created successfully!", { id: verifyToast });
-      navigate("/");
-    } catch (err) {
-      toast.error(err.message || "Verification failed", { id: verifyToast });
-    } finally {
-      setVerifying(false);
-    }
+  const handleOTPComplete = (completedOtp) => {
+    setOtp(completedOtp);
   };
 
-  const handleSocialLogin = async (provider) => {
-    const socialToast = toast.loading("Connecting...");
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    if (!otp || otp.length !== 6) {
+      toast.error("Please enter the 6-digit code");
+      return;
+    }
+    if (!newPassword.trim()) {
+      toast.error("Please enter a new password");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    setResetting(true);
+    const resetToast = toast.loading("Resetting password...");
     try {
-      await socialLogin(provider);
-      toast.success("Login successful!", { id: socialToast });
+      await resetPassword(email, otp, newPassword);
+      toast.success("Password reset successfully!", { id: resetToast });
       navigate("/");
     } catch (err) {
-      toast.error(err.message || "Social login failed", { id: socialToast });
+      toast.error(err.message || "Password reset failed", { id: resetToast });
+    } finally {
+      setResetting(false);
     }
   };
 
@@ -156,63 +152,43 @@ const Register = () => {
       >
         {step === 1 ? (
           <>
-            {/* Step 1: Registration Form */}
+            {/* Step 1: Enter Email */}
             <div className="text-center space-y-2">
               <h1
                 className={`text-2xl sm:text-3xl md:text-4xl font-extrabold transition-colors duration-500 ${isDark ? "text-gray-100" : "text-gray-900"}`}
               >
-                Create Account
+                Forgot Password
               </h1>
               <p
                 className={`text-sm opacity-70 transition-colors duration-500 ${isDark ? "text-gray-400" : "text-gray-600"}`}
               >
-                Join us! Fill in the details to get started
+                Enter your email and we&apos;ll send you a reset code
               </p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSendOTP}>
               <InputGroup
-                name="firstName"
-                label="First Name"
-                value={formData.firstName}
-                onChange={handleChange}
-              />
-              <InputGroup
-                name="lastName"
-                label="Last Name"
-                value={formData.lastName}
-                onChange={handleChange}
-              />
-              <InputGroup
                 name="email"
                 label="Email"
                 type="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-              <InputGroup
-                name="password"
-                label="Password"
-                type="password"
-                togglePassword
-                value={formData.password}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <button
                 type="submit"
-                disabled={sendingOTP}
+                disabled={sending}
                 className={`w-full py-3 font-bold transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed ${isDark
                   ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
                   : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
                   }`}
               >
-                {sendingOTP ? "Sending OTP..." : "Send Verification Code"}
+                {sending ? "Sending..." : "Send Reset Code"}
               </button>
             </form>
 
             <div className="flex items-center justify-center gap-2 text-sm opacity-70 border-t pt-4 mt-4 border-gray-300 dark:border-gray-700">
               <p className="transition-colors duration-500">
-                Already have an account?
+                Remember your password?
               </p>
               <Link
                 to="/login"
@@ -224,52 +200,29 @@ const Register = () => {
                 Login
               </Link>
             </div>
-
-            <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mt-2">
-              <button
-                type="button"
-                onClick={() => handleSocialLogin(googleProvider)}
-                className={`px-4 py-2 rounded-md text-sm font-semibold transition-all duration-500 ${isDark
-                  ? "bg-gray-800 hover:bg-gray-700 text-gray-200"
-                  : "bg-gray-100 hover:bg-gray-200 text-gray-800"
-                  }`}
-              >
-                Register with Google
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSocialLogin(githubProvider)}
-                className={`px-4 py-2 rounded-md text-sm font-semibold transition-all duration-500 ${isDark
-                  ? "bg-gray-800 hover:bg-gray-700 text-gray-200"
-                  : "bg-gray-100 hover:bg-gray-200 text-gray-800"
-                  }`}
-              >
-                Register with Github
-              </button>
-            </div>
           </>
         ) : (
           <>
-            {/* Step 2: OTP Verification */}
+            {/* Step 2: OTP + New Password */}
             <div className="text-center space-y-2">
               <h1
                 className={`text-2xl sm:text-3xl md:text-4xl font-extrabold transition-colors duration-500 ${isDark ? "text-gray-100" : "text-gray-900"}`}
               >
-                Verify Email
+                Reset Password
               </h1>
               <p
                 className={`text-sm opacity-70 transition-colors duration-500 ${isDark ? "text-gray-400" : "text-gray-600"}`}
               >
-                We sent a 6-digit code to{" "}
-                <span className="font-semibold">{formData.email}</span>
+                Enter the code sent to{" "}
+                <span className="font-semibold">{email}</span>
               </p>
             </div>
 
-            <div className="space-y-6">
+            <form className="space-y-6" onSubmit={handleResetPassword}>
               <OTPInput
                 length={6}
-                onComplete={handleVerifyOTP}
-                disabled={verifying}
+                onComplete={handleOTPComplete}
+                disabled={resetting}
               />
 
               {/* Expiry countdown */}
@@ -301,29 +254,57 @@ const Register = () => {
                   <button
                     type="button"
                     onClick={handleResendOTP}
-                    disabled={sendingOTP}
+                    disabled={sending}
                     className={`text-sm font-medium underline transition-colors duration-300 disabled:opacity-50 ${isDark
                       ? "text-brand-tertiary hover:text-purple-300"
                       : "text-indigo-600 hover:text-indigo-800"
                       }`}
                   >
-                    {sendingOTP ? "Sending..." : "Resend Code"}
+                    {sending ? "Sending..." : "Resend Code"}
                   </button>
                 )}
               </div>
 
-              {/* Back button */}
+              <InputGroup
+                name="newPassword"
+                label="New Password"
+                type="password"
+                togglePassword
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <InputGroup
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                togglePassword
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+
               <button
-                type="button"
-                onClick={() => setStep(1)}
-                className={`w-full py-2 text-sm font-medium rounded transition-colors duration-300 ${isDark
-                  ? "text-gray-400 hover:text-gray-200"
-                  : "text-gray-500 hover:text-gray-700"
+                type="submit"
+                disabled={resetting}
+                className={`w-full py-3 font-bold transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed ${isDark
+                  ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
+                  : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
                   }`}
               >
-                Back to registration form
+                {resetting ? "Resetting..." : "Reset Password"}
               </button>
-            </div>
+            </form>
+
+            {/* Back button */}
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className={`w-full py-2 text-sm font-medium rounded transition-colors duration-300 ${isDark
+                ? "text-gray-400 hover:text-gray-200"
+                : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              Back to email
+            </button>
           </>
         )}
       </div>
@@ -331,4 +312,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default ForgotPassword;

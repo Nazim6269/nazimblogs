@@ -44,7 +44,7 @@ const PopularBlog = ({ data }) => {
           <div className="flex items-center gap-2 text-[11px] font-semibold opacity-60">
             <span className={isDark ? "text-brand-tertiary" : "text-brand-primary"}>{authorName || "Unknown"}</span>
             <span className="w-1 h-1 rounded-full bg-current opacity-30"></span>
-            <span>{blog.likes || 0} Likes</span>
+            <span>{Array.isArray(blog.likes) ? blog.likes.length : (blog.likes || 0)} Likes</span>
           </div>
         </div>
       </Link>

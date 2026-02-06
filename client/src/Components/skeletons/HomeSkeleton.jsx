@@ -1,0 +1,82 @@
+import { useTheme } from "../../hooks/useTheme";
+
+const HomeSkeleton = () => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  const bg = isDark ? "bg-gray-700" : "bg-gray-200";
+
+  return (
+    <div className="max-w-7xl mx-auto w-full">
+      {/* Hero Skeleton */}
+      <div className={`relative w-full min-h-[250px] sm:min-h-[300px] md:min-h-[400px] rounded-md mb-8 animate-pulse ${isDark ? "bg-slate-800" : "bg-gray-200"}`}>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8">
+          <div className={`h-10 sm:h-12 w-3/4 max-w-2xl rounded ${isDark ? "bg-gray-600" : "bg-gray-300"}`} />
+          <div className={`h-5 w-1/2 max-w-xl rounded ${isDark ? "bg-gray-600" : "bg-gray-300"}`} />
+          <div className={`h-10 w-40 rounded-md mt-4 ${isDark ? "bg-gray-600" : "bg-gray-300"}`} />
+        </div>
+      </div>
+
+      {/* Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 p-4 sm:p-5 lg:p-8">
+        {/* Main Column */}
+        <div className="flex flex-col gap-4 sm:gap-6 lg:col-span-8">
+          {/* Section Header */}
+          <div className="animate-pulse space-y-2">
+            <div className={`h-8 w-48 rounded ${bg}`} />
+            <div className={`h-4 w-80 rounded ${bg}`} />
+          </div>
+
+          {/* Blog Card Skeletons */}
+          {[1, 2, 3].map((i) => (
+            <div key={i} className={`flex flex-col md:flex-row gap-4 md:gap-6 p-4 rounded-md border animate-pulse ${isDark ? "bg-[#0f172a]/40 border-white/5" : "bg-white border-black/5"}`}>
+              <div className={`w-full md:w-56 lg:w-72 h-40 sm:h-48 rounded-md shrink-0 ${bg}`} />
+              <div className="flex-1 space-y-3 py-1">
+                <div className="flex gap-4">
+                  <div className={`h-3 w-24 rounded ${bg}`} />
+                  <div className={`h-3 w-20 rounded ${bg}`} />
+                </div>
+                <div className={`h-6 w-3/4 rounded ${bg}`} />
+                <div className="space-y-2">
+                  <div className={`h-4 w-full rounded ${bg}`} />
+                  <div className={`h-4 w-5/6 rounded ${bg}`} />
+                </div>
+                <div className="flex items-center justify-between pt-4 border-t border-dashed border-gray-500/20">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-md ${bg}`} />
+                    <div className="space-y-1">
+                      <div className={`h-3 w-24 rounded ${bg}`} />
+                      <div className={`h-2 w-16 rounded ${bg}`} />
+                    </div>
+                  </div>
+                  <div className={`h-8 w-16 rounded-md ${bg}`} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-4 space-y-6">
+          {[1, 2].map((i) => (
+            <div key={i} className={`p-4 sm:p-6 rounded-md border animate-pulse ${isDark ? "bg-[#0f172a]/40 border-white/5" : "bg-white border-black/5"}`}>
+              <div className={`h-6 w-32 rounded mb-4 ${bg}`} />
+              <div className="flex flex-col gap-3">
+                {[1, 2, 3].map((j) => (
+                  <div key={j} className="flex gap-3 items-center">
+                    <div className={`w-16 h-16 rounded-md shrink-0 ${bg}`} />
+                    <div className="flex-1 space-y-2">
+                      <div className={`h-3 w-full rounded ${bg}`} />
+                      <div className={`h-2 w-2/3 rounded ${bg}`} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HomeSkeleton;

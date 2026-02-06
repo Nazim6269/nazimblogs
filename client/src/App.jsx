@@ -1,23 +1,47 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import "./styles/nprogress-custom.css";
 import Footer from "./Components/Footer/Footer";
 import Navbar from "./Components/Navbar/Navbar";
 import Container from "./Components/ui/container/Container";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import PublicRoute from "./Components/PublicRoute/PublicRoute";
-import { Toaster } from "react-hot-toast";
-
-import { useTheme } from "./hooks/useTheme";
-import CreateBlog from "./screens/CreateBlog/CreateBlog";
-import Home from "./screens/Home/Home";
-import Login from "./screens/Login/Login";
-import Profile from "./screens/Profile/Profile";
-import Register from "./screens/Register/Register";
-import SingleBlog from "./screens/SingleBlog/SingleBlog";
-import NotFound from "./screens/NotFound/NotFound";
-import Settings from "./screens/Settings/Settings";
-import Admin from "./screens/Admin/Admin";
 import AdminRoute from "./Components/AdminRoute/AdminRoute";
+import BannedGuard from "./Components/BannedGuard/BannedGuard";
+import { Toaster } from "react-hot-toast";
+import { useTheme } from "./hooks/useTheme";
+import { useRouteProgress } from "./hooks/useRouteProgress";
+
+import HomeSkeleton from "./Components/skeletons/HomeSkeleton";
+import BlogDetailSkeleton from "./Components/skeletons/BlogDetailSkeleton";
+import AuthSkeleton from "./Components/skeletons/AuthSkeleton";
+import CreateBlogSkeleton from "./Components/skeletons/CreateBlogSkeleton";
+import ProfileSkeleton from "./Components/skeletons/ProfileSkeleton";
+import SettingsSkeleton from "./Components/skeletons/SettingsSkeleton";
+import AdminSkeleton from "./Components/skeletons/AdminSkeleton";
+import ReadingListSkeleton from "./Components/skeletons/ReadingListSkeleton";
+import AuthorProfileSkeleton from "./Components/skeletons/AuthorProfileSkeleton";
+import NotificationsSkeleton from "./Components/skeletons/NotificationsSkeleton";
+
+const Home = lazy(() => import("./screens/Home/Home"));
+const SingleBlog = lazy(() => import("./screens/SingleBlog/SingleBlog"));
+const Login = lazy(() => import("./screens/Login/Login"));
+const Register = lazy(() => import("./screens/Register/Register"));
+const CreateBlog = lazy(() => import("./screens/CreateBlog/CreateBlog"));
+const Profile = lazy(() => import("./screens/Profile/Profile"));
+const Settings = lazy(() => import("./screens/Settings/Settings"));
+const Admin = lazy(() => import("./screens/Admin/Admin"));
+const ForgotPassword = lazy(() => import("./screens/ForgotPassword/ForgotPassword"));
+const ReadingList = lazy(() => import("./screens/ReadingList/ReadingList"));
+const AuthorProfile = lazy(() => import("./screens/AuthorProfile/AuthorProfile"));
+const Notifications = lazy(() => import("./screens/Notifications/Notifications"));
+const NotFound = lazy(() => import("./screens/NotFound/NotFound"));
+
+function RouteProgressBar() {
+  useRouteProgress();
+  return null;
+}
 
 function App() {
   const { theme } = useTheme();
@@ -25,6 +49,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <RouteProgressBar />
       <div
         className={`min-h-screen transition-all duration-500 ${isDark
           ? "bg-slate-900 text-gray-200"
@@ -43,18 +68,21 @@ function App() {
             >
               <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<Home />} />
-                <Route path="/tutorials" element={<Home />} />
-                <Route path="/design" element={<Home />} />
-                <Route path="/community" element={<Home />} />
-                <Route path="/blog-details/:id" element={<SingleBlog />} />
+                <Route path="/" element={<Suspense fallback={<HomeSkeleton />}><Home /></Suspense>} />
+                <Route path="/tutorials" element={<Suspense fallback={<HomeSkeleton />}><Home /></Suspense>} />
+                <Route path="/design" element={<Suspense fallback={<HomeSkeleton />}><Home /></Suspense>} />
+                <Route path="/community" element={<Suspense fallback={<HomeSkeleton />}><Home /></Suspense>} />
+                <Route path="/blog-details/:id" element={<Suspense fallback={<BlogDetailSkeleton />}><SingleBlog /></Suspense>} />
+                <Route path="/author/:id" element={<Suspense fallback={<AuthorProfileSkeleton />}><AuthorProfile /></Suspense>} />
 
                 {/* Auth Routes - Only accessible when NOT logged in */}
                 <Route
                   path="/login"
                   element={
                     <PublicRoute>
-                      <Login />
+                      <Suspense fallback={<AuthSkeleton />}>
+                        <Login />
+                      </Suspense>
                     </PublicRoute>
                   }
                 />
@@ -62,7 +90,19 @@ function App() {
                   path="/register"
                   element={
                     <PublicRoute>
-                      <Register />
+                      <Suspense fallback={<AuthSkeleton />}>
+                        <Register />
+                      </Suspense>
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/forgot-password"
+                  element={
+                    <PublicRoute>
+                      <Suspense fallback={<AuthSkeleton />}>
+                        <ForgotPassword />
+                      </Suspense>
                     </PublicRoute>
                   }
                 />
@@ -72,7 +112,11 @@ function App() {
                   path="/create-blog"
                   element={
                     <ProtectedRoute>
-                      <CreateBlog />
+                      <BannedGuard>
+                        <Suspense fallback={<CreateBlogSkeleton />}>
+                          <CreateBlog />
+                        </Suspense>
+                      </BannedGuard>
                     </ProtectedRoute>
                   }
                 />
@@ -80,7 +124,29 @@ function App() {
                   path="/profile"
                   element={
                     <ProtectedRoute>
-                      <Profile />
+                      <Suspense fallback={<ProfileSkeleton />}>
+                        <Profile />
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/notifications"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<NotificationsSkeleton />}>
+                        <Notifications />
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/reading-list"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<ReadingListSkeleton />}>
+                        <ReadingList />
+                      </Suspense>
                     </ProtectedRoute>
                   }
                 />
@@ -88,7 +154,9 @@ function App() {
                   path="/settings"
                   element={
                     <ProtectedRoute>
-                      <Settings />
+                      <Suspense fallback={<SettingsSkeleton />}>
+                        <Settings />
+                      </Suspense>
                     </ProtectedRoute>
                   }
                 />
@@ -98,20 +166,22 @@ function App() {
                   path="/admin"
                   element={
                     <AdminRoute>
-                      <Admin />
+                      <Suspense fallback={<AdminSkeleton />}>
+                        <Admin />
+                      </Suspense>
                     </AdminRoute>
                   }
                 />
 
                 {/* 404 Not Found */}
-                <Route path="*" element={<NotFound />} />
+                <Route path="*" element={<Suspense fallback={null}><NotFound /></Suspense>} />
               </Routes>
             </div>
           </Container>
         </main>
 
         <Footer />
-      </div>{" "}
+      </div>
     </BrowserRouter>
   );
 }

@@ -8,7 +8,8 @@ import {
   faPenNib,
   faSignOutAlt,
   faBars,
-  faClose
+  faClose,
+  faBookmark
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect, useRef } from "react";
@@ -17,6 +18,7 @@ import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSiteConfig } from "../../contexts/SiteConfigContext";
 import { useDebounce } from "../../hooks/useDebounce";
+import NotificationBell from "../NotificationBell/NotificationBell";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -150,6 +152,9 @@ const Navbar = () => {
               {isDark ? <FontAwesomeIcon icon={faSun} /> : <FontAwesomeIcon icon={faMoon} />}
             </button>
 
+            {/* Notification Bell */}
+            {user && <NotificationBell />}
+
             {/* Auth States */}
             {user ? (
               <div className="relative" ref={dropdownRef}>
@@ -207,6 +212,11 @@ const Navbar = () => {
                     <Link to="/create-blog" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
                       <FontAwesomeIcon icon={faPenNib} className="w-4 text-blue-500" />
                       <span>Write a Post</span>
+                    </Link>
+
+                    <Link to="/reading-list" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
+                      <FontAwesomeIcon icon={faBookmark} className="w-4 text-yellow-500" />
+                      <span>Reading List</span>
                     </Link>
 
                     <Link to="/settings" onClick={() => setIsDropdownOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition-colors ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-50 text-gray-700"}`}>
@@ -320,6 +330,10 @@ const Navbar = () => {
                   <Link to="/create-blog" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-md text-base ${isDark ? "text-gray-300" : "text-gray-600"}`}>
                     <FontAwesomeIcon icon={faPenNib} className="w-5 text-blue-500" />
                     <span>Write a Post</span>
+                  </Link>
+                  <Link to="/reading-list" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-md text-base ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                    <FontAwesomeIcon icon={faBookmark} className="w-5 text-yellow-500" />
+                    <span>Reading List</span>
                   </Link>
                   <Link to="/settings" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-md text-base ${isDark ? "text-gray-300" : "text-gray-600"}`}>
                     <FontAwesomeIcon icon={faGear} className="w-5 text-gray-400" />

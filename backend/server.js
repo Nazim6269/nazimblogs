@@ -7,6 +7,9 @@ import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import siteConfigRoutes from './routes/siteConfigRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import messageRoutes from './routes/messageRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import { port } from './secret.js';
 
@@ -47,6 +50,9 @@ app.use(cookieParser());
 app.use('/api/users', userRoutes);
 app.use('/api/site-config', siteConfigRoutes);
 app.use('/api/blogs', blogRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 
 app.get('/', (req, res) => {

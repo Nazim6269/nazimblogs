@@ -18,3 +18,8 @@ coverage
 
 # Local Netlify folder
 .netlify
+
+# Vercel env files
+.env.vercel
+.env.vercel-prod
+.vercel

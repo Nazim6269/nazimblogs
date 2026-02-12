@@ -4,7 +4,7 @@ const LoadingSkeleton = ({ isDark }) => {
     const bg = isDark ? "bg-gray-700" : "bg-gray-200";
 
     return (
-        <div className="min-h-screen py-10 sm:py-16 md:py-20 px-4 max-w-4xl mx-auto">
+        <div className="min-h-screen py-6 sm:py-8 md:py-12 px-4 sm:px-6 max-w-4xl mx-auto">
             <div className="animate-pulse space-y-8">
                 {/* Back button skeleton */}
                 <div className={`h-5 w-28 rounded ${bg}`} />
@@ -39,9 +39,9 @@ const LoadingSkeleton = ({ isDark }) => {
                     ))}
                 </div>
 
-                {/* Content skeleton */}
+                {/* Content skeleton - more paragraphs to match actual blog body */}
                 <div className="space-y-6">
-                    {[1, 2, 3].map((p) => (
+                    {[1, 2, 3, 4, 5].map((p) => (
                         <div key={p} className="space-y-2">
                             <div className={`h-4 w-full rounded ${bg}`} />
                             <div className={`h-4 w-full rounded ${bg}`} />
@@ -68,11 +68,11 @@ const LoadingSkeleton = ({ isDark }) => {
                     </div>
                 </div>
 
-                {/* Comments section skeleton */}
+                {/* Comments section skeleton - more comments to match actual */}
                 <div className="pt-8 border-t border-gray-500/20 space-y-4">
                     <div className={`h-8 w-36 sm:w-40 rounded ${bg}`} />
                     <div className={`h-20 sm:h-24 w-full rounded-lg ${bg}`} />
-                    {[1, 2].map((i) => (
+                    {[1, 2, 3, 4].map((i) => (
                         <div key={i} className="flex gap-3">
                             <div className={`w-9 h-9 rounded-full shrink-0 ${bg}`} />
                             <div className="flex-1 space-y-2">

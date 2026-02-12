@@ -108,13 +108,42 @@ const BlogCards = () => {
         {/* Blog Cards Section - 8 columns */}
         <div className="flex flex-col gap-4 sm:gap-6 lg:col-span-8 order-1 lg:order-1">
           {loading ? (
-            <div className="flex justify-center items-center py-32">
-              <div className="relative">
-                <div className="w-16 h-16 rounded-full border-4 border-purple-500/20 border-t-purple-500 animate-spin"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full animate-ping"></div>
-                </div>
-              </div>
+            <div className="grid gap-4 sm:gap-6 lg:gap-8">
+              {[1, 2, 3, 4, 5].map((i) => {
+                const bg = isDark ? "bg-gray-700" : "bg-gray-200";
+                return (
+                  <div key={i} className={`flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-6 p-4 rounded-md border animate-pulse ${isDark ? "bg-[#0f172a]/40 border-white/5" : "bg-white border-black/5"}`}>
+                    <div className={`w-full md:w-56 lg:w-72 h-40 sm:h-48 md:h-auto rounded-md shrink-0 ${bg}`} />
+                    <div className="flex-1 flex flex-col justify-between py-1">
+                      <div className="space-y-3">
+                        <div className="flex gap-4">
+                          <div className={`h-3 w-24 rounded ${bg}`} />
+                          <div className={`h-3 w-20 rounded ${bg}`} />
+                        </div>
+                        <div className={`h-6 sm:h-7 w-3/4 rounded ${bg}`} />
+                        <div className="space-y-2">
+                          <div className={`h-4 w-full rounded ${bg}`} />
+                          <div className={`h-4 w-5/6 rounded ${bg}`} />
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap items-center justify-between gap-3 pt-4 mt-6 border-t border-dashed border-gray-500/20">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 rounded-md ${bg}`} />
+                          <div className="space-y-1">
+                            <div className={`h-3 w-24 rounded ${bg}`} />
+                            <div className={`h-2 w-16 rounded ${bg}`} />
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <div className={`h-7 w-14 rounded-md ${bg}`} />
+                          <div className={`h-7 w-14 rounded-md ${bg}`} />
+                          <div className={`h-7 w-14 rounded-md ${bg}`} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           ) : currentPosts.length > 0 ? (
             <div className="grid gap-4 sm:gap-6 lg:gap-8">

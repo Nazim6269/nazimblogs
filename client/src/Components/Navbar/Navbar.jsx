@@ -18,6 +18,7 @@ import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSiteConfig } from "../../contexts/SiteConfigContext";
 import { useDebounce } from "../../hooks/useDebounce";
+import { fetchCategoryCounts } from "../../helper/blogApi";
 import NotificationBell from "../NotificationBell/NotificationBell";
 
 const Navbar = () => {
@@ -35,6 +36,14 @@ const Navbar = () => {
 
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
   const debouncedSearch = useDebounce(searchTerm, 500);
+  const [categoryCounts, setCategoryCounts] = useState({});
+
+  // Fetch category counts
+  useEffect(() => {
+    fetchCategoryCounts()
+      .then((data) => setCategoryCounts(data))
+      .catch(() => setCategoryCounts({}));
+  }, []);
 
   // Handle scroll effect
   useEffect(() => {
@@ -105,21 +114,29 @@ const Navbar = () => {
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                className={({ isActive }) => `
-                  px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
-                  ${isActive
-                    ? (isDark ? "text-brand-tertiary bg-purple-500/10" : "text-brand-primary bg-purple-50")
-                    : (isDark ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100")
-                  }
-                `}
-              >
-                {link.name}
-              </NavLink>
-            ))}
+            {navLinks.map((link) => {
+              const count = categoryCounts[link.name];
+              return (
+                <NavLink
+                  key={link.name}
+                  to={link.path}
+                  className={({ isActive }) => `
+                    flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
+                    ${isActive
+                      ? (isDark ? "text-brand-tertiary bg-purple-500/10" : "text-brand-primary bg-purple-50")
+                      : (isDark ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100")
+                    }
+                  `}
+                >
+                  {link.name}
+                  {count != null && (
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none ${isDark ? "bg-white/10 text-gray-400" : "bg-gray-100 text-gray-500"}`}>
+                      {count}
+                    </span>
+                  )}
+                </NavLink>
+              );
+            })}
           </div>
 
           {/* Right Section */}
@@ -291,22 +308,30 @@ const Navbar = () => {
                 </div>
               </div>
 
-              {navLinks.map((link) => (
-                <NavLink
-                  key={link.name}
-                  to={link.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={({ isActive }) => `
-                      px-4 py-3 rounded-md text-base font-semibold transition-all
-                      ${isActive
-                      ? (isDark ? "text-brand-tertiary bg-purple-500/10" : "text-brand-primary bg-purple-50")
-                      : (isDark ? "text-gray-400" : "text-gray-600")
-                    }
-                    `}
-                >
-                  {link.name}
-                </NavLink>
-              ))}
+              {navLinks.map((link) => {
+                const count = categoryCounts[link.name];
+                return (
+                  <NavLink
+                    key={link.name}
+                    to={link.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={({ isActive }) => `
+                        flex items-center justify-between px-4 py-3 rounded-md text-base font-semibold transition-all
+                        ${isActive
+                        ? (isDark ? "text-brand-tertiary bg-purple-500/10" : "text-brand-primary bg-purple-50")
+                        : (isDark ? "text-gray-400" : "text-gray-600")
+                      }
+                      `}
+                  >
+                    {link.name}
+                    {count != null && (
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${isDark ? "bg-white/10 text-gray-400" : "bg-gray-100 text-gray-500"}`}>
+                        {count}
+                      </span>
+                    )}
+                  </NavLink>
+                );
+              })}
               {/* Mobile User Section */}
               {user ? (
                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/5 flex flex-col gap-1">

@@ -126,6 +126,14 @@ export const fetchRecommendedBlogs = async () => {
     return res.json();
 };
 
+export const fetchCategoryCounts = async () => {
+    const res = await fetch(`${API_URL}/api/blogs/categories`, {
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch category counts');
+    return res.json();
+};
+
 export const toggleBookmark = async (blogId) => {
     const res = await fetch(`${API_URL}/api/blogs/${blogId}/bookmark`, {
         method: 'PUT',

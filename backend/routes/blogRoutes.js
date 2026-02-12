@@ -11,6 +11,7 @@ import {
     deleteComment,
     getTrendingBlogs,
     getRecommendedBlogs,
+    getCategoryCounts,
 } from '../controllers/blogController.js';
 import { toggleBookmark } from '../controllers/bookmarkController.js';
 import { protect } from '../middleware/authMiddleware.js';
@@ -22,6 +23,7 @@ router.route('/').get(getBlogs).post(protect, notBanned, createBlog);
 router.get('/user', protect, getUserBlogs);
 router.get('/trending', getTrendingBlogs);
 router.get('/recommended', getRecommendedBlogs);
+router.get('/categories', getCategoryCounts);
 router.put('/:id/bookmark', protect, toggleBookmark);
 router.route('/:id').get(getBlogById).put(protect, updateBlog).delete(protect, deleteBlog);
 router.put('/:id/like', protect, notBanned, likeBlog);

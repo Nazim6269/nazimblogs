@@ -400,4 +400,22 @@ const getRecommendedBlogs = asyncHandler(async (req, res) => {
     res.json(blogs);
 });
 
-export { getBlogs, getBlogById, getUserBlogs, createBlog, updateBlog, deleteBlog, likeBlog, addComment, deleteComment, getTrendingBlogs, getRecommendedBlogs };
+// @desc    Get blog counts per category
+// @route   GET /api/blogs/categories
+// @access  Public
+const getCategoryCounts = asyncHandler(async (req, res) => {
+    const counts = await Blog.aggregate([
+        { $match: { status: 'published' } },
+        { $group: { _id: '$category', count: { $sum: 1 } } },
+    ]);
+
+    const total = counts.reduce((sum, c) => sum + c.count, 0);
+    const result = { Explore: total };
+    counts.forEach((c) => {
+        result[c._id] = c.count;
+    });
+
+    res.json(result);
+});
+
+export { getBlogs, getBlogById, getUserBlogs, createBlog, updateBlog, deleteBlog, likeBlog, addComment, deleteComment, getTrendingBlogs, getRecommendedBlogs, getCategoryCounts };

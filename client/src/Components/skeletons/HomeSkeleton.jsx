@@ -16,14 +16,34 @@ const HomeSkeleton = () => {
         </div>
       </div>
 
+      {/* Trending Section Skeleton */}
+      <div className="px-4 sm:px-6 py-8">
+        <div className={`h-8 w-44 rounded-md mb-6 animate-pulse ${bg}`} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className={`rounded-md border overflow-hidden animate-pulse ${isDark ? "bg-[#0f172a]/40 border-white/5" : "bg-white border-black/5"}`}>
+              <div className={`h-32 ${bg}`} />
+              <div className="p-3 space-y-2">
+                <div className={`h-4 w-3/4 rounded ${bg}`} />
+                <div className={`h-3 w-full rounded ${bg}`} />
+                <div className="flex items-center justify-between pt-1">
+                  <div className={`h-3 w-16 rounded ${bg}`} />
+                  <div className={`h-3 w-20 rounded ${bg}`} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 p-4 sm:p-5 lg:p-8">
         {/* Main Column */}
-        <div className="flex flex-col gap-4 sm:gap-6 lg:col-span-8">
+        <div className="flex flex-col gap-4 sm:gap-6 lg:col-span-8 order-1 lg:order-1">
           {/* Section Header */}
           <div className="animate-pulse space-y-2">
             <div className={`h-8 w-48 rounded ${bg}`} />
-            <div className={`h-4 w-80 rounded ${bg}`} />
+            <div className={`h-4 w-full max-w-80 rounded ${bg}`} />
           </div>
 
           {/* Blog Card Skeletons */}
@@ -56,7 +76,7 @@ const HomeSkeleton = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="lg:col-span-4 space-y-6">
+        <div className="lg:col-span-4 order-2 lg:order-2 space-y-6">
           {[1, 2].map((i) => (
             <div key={i} className={`p-4 sm:p-6 rounded-md border animate-pulse ${isDark ? "bg-[#0f172a]/40 border-white/5" : "bg-white border-black/5"}`}>
               <div className={`h-6 w-32 rounded mb-4 ${bg}`} />

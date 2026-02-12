@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { useSiteConfig } from "../../contexts/SiteConfigContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash, faSave, faSpinner, faBan, faCheck, faUsers, faNewspaper, faEnvelope, faChartBar } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash, faSave, faSpinner, faBan, faCheck, faUsers, faNewspaper, faEnvelope, faChartBar, faGauge, faPalette, faImage, faColumns } from "@fortawesome/free-solid-svg-icons";
 import { fetchDashboardStats, banUser as banUserApi, unbanUser as unbanUserApi, fetchAdminMessages, markMessageRead as markMessageReadApi } from "../../helper/adminApi";
 import toast from "react-hot-toast";
 import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
@@ -104,12 +104,12 @@ const Admin = () => {
   };
 
   const tabs = [
-    { id: "dashboard", label: "Dashboard" },
-    { id: "users", label: "Users" },
-    { id: "messages", label: "Messages" },
-    { id: "navbar", label: "Navbar" },
-    { id: "hero", label: "Hero" },
-    { id: "footer", label: "Footer" },
+    { id: "dashboard", label: "Dashboard", icon: faGauge },
+    { id: "users", label: "Users", icon: faUsers },
+    { id: "messages", label: "Messages", icon: faEnvelope },
+    { id: "navbar", label: "Navbar", icon: faPalette },
+    { id: "hero", label: "Hero", icon: faImage },
+    { id: "footer", label: "Footer", icon: faColumns },
   ];
 
   const inputClass = `w-full px-4 py-2.5 rounded-md text-sm outline-none transition-all duration-300 ${
@@ -120,11 +120,11 @@ const Admin = () => {
 
   const labelClass = `block text-sm font-semibold mb-1.5 ${isDark ? "text-gray-300" : "text-gray-700"}`;
 
-  const cardClass = `p-6 rounded-md ${isDark ? "bg-white/5 border border-white/10" : "bg-white border border-gray-200 shadow-sm"}`;
+  const cardClass = `p-4 sm:p-6 rounded-md ${isDark ? "bg-white/5 border border-white/10" : "bg-white border border-gray-200 shadow-sm"}`;
 
   return (
     <div className="max-w-4xl mx-auto py-6 sm:py-8 px-4">
-      <h1 className={`text-3xl font-bold mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+      <h1 className={`text-2xl sm:text-3xl font-bold mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
         Admin Panel
       </h1>
       <p className={`text-sm mb-8 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
@@ -132,12 +132,12 @@ const Admin = () => {
       </p>
 
       {/* Tabs */}
-      <div className={`flex flex-wrap gap-1 mb-8 p-1 rounded-md ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
+      <div className={`flex overflow-x-auto gap-1 mb-6 sm:mb-8 p-1 rounded-md scrollbar-hide ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 px-4 py-2.5 rounded-md text-sm font-semibold transition-all duration-200 ${
+            className={`flex items-center justify-center gap-1.5 shrink-0 flex-1 min-w-0 px-2.5 sm:px-4 py-2.5 rounded-md text-xs sm:text-sm font-semibold transition-all duration-200 ${
               activeTab === tab.id
                 ? "bg-brand-primary text-white shadow-md"
                 : isDark
@@ -145,14 +145,15 @@ const Admin = () => {
                   : "text-gray-600 hover:text-gray-900 hover:bg-white"
             }`}
           >
-            {tab.label}
+            <FontAwesomeIcon icon={tab.icon} className="text-[10px] sm:text-xs" />
+            <span className="hidden xsm:inline">{tab.label}</span>
           </button>
         ))}
       </div>
 
       {/* Dashboard Tab */}
       {activeTab === "dashboard" && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {loadingStats ? (
             <div className="flex justify-center py-12">
               <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-brand-primary" />
@@ -160,48 +161,56 @@ const Admin = () => {
           ) : stats ? (
             <>
               {/* Summary Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className={cardClass}>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-md bg-brand-primary/10 flex items-center justify-center">
-                      <FontAwesomeIcon icon={faUsers} className="text-brand-primary" />
-                    </div>
-                    <div>
-                      <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>Total Users</p>
-                      <p className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{stats.totalUsers}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className={cardClass}>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-md bg-brand-primary/10 flex items-center justify-center">
-                      <FontAwesomeIcon icon={faNewspaper} className="text-brand-primary" />
-                    </div>
-                    <div>
-                      <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>Total Blogs</p>
-                      <p className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{stats.totalBlogs}</p>
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                {[
+                  { icon: faUsers, label: "Users", value: stats.totalUsers },
+                  { icon: faNewspaper, label: "Blogs", value: stats.totalBlogs },
+                  { icon: faChartBar, label: "Avg/User", value: stats.totalUsers > 0 ? (stats.totalBlogs / stats.totalUsers).toFixed(1) : 0 },
+                ].map((card) => (
+                  <div key={card.label} className={cardClass}>
+                    <div className="flex flex-col items-center sm:flex-row sm:items-center gap-2 sm:gap-3 text-center sm:text-left">
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-brand-primary/10 flex items-center justify-center shrink-0">
+                        <FontAwesomeIcon icon={card.icon} className="text-brand-primary text-sm" />
+                      </div>
+                      <div>
+                        <p className={`text-[10px] sm:text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>{card.label}</p>
+                        <p className={`text-lg sm:text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{card.value}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className={cardClass}>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-md bg-brand-primary/10 flex items-center justify-center">
-                      <FontAwesomeIcon icon={faChartBar} className="text-brand-primary" />
-                    </div>
-                    <div>
-                      <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>Avg Blogs/User</p>
-                      <p className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
-                        {stats.totalUsers > 0 ? (stats.totalBlogs / stats.totalUsers).toFixed(1) : 0}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
 
-              {/* User Blog Counts Table */}
+              {/* User Blog Counts — Card list on mobile, table on md+ */}
               <div className={cardClass}>
-                <h2 className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>Users & Blog Counts</h2>
-                <div className="overflow-x-auto">
+                <h2 className={`text-base sm:text-lg font-bold mb-3 sm:mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>Users & Blog Counts</h2>
+
+                {/* Mobile: Card layout */}
+                <div className="flex flex-col gap-2 md:hidden">
+                  {stats.users.map((u) => (
+                    <div key={u._id} className={`flex items-center justify-between gap-3 p-3 rounded-md ${isDark ? "bg-white/5" : "bg-gray-50"}`}>
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-sm font-semibold truncate ${isDark ? "text-gray-200" : "text-gray-900"}`}>{u.name}</p>
+                        <p className={`text-xs truncate ${isDark ? "text-gray-500" : "text-gray-400"}`}>{u.email}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold ${isDark ? "bg-white/10 text-gray-300" : "bg-gray-200 text-gray-600"}`}>
+                          {u.blogCount} posts
+                        </span>
+                        {u.isAdmin ? (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">Admin</span>
+                        ) : u.isBanned ? (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700">Banned</span>
+                        ) : (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700">Active</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop: Table layout */}
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className={`border-b ${isDark ? "border-gray-700" : "border-gray-200"}`}>
@@ -243,40 +252,42 @@ const Admin = () => {
 
       {/* Users Tab */}
       {activeTab === "users" && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <div className={cardClass}>
-            <h2 className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>User Management</h2>
+            <h2 className={`text-base sm:text-lg font-bold mb-3 sm:mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>User Management</h2>
             {loadingStats ? (
               <div className="flex justify-center py-8">
                 <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xl text-brand-primary" />
               </div>
             ) : stats ? (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {stats.users.map((u) => (
-                  <div key={u._id} className={`flex items-center justify-between p-3 rounded-md ${isDark ? "bg-white/5" : "bg-gray-50"}`}>
-                    <div className="min-w-0">
-                      <p className={`font-semibold truncate ${isDark ? "text-white" : "text-gray-900"}`}>{u.name}</p>
-                      <p className={`text-xs truncate ${isDark ? "text-gray-400" : "text-gray-500"}`}>{u.email}</p>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0 ml-3">
-                      <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${
-                        u.isAdmin ? "bg-purple-100 text-purple-700" :
-                        u.isBanned ? "bg-red-100 text-red-700" :
-                        "bg-green-100 text-green-700"
-                      }`}>
-                        {u.isAdmin ? "Admin" : u.isBanned ? "Banned" : "Active"}
-                      </span>
+                  <div key={u._id} className={`p-3 rounded-md ${isDark ? "bg-white/5" : "bg-gray-50"}`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <p className={`text-sm font-semibold truncate ${isDark ? "text-white" : "text-gray-900"}`}>{u.name}</p>
+                          <span className={`shrink-0 text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full font-semibold ${
+                            u.isAdmin ? "bg-purple-100 text-purple-700" :
+                            u.isBanned ? "bg-red-100 text-red-700" :
+                            "bg-green-100 text-green-700"
+                          }`}>
+                            {u.isAdmin ? "Admin" : u.isBanned ? "Banned" : "Active"}
+                          </span>
+                        </div>
+                        <p className={`text-xs truncate mt-0.5 ${isDark ? "text-gray-400" : "text-gray-500"}`}>{u.email}</p>
+                      </div>
                       {!u.isAdmin && (
                         <button
                           onClick={() => setBanTarget(u)}
-                          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+                          className={`shrink-0 px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-semibold transition-colors ${
                             u.isBanned
                               ? "bg-green-600 text-white hover:bg-green-700"
                               : "bg-red-600 text-white hover:bg-red-700"
                           }`}
                         >
-                          <FontAwesomeIcon icon={u.isBanned ? faCheck : faBan} className="mr-1" />
-                          {u.isBanned ? "Unban" : "Ban"}
+                          <FontAwesomeIcon icon={u.isBanned ? faCheck : faBan} className="sm:mr-1" />
+                          <span className="hidden sm:inline">{u.isBanned ? "Unban" : "Ban"}</span>
                         </button>
                       )}
                     </div>
@@ -290,9 +301,9 @@ const Admin = () => {
 
       {/* Messages Tab */}
       {activeTab === "messages" && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <div className={cardClass}>
-            <h2 className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>User Messages</h2>
+            <h2 className={`text-base sm:text-lg font-bold mb-3 sm:mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>User Messages</h2>
             {loadingMessages ? (
               <div className="flex justify-center py-8">
                 <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xl text-brand-primary" />
@@ -303,39 +314,40 @@ const Admin = () => {
                 <p className={`text-sm ${isDark ? "text-gray-500" : "text-gray-400"}`}>No messages yet.</p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {messages.map((msg) => (
                   <div
                     key={msg._id}
-                    className={`p-4 rounded-md border transition-colors ${
+                    className={`p-3 sm:p-4 rounded-md border transition-colors ${
                       msg.read
                         ? isDark ? "border-gray-700/50 bg-gray-800/20" : "border-gray-100 bg-gray-50"
                         : isDark ? "border-purple-500/30 bg-purple-900/10" : "border-purple-200 bg-purple-50"
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
+                    <div className="flex items-start justify-between gap-2 sm:gap-3">
+                      <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <p className={`text-sm font-bold ${isDark ? "text-gray-200" : "text-gray-900"}`}>
+                          <p className={`text-sm font-bold truncate ${isDark ? "text-gray-200" : "text-gray-900"}`}>
                             {msg.from?.name || "Unknown User"}
                           </p>
                           {!msg.read && (
                             <span className="w-2 h-2 rounded-full bg-brand-primary shrink-0"></span>
                           )}
                         </div>
-                        <p className={`text-xs mb-2 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                          {msg.from?.email} &middot; {new Date(msg.createdAt).toLocaleDateString()}
+                        <p className={`text-[10px] sm:text-xs mb-1.5 sm:mb-2 truncate ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+                          <span className="hidden sm:inline">{msg.from?.email} &middot; </span>{new Date(msg.createdAt).toLocaleDateString()}
                         </p>
-                        <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                        <p className={`text-xs sm:text-sm line-clamp-3 sm:line-clamp-none ${isDark ? "text-gray-300" : "text-gray-600"}`}>
                           {msg.text}
                         </p>
                       </div>
                       {!msg.read && (
                         <button
                           onClick={() => handleMarkRead(msg._id)}
-                          className="shrink-0 px-3 py-1.5 rounded-md text-xs font-semibold bg-brand-primary text-white hover:bg-purple-700 transition-colors"
+                          className="shrink-0 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-[10px] sm:text-xs font-semibold bg-brand-primary text-white hover:bg-purple-700 transition-colors"
                         >
-                          Mark Read
+                          <FontAwesomeIcon icon={faCheck} className="sm:hidden" />
+                          <span className="hidden sm:inline">Mark Read</span>
                         </button>
                       )}
                     </div>
@@ -396,7 +408,7 @@ const Admin = () => {
             </div>
             <div className="space-y-3">
               {(navbarForm.navLinks || []).map((link, idx) => (
-                <div key={idx} className="flex items-center gap-3">
+                <div key={idx} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                   <input
                     className={inputClass}
                     value={link.name}
@@ -407,25 +419,27 @@ const Admin = () => {
                     }}
                     placeholder="Link Name"
                   />
-                  <input
-                    className={inputClass}
-                    value={link.path}
-                    onChange={(e) => {
-                      const updated = [...navbarForm.navLinks];
-                      updated[idx] = { ...updated[idx], path: e.target.value };
-                      setNavbarForm({ ...navbarForm, navLinks: updated });
-                    }}
-                    placeholder="/path"
-                  />
-                  <button
-                    onClick={() => {
-                      const updated = navbarForm.navLinks.filter((_, i) => i !== idx);
-                      setNavbarForm({ ...navbarForm, navLinks: updated });
-                    }}
-                    className="flex-shrink-0 w-9 h-9 rounded-md flex items-center justify-center text-red-500 hover:bg-red-500/10 transition-colors"
-                  >
-                    <FontAwesomeIcon icon={faTrash} className="w-3.5 h-3.5" />
-                  </button>
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <input
+                      className={inputClass}
+                      value={link.path}
+                      onChange={(e) => {
+                        const updated = [...navbarForm.navLinks];
+                        updated[idx] = { ...updated[idx], path: e.target.value };
+                        setNavbarForm({ ...navbarForm, navLinks: updated });
+                      }}
+                      placeholder="/path"
+                    />
+                    <button
+                      onClick={() => {
+                        const updated = navbarForm.navLinks.filter((_, i) => i !== idx);
+                        setNavbarForm({ ...navbarForm, navLinks: updated });
+                      }}
+                      className="flex-shrink-0 w-9 h-9 rounded-md flex items-center justify-center text-red-500 hover:bg-red-500/10 transition-colors"
+                    >
+                      <FontAwesomeIcon icon={faTrash} className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -564,7 +578,7 @@ const Admin = () => {
             </div>
             <div className="space-y-3">
               {(footerForm.contactInfo || []).map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3">
+                <div key={idx} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                   <select
                     className={inputClass}
                     value={item.type}
@@ -579,25 +593,27 @@ const Admin = () => {
                     <option value="phone">Phone</option>
                     <option value="location">Location</option>
                   </select>
-                  <input
-                    className={inputClass}
-                    value={item.text}
-                    onChange={(e) => {
-                      const updated = [...footerForm.contactInfo];
-                      updated[idx] = { ...updated[idx], text: e.target.value };
-                      setFooterForm({ ...footerForm, contactInfo: updated });
-                    }}
-                    placeholder="Contact detail..."
-                  />
-                  <button
-                    onClick={() => {
-                      const updated = footerForm.contactInfo.filter((_, i) => i !== idx);
-                      setFooterForm({ ...footerForm, contactInfo: updated });
-                    }}
-                    className="flex-shrink-0 w-9 h-9 rounded-md flex items-center justify-center text-red-500 hover:bg-red-500/10 transition-colors"
-                  >
-                    <FontAwesomeIcon icon={faTrash} className="w-3.5 h-3.5" />
-                  </button>
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <input
+                      className={inputClass}
+                      value={item.text}
+                      onChange={(e) => {
+                        const updated = [...footerForm.contactInfo];
+                        updated[idx] = { ...updated[idx], text: e.target.value };
+                        setFooterForm({ ...footerForm, contactInfo: updated });
+                      }}
+                      placeholder="Contact detail..."
+                    />
+                    <button
+                      onClick={() => {
+                        const updated = footerForm.contactInfo.filter((_, i) => i !== idx);
+                        setFooterForm({ ...footerForm, contactInfo: updated });
+                      }}
+                      className="flex-shrink-0 w-9 h-9 rounded-md flex items-center justify-center text-red-500 hover:bg-red-500/10 transition-colors"
+                    >
+                      <FontAwesomeIcon icon={faTrash} className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -638,9 +654,9 @@ const Admin = () => {
                       <FontAwesomeIcon icon={faTrash} className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                  <div className="space-y-2 pl-2">
+                  <div className="space-y-2 sm:pl-2">
                     {(column.links || []).map((link, linkIdx) => (
-                      <div key={linkIdx} className="flex items-center gap-2">
+                      <div key={linkIdx} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                         <input
                           className={`${inputClass} text-xs`}
                           value={link.name}
@@ -653,28 +669,30 @@ const Admin = () => {
                           }}
                           placeholder="Link Name"
                         />
-                        <input
-                          className={`${inputClass} text-xs`}
-                          value={link.path}
-                          onChange={(e) => {
-                            const updated = [...footerForm.footerLinks];
-                            const updatedLinks = [...updated[colIdx].links];
-                            updatedLinks[linkIdx] = { ...updatedLinks[linkIdx], path: e.target.value };
-                            updated[colIdx] = { ...updated[colIdx], links: updatedLinks };
-                            setFooterForm({ ...footerForm, footerLinks: updated });
-                          }}
-                          placeholder="/path"
-                        />
-                        <button
-                          onClick={() => {
-                            const updated = [...footerForm.footerLinks];
-                            updated[colIdx] = { ...updated[colIdx], links: updated[colIdx].links.filter((_, i) => i !== linkIdx) };
-                            setFooterForm({ ...footerForm, footerLinks: updated });
-                          }}
-                          className="flex-shrink-0 w-7 h-7 rounded flex items-center justify-center text-red-400 hover:bg-red-500/10 transition-colors"
-                        >
-                          <FontAwesomeIcon icon={faTrash} className="w-3 h-3" />
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <input
+                            className={`${inputClass} text-xs`}
+                            value={link.path}
+                            onChange={(e) => {
+                              const updated = [...footerForm.footerLinks];
+                              const updatedLinks = [...updated[colIdx].links];
+                              updatedLinks[linkIdx] = { ...updatedLinks[linkIdx], path: e.target.value };
+                              updated[colIdx] = { ...updated[colIdx], links: updatedLinks };
+                              setFooterForm({ ...footerForm, footerLinks: updated });
+                            }}
+                            placeholder="/path"
+                          />
+                          <button
+                            onClick={() => {
+                              const updated = [...footerForm.footerLinks];
+                              updated[colIdx] = { ...updated[colIdx], links: updated[colIdx].links.filter((_, i) => i !== linkIdx) };
+                              setFooterForm({ ...footerForm, footerLinks: updated });
+                            }}
+                            className="flex-shrink-0 w-7 h-7 rounded flex items-center justify-center text-red-400 hover:bg-red-500/10 transition-colors"
+                          >
+                            <FontAwesomeIcon icon={faTrash} className="w-3 h-3" />
+                          </button>
+                        </div>
                       </div>
                     ))}
                     <button
@@ -706,7 +724,7 @@ const Admin = () => {
             </div>
             <div className="space-y-3">
               {(footerForm.socialLinks || []).map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3">
+                <div key={idx} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                   <select
                     className={inputClass}
                     value={item.icon}
@@ -725,25 +743,27 @@ const Admin = () => {
                     <option value="fa-tiktok">TikTok</option>
                     <option value="fa-discord">Discord</option>
                   </select>
-                  <input
-                    className={inputClass}
-                    value={item.link}
-                    onChange={(e) => {
-                      const updated = [...footerForm.socialLinks];
-                      updated[idx] = { ...updated[idx], link: e.target.value };
-                      setFooterForm({ ...footerForm, socialLinks: updated });
-                    }}
-                    placeholder="https://..."
-                  />
-                  <button
-                    onClick={() => {
-                      const updated = footerForm.socialLinks.filter((_, i) => i !== idx);
-                      setFooterForm({ ...footerForm, socialLinks: updated });
-                    }}
-                    className="flex-shrink-0 w-9 h-9 rounded-md flex items-center justify-center text-red-500 hover:bg-red-500/10 transition-colors"
-                  >
-                    <FontAwesomeIcon icon={faTrash} className="w-3.5 h-3.5" />
-                  </button>
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <input
+                      className={inputClass}
+                      value={item.link}
+                      onChange={(e) => {
+                        const updated = [...footerForm.socialLinks];
+                        updated[idx] = { ...updated[idx], link: e.target.value };
+                        setFooterForm({ ...footerForm, socialLinks: updated });
+                      }}
+                      placeholder="https://..."
+                    />
+                    <button
+                      onClick={() => {
+                        const updated = footerForm.socialLinks.filter((_, i) => i !== idx);
+                        setFooterForm({ ...footerForm, socialLinks: updated });
+                      }}
+                      className="flex-shrink-0 w-9 h-9 rounded-md flex items-center justify-center text-red-500 hover:bg-red-500/10 transition-colors"
+                    >
+                      <FontAwesomeIcon icon={faTrash} className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

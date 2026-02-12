@@ -370,4 +370,34 @@ const getTrendingBlogs = asyncHandler(async (req, res) => {
     res.json(blogs);
 });
 
-export { getBlogs, getBlogById, getUserBlogs, createBlog, updateBlog, deleteBlog, likeBlog, addComment, deleteComment, getTrendingBlogs };
+// @desc    Get recommended blogs (random popular posts)
+// @route   GET /api/blogs/recommended
+// @access  Public
+const getRecommendedBlogs = asyncHandler(async (req, res) => {
+    const blogs = await Blog.aggregate([
+        { $match: { status: 'published' } },
+        {
+            $match: {
+                $or: [
+                    { $expr: { $gt: [{ $size: '$likes' }, 0] } },
+                    { $expr: { $gt: [{ $size: '$comments' }, 0] } },
+                ],
+            },
+        },
+        { $sample: { size: 3 } },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'author',
+                foreignField: '_id',
+                as: 'author',
+                pipeline: [{ $project: { name: 1, email: 1 } }],
+            },
+        },
+        { $unwind: '$author' },
+    ]);
+
+    res.json(blogs);
+});
+
+export { getBlogs, getBlogById, getUserBlogs, createBlog, updateBlog, deleteBlog, likeBlog, addComment, deleteComment, getTrendingBlogs, getRecommendedBlogs };

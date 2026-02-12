@@ -118,6 +118,14 @@ export const fetchTrendingBlogs = async () => {
     return res.json();
 };
 
+export const fetchRecommendedBlogs = async () => {
+    const res = await fetch(`${API_URL}/api/blogs/recommended`, {
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch recommended blogs');
+    return res.json();
+};
+
 export const toggleBookmark = async (blogId) => {
     const res = await fetch(`${API_URL}/api/blogs/${blogId}/bookmark`, {
         method: 'PUT',

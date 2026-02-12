@@ -1,13 +1,17 @@
+import { useState, useEffect, useMemo } from "react";
 import Favorite from "../../Components/Favorite/Favorite";
 import PopularBlog from "../../Components/PopularBlog/PopularBlog";
 import { useTheme } from "../../hooks/useTheme";
+import { fetchRecommendedBlogs } from "../../helper/blogApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire, faHeart, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { useMemo } from "react";
 
 const SideBar = ({ blogs = [] }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  const [recommendedPosts, setRecommendedPosts] = useState([]);
+  const [recLoading, setRecLoading] = useState(true);
 
   // Calculate trending posts (Top 3 by likes)
   const trendingPosts = useMemo(() => {
@@ -17,11 +21,13 @@ const SideBar = ({ blogs = [] }) => {
       .slice(0, 3);
   }, [blogs]);
 
-  // Calculate recommended posts (3 different ones)
-  const recommendedPosts = useMemo(() => {
-    if (!blogs || blogs.length === 0) return [];
-    return blogs.slice(5, 8);
-  }, [blogs]);
+  // Fetch recommended posts from dedicated endpoint
+  useEffect(() => {
+    fetchRecommendedBlogs()
+      .then((data) => setRecommendedPosts(data))
+      .catch(() => setRecommendedPosts([]))
+      .finally(() => setRecLoading(false));
+  }, []);
 
   return (
     <aside className="w-full lg:w-[380px] flex flex-col gap-6 sm:gap-8 shrink-0 lg:sticky lg:top-24 h-fit">
@@ -75,14 +81,18 @@ const SideBar = ({ blogs = [] }) => {
         </div>
 
         <div className="flex flex-col gap-2 relative z-10">
-          {recommendedPosts.length > 0 ? (
+          {recLoading ? (
+            [1, 2, 3].map(i => (
+              <div key={i} className="h-20 animate-pulse bg-gray-500/10 rounded-md" />
+            ))
+          ) : recommendedPosts.length > 0 ? (
             recommendedPosts.map(post => (
               <Favorite key={post._id || post.id} data={post} />
             ))
           ) : (
-            [1, 2, 3].map(i => (
-              <div key={i} className="h-20 animate-pulse bg-gray-500/10 rounded-md" />
-            ))
+            <p className={`text-sm text-center py-4 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+              No recommendations yet
+            </p>
           )}
         </div>
 

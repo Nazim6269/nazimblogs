@@ -94,11 +94,11 @@ const Notifications = () => {
   const hasUnread = notifications.some((n) => !n.read);
 
   return (
-    <div className="max-w-3xl mx-auto py-12 px-4">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <FontAwesomeIcon icon={faBell} className="text-brand-primary text-xl" />
-          <h1 className={`text-3xl font-black ${isDark ? "text-white" : "text-gray-900"}`}>
+    <div className="max-w-3xl mx-auto py-6 sm:py-8 md:py-12 px-4">
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <FontAwesomeIcon icon={faBell} className="text-brand-primary text-lg sm:text-xl" />
+          <h1 className={`text-2xl sm:text-3xl font-black ${isDark ? "text-white" : "text-gray-900"}`}>
             Notifications
           </h1>
         </div>

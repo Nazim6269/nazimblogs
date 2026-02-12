@@ -192,7 +192,7 @@ const Profile = () => {
         </div>
 
         <div className="flex-1 text-center md:text-left">
-          <h1 className={`text-3xl font-bold ${isDark ? "text-gray-200" : "text-gray-900"}`}>{profile.name}</h1>
+          <h1 className={`text-2xl sm:text-3xl font-bold ${isDark ? "text-gray-200" : "text-gray-900"}`}>{profile.name}</h1>
           <p className={`${isDark ? "text-gray-400" : "text-gray-600"} text-sm`}>{profile.email}</p>
           <p className={`mt-3 text-sm ${isDark ? "text-gray-300" : "text-gray-700"}`}>{profile.bio}</p>
           <p className={`text-xs mt-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>{profile.location}</p>
@@ -204,7 +204,7 @@ const Profile = () => {
       </div>
 
       {/* Editable Bio Section */}
-      <div className={`relative w-full max-w-3xl rounded-md p-6 shadow-md transition-colors duration-500 ${isDark ? "bg-slate-800 text-gray-200" : "bg-slate-100 border-gray-300 text-gray-900 shadow-md"}`}>
+      <div className={`relative w-full max-w-3xl rounded-md p-4 sm:p-6 shadow-md transition-colors duration-500 ${isDark ? "bg-slate-800 text-gray-200" : "bg-slate-100 border-gray-300 text-gray-900 shadow-md"}`}>
         {isEditingProfile ? (
           <ProfileEditForm
             initial={profile}
@@ -244,7 +244,7 @@ const Profile = () => {
           }`}
       >
         {/* Header with Search */}
-        <div className="p-4 border-b border-gray-600">
+        <div className={`p-4 border-b ${isDark ? "border-gray-600" : "border-gray-300"}`}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <h2
               className={`text-2xl sm:text-3xl font-semibold ${isDark ? "text-gray-200" : "text-gray-900"

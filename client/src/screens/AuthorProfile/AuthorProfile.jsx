@@ -50,9 +50,9 @@ const AuthorProfile = () => {
   });
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4">
+    <div className="max-w-4xl mx-auto py-6 sm:py-8 md:py-12 px-4">
       {/* Author Header */}
-      <div className={`rounded-md border p-8 mb-8 ${isDark ? "bg-gray-900/50 border-gray-800" : "bg-white border-gray-200"}`}>
+      <div className={`rounded-md border p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 ${isDark ? "bg-gray-900/50 border-gray-800" : "bg-white border-gray-200"}`}>
         <div className="flex flex-col items-center text-center">
           {author.photoURL ? (
             <img
@@ -76,7 +76,7 @@ const AuthorProfile = () => {
             </p>
           )}
 
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-4">
             {author.location && (
               <span className={`flex items-center gap-1 text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}>
                 <FontAwesomeIcon icon={faMapMarkerAlt} /> {author.location}

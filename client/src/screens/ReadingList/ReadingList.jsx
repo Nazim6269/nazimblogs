@@ -23,10 +23,10 @@ const ReadingList = () => {
   if (loading) return <ReadingListSkeleton />;
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4">
-      <div className="flex items-center gap-3 mb-8">
-        <FontAwesomeIcon icon={faBookmark} className="text-yellow-500 text-xl" />
-        <h1 className={`text-3xl font-black ${isDark ? "text-white" : "text-gray-900"}`}>
+    <div className="max-w-4xl mx-auto py-6 sm:py-8 md:py-12 px-4">
+      <div className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+        <FontAwesomeIcon icon={faBookmark} className="text-yellow-500 text-lg sm:text-xl" />
+        <h1 className={`text-2xl sm:text-3xl font-black ${isDark ? "text-white" : "text-gray-900"}`}>
           Reading List
         </h1>
         <span className={`text-sm font-semibold px-2 py-0.5 rounded-md ${isDark ? "bg-white/10 text-gray-400" : "bg-gray-100 text-gray-500"}`}>
@@ -72,11 +72,11 @@ const ReadingList = () => {
                   <p className={`text-sm line-clamp-2 mb-2 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
                     {stripHTML(blog.body)?.substring(0, 150)}
                   </p>
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4">
                     <span className={`text-xs font-semibold ${isDark ? "text-gray-500" : "text-gray-400"}`}>
                       {authorName}
                     </span>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       <span className={`flex items-center gap-1 text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}>
                         <FontAwesomeIcon icon={faEye} /> {blog.views || 0}
                       </span>

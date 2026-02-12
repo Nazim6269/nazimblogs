@@ -30,8 +30,8 @@ const ProfileSkeleton = () => {
       </div>
 
       {/* Stats */}
-      <div className="w-full max-w-3xl grid grid-cols-3 gap-2 sm:gap-4 animate-pulse">
-        {[1, 2, 3].map((i) => (
+      <div className="w-full max-w-3xl grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 animate-pulse">
+        {[1, 2, 3, 4].map((i) => (
           <div key={i} className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
             <div className={`h-3 w-16 rounded mb-2 mx-auto ${bg}`} />
             <div className={`h-8 w-10 rounded mx-auto ${bg}`} />
@@ -44,7 +44,7 @@ const ProfileSkeleton = () => {
         <div className={`p-4 border-b ${isDark ? "border-gray-600" : "border-gray-300"}`}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className={`h-7 w-36 rounded ${bg}`} />
-            <div className={`h-10 w-full md:w-80 rounded-md ${bg}`} />
+            <div className={`h-10 w-full md:w-96 rounded-md ${bg}`} />
           </div>
         </div>
         <div className="p-4 space-y-4">

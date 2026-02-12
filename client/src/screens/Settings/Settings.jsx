@@ -112,13 +112,13 @@ const Settings = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4">
+        <div className="max-w-4xl mx-auto py-6 sm:py-8 md:py-12 px-4">
             <div className={`rounded-md shadow-md overflow-hidden transition-all duration-500 ${isDark ? "bg-gray-900 border border-white/5" : "bg-white border border-black/5"}`}>
-                <div className="p-8 md:p-12">
+                <div className="p-4 sm:p-6 md:p-8 lg:p-12">
                     <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-10 mb-6 sm:mb-12">
                         {/* Avatar Section */}
                         <div className="relative group">
-                            <div className={`w-40 h-40 rounded-md overflow-hidden border-4 ${isDark ? "border-purple-500/30" : "border-purple-100"} shadow-md relative transition-transform duration-500 group-hover:scale-[1.02]`}>
+                            <div className={`w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-md overflow-hidden border-4 ${isDark ? "border-purple-500/30" : "border-purple-100"} shadow-md relative transition-transform duration-500 group-hover:scale-[1.02]`}>
                                 {imagePreview ? (
                                     <img src={imagePreview} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (

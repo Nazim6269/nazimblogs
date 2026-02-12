@@ -106,7 +106,7 @@ const BlogCards = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 p-4 sm:p-5 lg:p-8">
         {/* Blog Cards Section - 8 columns */}
-        <div className="flex flex-col gap-4 sm:gap-6 lg:col-span-8 order-2 lg:order-1">
+        <div className="flex flex-col gap-4 sm:gap-6 lg:col-span-8 order-1 lg:order-1">
           {loading ? (
             <div className="flex justify-center items-center py-32">
               <div className="relative">
@@ -149,7 +149,7 @@ const BlogCards = () => {
         </div>
 
         {/* Sidebar - 4 columns */}
-        <div className="lg:col-span-4 order-1 lg:order-2">
+        <div className="lg:col-span-4 order-2 lg:order-2">
           <SideBar blogs={data} />
         </div>
       </div>

@@ -25,9 +25,9 @@ const TrendingSection = () => {
         <div className="flex items-center gap-2 mb-6">
           <div className={`w-32 h-8 rounded-md animate-pulse ${isDark ? "bg-gray-800" : "bg-gray-200"}`} />
         </div>
-        <div className="flex gap-4 overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className={`min-w-[280px] h-48 rounded-md animate-pulse ${isDark ? "bg-gray-800" : "bg-gray-200"}`} />
+            <div key={i} className={`h-48 rounded-md animate-pulse ${isDark ? "bg-gray-800" : "bg-gray-200"}`} />
           ))}
         </div>
       </div>
@@ -45,14 +45,14 @@ const TrendingSection = () => {
         </h2>
       </div>
 
-      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {blogs.map((blog) => {
           const authorName = typeof blog.author === "object" ? blog.author?.name : blog.author;
           return (
             <Link
               key={blog._id}
               to={`/blog-details/${blog._id}`}
-              className={`group min-w-[280px] max-w-[320px] flex-shrink-0 rounded-md border overflow-hidden transition-all duration-300 hover:-translate-y-1 ${isDark
+              className={`group rounded-md border overflow-hidden transition-all duration-300 hover:-translate-y-1 ${isDark
                 ? "bg-gray-800/50 border-gray-700/50 hover:border-purple-500/30"
                 : "bg-white border-gray-200 hover:border-purple-500/20 hover:shadow-lg"
                 }`}

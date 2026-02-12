@@ -87,7 +87,7 @@ const BlogCard = ({ data }) => {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="flex items-center justify-between pt-4 border-t border-dashed border-gray-500/20">
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-dashed border-gray-500/20">
                     {/* Author */}
                     <div className="flex items-center gap-3">
                         <div className="relative">
@@ -116,16 +116,16 @@ const BlogCard = ({ data }) => {
                     </div>
 
                     {/* Engagement */}
-                    <div className="flex items-center gap-2">
-                        <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-bold ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <div className={`flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 rounded-md text-xs font-bold ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
                             <FontAwesomeIcon icon={faEye} className="text-blue-400 text-[10px]" />
                             <span>{views || 0}</span>
                         </div>
-                        <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-bold ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
+                        <div className={`flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 rounded-md text-xs font-bold ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
                             <FontAwesomeIcon icon={faComment} className="text-gray-400 text-[10px]" />
                             <span>{comments?.length || 0}</span>
                         </div>
-                        <div className={`flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-md ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
+                        <div className={`flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 sm:px-3 sm:py-1.5 rounded-md ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
                             <FontAwesomeIcon icon={faHeart} className="text-red-500 text-[10px]" />
                             <span className="text-xs font-bold">{Array.isArray(likes) ? likes.length : (likes || 0)}</span>
                         </div>

@@ -8,18 +8,12 @@ const NoData = ({ message = "No data found", subMessage = "Try adjusting your fi
     const isDark = theme === "dark";
 
     return (
-        <div className={`flex flex-col items-center justify-center py-20 px-4 text-center rounded-md border-2 border-dashed transition-all duration-300 ${isDark ? "border-white/5 bg-white/2" : "border-black/5 bg-black/2"
-            }`}>
-            <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${isDark ? "bg-white/5 text-gray-500" : "bg-black/5 text-gray-400"
-                }`}>
-                <FontAwesomeIcon icon={faInbox} className="text-3xl" />
-            </div>
-
-            <h3 className={`text-2xl font-bold mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+        <div className={`flex flex-col items-center justify-center py-12 px-4 text-center rounded-lg ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+            <FontAwesomeIcon icon={faInbox} className="text-2xl mb-3" />
+            <h3 className={`text-base font-semibold mb-1 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
                 {message}
             </h3>
-
-            <p className={`text-base max-w-sm ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+            <p className="text-sm max-w-xs">
                 {subMessage}
             </p>
         </div>

@@ -94,11 +94,11 @@ const Notifications = () => {
   const hasUnread = notifications.some((n) => !n.read);
 
   return (
-    <div className="max-w-3xl mx-auto py-6 sm:py-8 md:py-12 px-4">
-      <div className="flex items-center justify-between mb-6 sm:mb-8">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <FontAwesomeIcon icon={faBell} className="text-brand-primary text-lg sm:text-xl" />
-          <h1 className={`text-2xl sm:text-3xl font-black ${isDark ? "text-white" : "text-gray-900"}`}>
+    <div className="max-w-2xl mx-auto py-4 sm:py-6 px-4">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <FontAwesomeIcon icon={faBell} className="text-brand-primary text-sm" />
+          <h1 className={`text-lg font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
             Notifications
           </h1>
         </div>
@@ -114,14 +114,10 @@ const Notifications = () => {
       </div>
 
       {notifications.length === 0 ? (
-        <div className={`text-center py-20 rounded-md border ${isDark ? "bg-gray-900/50 border-gray-800" : "bg-white border-gray-200"}`}>
-          <FontAwesomeIcon icon={faBell} className={`text-5xl mb-4 ${isDark ? "text-gray-700" : "text-gray-300"}`} />
-          <p className={`text-lg font-bold mb-2 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-            No notifications yet
-          </p>
-          <p className={`text-sm ${isDark ? "text-gray-600" : "text-gray-400"}`}>
-            When someone likes your post, comments, or follows you, it will show up here.
-          </p>
+        <div className={`text-center py-12 rounded-lg ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+          <FontAwesomeIcon icon={faBell} className="text-2xl mb-2" />
+          <p className={`text-sm font-medium ${isDark ? "text-gray-300" : "text-gray-600"}`}>No notifications yet</p>
+          <p className="text-xs">Activity will show up here.</p>
         </div>
       ) : (
         <div className="flex flex-col gap-2">
@@ -140,7 +136,7 @@ const Notifications = () => {
                     : "bg-purple-50 border-purple-200/50 hover:bg-purple-100/50"
               }`}
             >
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
                 <FontAwesomeIcon
                   icon={typeIcon[notif.type] || faBell}
                   className={typeColor[notif.type] || "text-gray-400"}

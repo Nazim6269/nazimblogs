@@ -64,7 +64,7 @@ function App() {
 
           <Container>
             <div
-              className={`relative rounded-md px-4 sm:px-6 transition-all duration-300 `}
+              className={`relative w-full rounded-md px-4 sm:px-6 transition-all duration-300 `}
             >
               <Routes>
                 {/* Public Routes */}

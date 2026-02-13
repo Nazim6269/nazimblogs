@@ -8,51 +8,48 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const pages = [...Array(totalPages)].map((_, i) => i + 1);
 
   return (
-    <div className="flex justify-center gap-2 mt-6">
-      {/* Previous */}
+    <div className="flex justify-center items-center gap-1.5 mt-4">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`px-4 py-2 rounded-md text-sm font-medium transition-all
+        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors
           ${currentPage === 1
-            ? "opacity-40 cursor-not-allowed bg-gray-400 text-white"
+            ? "opacity-30 cursor-not-allowed"
             : isDark
-              ? "bg-gray-800 text-gray-200 hover:bg-gray-700"
-              : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+              ? "text-gray-400 hover:text-white hover:bg-white/5"
+              : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
           }
         `}
       >
-        Previous
+        Prev
       </button>
 
-      {/* Page Numbers */}
       {pages.map((num) => (
         <button
           key={num}
           onClick={() => onPageChange(num)}
-          className={`px-4 py-2 rounded-md border text-sm font-medium transition-all duration-300
-      ${currentPage === num
-              ? "bg-brand-primary text-white border-0 shadow-md shadow-purple-500/40"
+          className={`w-8 h-8 rounded text-xs font-medium transition-colors
+            ${currentPage === num
+              ? "bg-brand-primary text-white"
               : isDark
-                ? "bg-gray-900 border-gray-700 text-gray-200 hover:border-purple-500 hover:shadow-sm hover:shadow-purple-500/20"
-                : "bg-white border-gray-300 text-gray-700 hover:border-blue-500 hover:shadow-sm hover:shadow-blue-500/20"
+                ? "text-gray-400 hover:bg-white/5"
+                : "text-gray-600 hover:bg-gray-100"
             }
-    `}
+          `}
         >
           {num}
         </button>
       ))}
 
-      {/* Next */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={`px-4 py-2 rounded-md text-sm font-medium transition-all
+        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors
           ${currentPage === totalPages
-            ? "opacity-40 cursor-not-allowed bg-gray-400 text-white"
+            ? "opacity-30 cursor-not-allowed"
             : isDark
-              ? "bg-gray-800 text-gray-200 hover:bg-gray-700"
-              : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+              ? "text-gray-400 hover:text-white hover:bg-white/5"
+              : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
           }
         `}
       >

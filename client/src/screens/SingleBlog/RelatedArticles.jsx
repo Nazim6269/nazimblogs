@@ -20,14 +20,14 @@ const RelatedArticles = ({ currentId, isDark }) => {
     if (related.length === 0) return null;
 
     return (
-        <div className="mt-16 pt-12 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
             <h2
-                className={`text-3xl font-bold mb-8 ${isDark ? "text-white" : "text-gray-900"
+                className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"
                     }`}
             >
                 Related Articles
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {related.map((blog) => (
                     <RelatedArticleCard key={blog._id || blog.id} blog={blog} isDark={isDark} />
                 ))}

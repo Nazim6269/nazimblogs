@@ -10,38 +10,16 @@ const BlogMeta = ({ blog, isDark }) => {
     const commentCount = blog.comments?.length || 0;
     const authorName = typeof blog.authorObj === 'object' ? blog.authorObj?.name : (typeof blog.author === 'object' ? blog.author?.name : blog.author);
     const authorId = blog.authorObj?._id || blog.author?._id;
+    const authorPhoto = blog.authorObj?.photoURL || blog.author?.photoURL;
 
     return (
-        <div className="flex flex-wrap items-center gap-4 mb-8">
-            <User author={authorName} date={blog.date} authorId={authorId} />
-
-            <MetaBadge
-                icon={faClock}
-                text={`${readingTime} min read`}
-                isDark={isDark}
-                variant="default"
-            />
-
-            <MetaBadge
-                icon={faEye}
-                text={`${views.toLocaleString()} views`}
-                isDark={isDark}
-                variant="default"
-            />
-
-            <MetaBadge
-                icon={faHeart}
-                text={`${likes} likes`}
-                isDark={isDark}
-                variant="accent"
-            />
-
-            <MetaBadge
-                icon={faComment}
-                text={`${commentCount} comments`}
-                isDark={isDark}
-                variant="default"
-            />
+        <div className="flex flex-wrap items-center gap-3 mb-5">
+            <User author={authorName} date={blog.date} authorId={authorId} photoURL={authorPhoto} />
+            <span className={`text-xs ${isDark ? "text-gray-600" : "text-gray-300"}`}>|</span>
+            <MetaBadge icon={faClock} text={`${readingTime} min`} isDark={isDark} />
+            <MetaBadge icon={faEye} text={views.toLocaleString()} isDark={isDark} />
+            <MetaBadge icon={faHeart} text={likes} isDark={isDark} variant="accent" />
+            <MetaBadge icon={faComment} text={commentCount} isDark={isDark} />
         </div>
     );
 };

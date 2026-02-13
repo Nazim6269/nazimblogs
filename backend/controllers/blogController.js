@@ -26,7 +26,7 @@ const getBlogs = asyncHandler(async (req, res) => {
 
     const [blogs, total] = await Promise.all([
         Blog.find(query)
-            .populate('author', 'name email')
+            .populate('author', 'name email photoURL')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(Number(limit)),
@@ -46,8 +46,8 @@ const getBlogs = asyncHandler(async (req, res) => {
 // @access  Public
 const getBlogById = asyncHandler(async (req, res) => {
     const blog = await Blog.findById(req.params.id)
-        .populate('author', 'name email')
-        .populate('comments.user', 'name email');
+        .populate('author', 'name email photoURL')
+        .populate('comments.user', 'name email photoURL');
 
     if (!blog) {
         res.status(404);
@@ -80,7 +80,7 @@ const getUserBlogs = asyncHandler(async (req, res) => {
     }
 
     const blogs = await Blog.find(query)
-        .populate('author', 'name email')
+        .populate('author', 'name email photoURL')
         .sort({ createdAt: -1 });
 
     res.json(blogs);
@@ -116,7 +116,7 @@ const createBlog = asyncHandler(async (req, res) => {
         author: req.user._id,
     });
 
-    const populated = await blog.populate('author', 'name email');
+    const populated = await blog.populate('author', 'name email photoURL');
 
     res.status(201).json(populated);
 });
@@ -147,7 +147,7 @@ const updateBlog = asyncHandler(async (req, res) => {
     if (status !== undefined) blog.status = status;
 
     const updated = await blog.save();
-    const populated = await updated.populate('author', 'name email');
+    const populated = await updated.populate('author', 'name email photoURL');
 
     res.json(populated);
 });
@@ -290,7 +290,7 @@ const addComment = asyncHandler(async (req, res) => {
     }
 
     // Populate the user info on the newly added comment
-    await blog.populate('comments.user', 'name email');
+    await blog.populate('comments.user', 'name email photoURL');
 
     res.status(201).json(blog.comments[0]);
 });
@@ -361,7 +361,7 @@ const getTrendingBlogs = asyncHandler(async (req, res) => {
                 localField: 'author',
                 foreignField: '_id',
                 as: 'author',
-                pipeline: [{ $project: { name: 1, email: 1 } }],
+                pipeline: [{ $project: { name: 1, email: 1, photoURL: 1 } }],
             },
         },
         { $unwind: '$author' },
@@ -391,7 +391,7 @@ const getRecommendedBlogs = asyncHandler(async (req, res) => {
                 localField: 'author',
                 foreignField: '_id',
                 as: 'author',
-                pipeline: [{ $project: { name: 1, email: 1 } }],
+                pipeline: [{ $project: { name: 1, email: 1, photoURL: 1 } }],
             },
         },
         { $unwind: '$author' },

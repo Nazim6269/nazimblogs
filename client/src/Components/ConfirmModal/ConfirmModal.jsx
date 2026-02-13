@@ -53,16 +53,16 @@ const ConfirmModal = ({
       }}
     >
       <div
-        className={`w-full max-w-md mx-4 p-6 rounded-lg shadow-xl transition-all ${
+        className={`w-full max-w-sm mx-4 p-5 rounded-lg shadow-xl transition-all ${
           isDark ? "bg-gray-800 border border-gray-700" : "bg-white border border-gray-200"
         }`}
       >
         <h3
-          className={`text-xl font-bold mb-2 ${isDark ? "text-gray-100" : "text-gray-900"}`}
+          className={`text-base font-bold mb-1.5 ${isDark ? "text-gray-100" : "text-gray-900"}`}
         >
           {title}
         </h3>
-        <p className={`text-sm mb-6 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+        <p className={`text-sm mb-4 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
           {message}
         </p>
         <div className="flex gap-3 justify-end">

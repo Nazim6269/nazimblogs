@@ -2,16 +2,20 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faCalendarAlt, faClock, faEye, faComment } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faEye, faComment } from "@fortawesome/free-solid-svg-icons";
 import { stripHTML } from "../../utils/stripHTML";
 
 const formatDate = (dateStr) => {
     if (!dateStr) return "Unknown";
-    return new Date(dateStr).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
+    const now = new Date();
+    const d = new Date(dateStr);
+    const diffMs = now - d;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Yesterday";
+    if (diffDays < 7) return `${diffDays}d ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 };
 
 const BlogCard = ({ data }) => {
@@ -21,114 +25,102 @@ const BlogCard = ({ data }) => {
 
     const authorName = typeof author === "object" ? author?.name : author;
     const authorId = typeof author === "object" ? author?._id : null;
+    const authorPhoto = typeof author === "object" ? author?.photoURL : null;
     const displayDate = date || formatDate(createdAt);
     const blogId = _id || id;
+    const likeCount = Array.isArray(likes) ? likes.length : (likes || 0);
 
     return (
         <div
             className={`
-        group relative flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-6 p-4 rounded-md border transition-all duration-500
-        hover:-translate-y-1 overflow-hidden
-        ${isDark
-                    ? "bg-[#0f172a]/40 border-white/5 hover:border-purple-500/30 hover:shadow-[0_20px_50px_rgba(139,92,246,0.1)] shadow-md backdrop-blur-md"
-                    : "bg-white border-black/5 hover:border-purple-500/20 hover:shadow-[0_20px_50px_rgba(139,92,246,0.08)] shadow-md"
+                group relative flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 rounded-lg border transition-all duration-300
+                ${isDark
+                    ? "bg-slate-800/60 border-slate-700/50 hover:border-slate-600"
+                    : "bg-white border-gray-100 hover:border-gray-200 hover:shadow-sm"
                 }
-      `}
+            `}
         >
-            {/* Visual Accent */}
-            <div className="absolute -inset-px bg-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-md"></div>
-
-            {/* Image Section */}
-            <div className="relative w-full md:w-56 lg:w-72 h-40 sm:h-48 md:h-auto overflow-hidden rounded-md shrink-0">
-                <div className="absolute inset-0 bg-black/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            {/* Image */}
+            <div className="relative w-full sm:w-44 md:w-52 h-36 sm:h-32 overflow-hidden rounded-md shrink-0">
                 <img
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     src={imageSrc || `https://picsum.photos/seed/${blogId || title?.length}/600/400`}
                     alt={title}
                 />
-                {/* Category Badge */}
-                <div className="absolute top-3 left-3 z-20">
-                    <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white bg-brand-primary/80 backdrop-blur-md rounded-md">
-                        {category || "Technology"}
-                    </span>
-                </div>
+                <span className={`absolute top-2 left-2 px-2 py-0.5 text-[10px] font-semibold rounded ${isDark
+                    ? "bg-slate-900/80 text-gray-300"
+                    : "bg-white/90 text-gray-600"
+                    } backdrop-blur-sm`}
+                >
+                    {category || "Community"}
+                </span>
             </div>
 
-            {/* Content Section */}
-            <div className="relative z-10 flex flex-col justify-between flex-1 py-1">
+            {/* Content */}
+            <div className="flex flex-col justify-between flex-1 min-w-0 py-0.5">
                 <div>
-                    {/* Meta Top */}
-                    <div className="flex items-center gap-2 sm:gap-4 mb-3">
-                        <div className="flex items-center gap-1.5 text-xs font-semibold opacity-60">
-                            <FontAwesomeIcon icon={faCalendarAlt} className="text-brand-secondary" />
-                            <span>{displayDate}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 text-xs font-semibold opacity-60">
-                            <FontAwesomeIcon icon={faClock} className="text-blue-500" />
-                            <span>5 min read</span>
-                        </div>
+                    {/* Author row + date */}
+                    <div className="flex items-center gap-2 mb-2">
+                        {authorId ? (
+                            <Link
+                                to={`/author/${authorId}`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="flex items-center gap-2 shrink-0"
+                            >
+                                {authorPhoto ? (
+                                    <img src={authorPhoto} alt={authorName} className="w-5 h-5 rounded-full object-cover" />
+                                ) : (
+                                    <div className={`w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center ${isDark ? "bg-slate-700 text-gray-300" : "bg-gray-200 text-gray-600"}`}>
+                                        {authorName?.charAt(0).toUpperCase() || "U"}
+                                    </div>
+                                )}
+                                <span className={`text-xs font-semibold hover:text-brand-secondary transition-colors truncate ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                                    {authorName}
+                                </span>
+                            </Link>
+                        ) : (
+                            <div className="flex items-center gap-2 shrink-0">
+                                {authorPhoto ? (
+                                    <img src={authorPhoto} alt={authorName} className="w-5 h-5 rounded-full object-cover" />
+                                ) : (
+                                    <div className={`w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center ${isDark ? "bg-slate-700 text-gray-300" : "bg-gray-200 text-gray-600"}`}>
+                                        {authorName?.charAt(0).toUpperCase() || "U"}
+                                    </div>
+                                )}
+                                <span className={`text-xs font-semibold truncate ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                                    {authorName}
+                                </span>
+                            </div>
+                        )}
+                        <span className={`text-[11px] ${isDark ? "text-gray-500" : "text-gray-400"}`}>{displayDate}</span>
                     </div>
 
                     {/* Title */}
-                    <h3
-                        className={`text-lg sm:text-xl lg:text-2xl font-black mb-3 leading-tight transition-colors duration-300 group-hover:text-brand-secondary ${isDark ? "text-white" : "text-gray-900"
-                            }`}
-                    >
+                    <h3 className={`text-base sm:text-lg font-bold leading-snug mb-1.5 line-clamp-2 group-hover:text-brand-secondary transition-colors duration-200 ${isDark ? "text-gray-100" : "text-gray-900"}`}>
                         {title}
                     </h3>
 
                     {/* Snippet */}
-                    <p
-                        className={`line-clamp-2 md:line-clamp-3 leading-relaxed text-sm md:text-base mb-6 ${isDark ? "text-gray-400" : "text-gray-600"
-                            }`}
-                    >
-                        {stripHTML(body)?.substring(0, 200) || "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
+                    <p className={`text-xs sm:text-sm leading-relaxed line-clamp-2 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+                        {stripHTML(body)?.substring(0, 150) || "No description available."}
                     </p>
                 </div>
 
-                {/* Bottom Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-dashed border-gray-500/20">
-                    {/* Author */}
-                    <div className="flex items-center gap-3">
-                        <div className="relative">
-                            <div className="w-10 h-10 rounded-md bg-brand-primary flex items-center justify-center text-white font-bold shadow-md">
-                                {authorName?.charAt(0).toUpperCase() || "N"}
-                            </div>
-                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-[#0f172a] rounded-full"></div>
-                        </div>
-
-                        <div className="flex flex-col">
-                            {authorId ? (
-                              <Link
-                                to={`/author/${authorId}`}
-                                onClick={(e) => e.stopPropagation()}
-                                className={`text-sm font-bold hover:text-brand-secondary transition-colors ${isDark ? "text-white" : "text-gray-900"}`}
-                              >
-                                {authorName || "Nazim Uddin"}
-                              </Link>
-                            ) : (
-                              <span className={`text-sm font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
-                                {authorName || "Nazim Uddin"}
-                              </span>
-                            )}
-                            <span className="text-[10px] uppercase font-black tracking-widest opacity-40">{category || "Community"}</span>
-                        </div>
-                    </div>
-
-                    {/* Engagement */}
-                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                        <div className={`flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 rounded-md text-xs font-bold ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
-                            <FontAwesomeIcon icon={faEye} className="text-blue-400 text-[10px]" />
-                            <span>{views || 0}</span>
-                        </div>
-                        <div className={`flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 rounded-md text-xs font-bold ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
-                            <FontAwesomeIcon icon={faComment} className="text-gray-400 text-[10px]" />
-                            <span>{comments?.length || 0}</span>
-                        </div>
-                        <div className={`flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 sm:px-3 sm:py-1.5 rounded-md ${isDark ? "bg-white/5" : "bg-gray-100"}`}>
-                            <FontAwesomeIcon icon={faHeart} className="text-red-500 text-[10px]" />
-                            <span className="text-xs font-bold">{Array.isArray(likes) ? likes.length : (likes || 0)}</span>
-                        </div>
+                {/* Footer */}
+                <div className="flex items-center justify-between mt-3">
+                    <div className={`flex items-center gap-3 text-[11px] ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+                        <span className="flex items-center gap-1">
+                            <FontAwesomeIcon icon={faEye} className="text-[10px]" />
+                            {views || 0}
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <FontAwesomeIcon icon={faHeart} className="text-[10px] text-red-400/70" />
+                            {likeCount}
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <FontAwesomeIcon icon={faComment} className="text-[10px]" />
+                            {comments?.length || 0}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -149,8 +141,10 @@ BlogCard.propTypes = {
         date: PropTypes.string,
         createdAt: PropTypes.string,
         imageSrc: PropTypes.string,
-        likes: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        likes: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
         category: PropTypes.string,
+        views: PropTypes.number,
+        comments: PropTypes.array,
     }).isRequired,
 };
 

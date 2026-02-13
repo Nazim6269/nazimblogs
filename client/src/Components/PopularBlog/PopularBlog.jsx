@@ -23,25 +23,25 @@ const PopularBlog = ({ data }) => {
         ${isDark ? "hover:bg-white/5" : "hover:bg-gray-50"}
       `}
     >
-      <Link to={`/blog-details/${blogId}`} className="flex gap-4 p-3 items-center">
+      <Link to={`/blog-details/${blogId}`} className="flex gap-3 p-2.5 items-center">
         {/* Thumbnail */}
-        <div className="w-16 h-16 rounded-md overflow-hidden shrink-0 shadow-sm">
+        <div className="w-12 h-12 rounded-md overflow-hidden shrink-0">
           <img
             src={image}
             alt={blog.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-full object-cover"
           />
         </div>
 
         <div className="flex-1 min-w-0">
           <h3
-            className={`font-bold text-sm leading-tight mb-1 line-clamp-2 transition-colors duration-300 ${isDark ? "text-gray-200 group-hover:text-brand-tertiary" : "text-gray-800 group-hover:text-brand-primary"
+            className={`font-semibold text-xs leading-tight mb-0.5 line-clamp-2 transition-colors ${isDark ? "text-gray-200 group-hover:text-brand-tertiary" : "text-gray-800 group-hover:text-brand-primary"
               }`}
           >
             {blog.title}
           </h3>
 
-          <div className="flex items-center gap-2 text-[11px] font-semibold opacity-60">
+          <div className="flex items-center gap-1.5 text-[10px] font-medium opacity-60">
             <span className={isDark ? "text-brand-tertiary" : "text-brand-primary"}>{authorName || "Unknown"}</span>
             <span className="w-1 h-1 rounded-full bg-current opacity-30"></span>
             <span>{Array.isArray(blog.likes) ? blog.likes.length : (blog.likes || 0)} Likes</span>

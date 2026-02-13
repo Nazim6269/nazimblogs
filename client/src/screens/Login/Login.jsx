@@ -58,30 +58,21 @@ const Login = () => {
       className={`flex min-h-screen w-full items-start justify-center transition-colors duration-500 `}
     >
       <div
-        className={`w-full max-w-lg px-6 py-8 sm:px-10 sm:py-12 rounded-md shadow-md space-y-8 transition-all duration-500
-        ${isDark
-            ? "bg-gray-900/90 border border-gray-700 text-gray-200"
+        className={`w-full max-w-md px-5 py-6 sm:px-8 sm:py-8 rounded-lg space-y-5 transition-colors ${isDark
+            ? "bg-slate-800/80 border border-slate-700 text-gray-200"
             : "bg-white border border-gray-200 text-gray-900"
           }`}
       >
-        {/* Title + Subtitle */}
-        <div className="text-center space-y-2">
-          <h2
-            className={`text-2xl sm:text-3xl md:text-4xl font-extrabold transition-colors duration-500 ${isDark ? "text-gray-100" : "text-gray-900"
-              }`}
-          >
-            Welcome Back
+        <div className="text-center space-y-1">
+          <h2 className={`text-xl sm:text-2xl font-bold ${isDark ? "text-gray-100" : "text-gray-900"}`}>
+            Welcome back
           </h2>
-          <p
-            className={`text-sm opacity-70 transition-colors duration-500 ${isDark ? "text-gray-400" : "text-gray-600"
-              }`}
-          >
-            Enter your credentials to access your account
+          <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+            Sign in to your account
           </p>
         </div>
 
-        {/* Form */}
-        <form className="space-y-5" onSubmit={handleSubmit}>
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <InputGroup
             name="email"
             label="Email"
@@ -99,12 +90,12 @@ const Login = () => {
           />
           <button
             type="submit"
-            className={`w-full py-3 font-bold transition-all duration-500 ${isDark
-              ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
-              : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
+            className={`w-full py-2.5 text-sm font-semibold rounded-md transition-colors ${isDark
+              ? "bg-brand-primary text-white hover:bg-purple-700"
+              : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary"
               }`}
           >
-            Login{" "}
+            Sign in
           </button>
           <div className="text-right -mt-2">
             <Link

@@ -87,7 +87,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${isScrolled ? "py-2" : "py-4"}`}>
+    <header className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${isScrolled ? "py-1.5" : "py-2.5"}`}>
       <nav
         className={`
           max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
@@ -98,14 +98,14 @@ const Navbar = () => {
           }
         `}
       >
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-14">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-brand-primary rounded-md flex items-center justify-center text-white font-bold text-2xl shadow-md group-hover:rotate-12 transition-transform duration-300">
+            <div className="w-9 h-9 bg-brand-primary rounded-md flex items-center justify-center text-white font-bold text-xl shadow-sm group-hover:rotate-12 transition-transform duration-300">
               {logoIcon}
             </div>
             <span
-              className={`text-2xl font-bold tracking-tight transition-all duration-500 hidden sm:block ${isDark ? "text-white" : "text-gray-900"
+              className={`text-xl font-bold tracking-tight transition-all duration-500 hidden sm:block ${isDark ? "text-white" : "text-gray-900"
                 }`}
             >
               {siteNamePrefix}<span className="text-brand-secondary">{siteNameAccent}</span>
@@ -268,7 +268,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-3 sm:px-5 py-2.5 rounded-md text-xs sm:text-sm font-bold text-white bg-brand-primary hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
+                  className="px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-semibold text-white bg-brand-primary hover:bg-purple-700 transition-colors whitespace-nowrap"
                 >
                   Join {siteNamePrefix}
                 </Link>

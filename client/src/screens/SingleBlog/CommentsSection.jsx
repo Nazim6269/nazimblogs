@@ -73,7 +73,9 @@ const CommentsSection = ({ isDark, comments = [], user, blogAuthorId, onAddComme
     const renderComment = (comment, isReply = false) => {
         const commentUser = typeof comment.user === 'object' ? comment.user : { name: 'User' };
         const commentUserId = typeof comment.user === 'object' ? comment.user._id : null;
+        const commentUserPhoto = typeof comment.user === 'object' ? comment.user.photoURL : null;
         const initial = commentUser.name?.charAt(0).toUpperCase() || 'U';
+        const avatarSize = isReply ? 'w-7 h-7' : 'w-9 h-9';
 
         return (
             <div
@@ -84,9 +86,17 @@ const CommentsSection = ({ isDark, comments = [], user, blogAuthorId, onAddComme
                     }`}
             >
                 <div className="flex items-start gap-3">
-                    <div className={`${isReply ? 'w-7 h-7 text-xs' : 'w-9 h-9 text-sm'} rounded-full bg-brand-primary flex items-center justify-center text-white font-bold shrink-0`}>
-                        {initial}
-                    </div>
+                    {commentUserPhoto ? (
+                        <img
+                            src={commentUserPhoto}
+                            alt={commentUser.name || 'User'}
+                            className={`${avatarSize} rounded-full object-cover shrink-0`}
+                        />
+                    ) : (
+                        <div className={`${avatarSize} ${isReply ? 'text-xs' : 'text-sm'} rounded-full bg-brand-primary flex items-center justify-center text-white font-bold shrink-0`}>
+                            {initial}
+                        </div>
+                    )}
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                             {commentUserId ? (

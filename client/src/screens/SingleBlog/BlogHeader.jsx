@@ -1,10 +1,9 @@
 import React from 'react'
 
 const BlogHeader = ({ title, isDark }) => (
-    <div className="mb-8">
+    <div className="mb-4">
         <h1
-            className={`text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 ${isDark ? "text-white" : "text-gray-900"
-                }`}
+            className={`text-2xl sm:text-3xl md:text-4xl font-bold leading-tight ${isDark ? "text-white" : "text-gray-900"}`}
         >
             {title}
         </h1>

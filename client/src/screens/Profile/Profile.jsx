@@ -163,93 +163,68 @@ const Profile = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen px-4 py-6 sm:px-6 sm:py-10 flex flex-col items-center gap-6 sm:gap-8 transition-colors duration-500`}
-    >
-      {/* Header: Avatar, name, actions */}
-      <div className="w-full max-w-3xl flex flex-col md:flex-row items-center gap-4 sm:gap-6">
+    <div className="min-h-screen px-4 py-4 sm:px-6 sm:py-6 flex flex-col items-center gap-4 transition-colors">
+      {/* Header */}
+      <div className="w-full max-w-3xl flex flex-col md:flex-row items-center gap-3 sm:gap-4">
         <div className="relative">
           {profile.photoURL ? (
-            <img
-              src={profile.photoURL}
-              alt={profile.name}
-              className="w-28 h-28 rounded-full object-cover shadow-md"
-            />
+            <img src={profile.photoURL} alt={profile.name} className="w-20 h-20 rounded-full object-cover" />
           ) : (
-            <div
-              className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold transition-all duration-300 ${isDark ? "bg-gray-700 text-white" : "bg-gray-300 text-gray-800"}`}
-            >
+            <div className={`w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold ${isDark ? "bg-slate-700 text-gray-300" : "bg-gray-200 text-gray-600"}`}>
               {profile.name?.charAt(0).toUpperCase()}
             </div>
           )}
           <button
             onClick={() => setIsEditingProfile(true)}
             title="Edit profile"
-            className={`absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors ${isDark ? "bg-brand-primary hover:bg-purple-700" : "bg-alter-brand-primary hover:bg-alter-brand-secondary"}`}
+            className={`absolute bottom-0 right-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${isDark ? "bg-brand-primary hover:bg-purple-700" : "bg-alter-brand-primary hover:bg-alter-brand-secondary"}`}
           >
-            <FontAwesomeIcon icon={faPen} className="text-white text-sm" />
+            <FontAwesomeIcon icon={faPen} className="text-white text-[10px]" />
           </button>
         </div>
 
         <div className="flex-1 text-center md:text-left">
-          <h1 className={`text-2xl sm:text-3xl font-bold ${isDark ? "text-gray-200" : "text-gray-900"}`}>{profile.name}</h1>
-          <p className={`${isDark ? "text-gray-400" : "text-gray-600"} text-sm`}>{profile.email}</p>
-          <p className={`mt-3 text-sm ${isDark ? "text-gray-300" : "text-gray-700"}`}>{profile.bio}</p>
-          <p className={`text-xs mt-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>{profile.location}</p>
+          <h1 className={`text-lg sm:text-xl font-bold ${isDark ? "text-gray-200" : "text-gray-900"}`}>{profile.name}</h1>
+          <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>{profile.email}</p>
+          <p className={`text-xs mt-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>{profile.bio}</p>
         </div>
 
-        <div className="flex flex-col items-center gap-3">
-          <Link to="/create-blog" className={`px-4 py-2 rounded-md font-semibold ${isDark ? "bg-brand-primary text-white" : "bg-alter-brand-primary text-white"}`}>Create</Link>
-        </div>
+        <Link to="/create-blog" className={`px-3 py-1.5 rounded-md text-xs font-semibold shrink-0 ${isDark ? "bg-brand-primary text-white" : "bg-alter-brand-primary text-white"}`}>Create</Link>
       </div>
 
-      {/* Editable Bio Section */}
-      <div className={`relative w-full max-w-3xl rounded-md p-4 sm:p-6 shadow-md transition-colors duration-500 ${isDark ? "bg-slate-800 text-gray-200" : "bg-slate-100 border-gray-300 text-gray-900 shadow-md"}`}>
-        {isEditingProfile ? (
+      {/* Bio edit */}
+      {isEditingProfile && (
+        <div className={`w-full max-w-3xl rounded-lg p-4 ${isDark ? "bg-slate-800" : "bg-gray-50 border border-gray-200"}`}>
           <ProfileEditForm
             initial={profile}
             onCancel={() => setIsEditingProfile(false)}
             onSave={handleProfileSave}
           />
-        ) : (
-          <>
-            <p className="leading-relaxed text-center">{profile.bio} <span className="hidden sm:inline">Currently studying at the University of Chittagong.</span></p>
-          </>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Quick Stats */}
-      <div className="w-full max-w-3xl grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
-        <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
-          <div className="text-sm text-gray-400">Blogs</div>
-          <div className="text-2xl font-bold">{totalBlogs}</div>
-        </div>
-        <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
-          <div className="text-sm text-gray-400">Likes</div>
-          <div className="text-2xl font-bold">{totalLikes}</div>
-        </div>
-        <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
-          <div className="text-sm text-gray-400">Followers</div>
-          <div className="text-2xl font-bold">{user?.followers?.length || 0}</div>
-        </div>
-        <div className={`p-4 rounded-md text-center ${isDark ? "bg-slate-800" : "bg-white border border-gray-200"}`}>
-          <div className="text-sm text-gray-400">Following</div>
-          <div className="text-2xl font-bold">{user?.following?.length || 0}</div>
-        </div>
+      {/* Stats */}
+      <div className="w-full max-w-3xl grid grid-cols-4 gap-2">
+        {[
+          { label: "Posts", value: totalBlogs },
+          { label: "Likes", value: totalLikes },
+          { label: "Followers", value: user?.followers?.length || 0 },
+          { label: "Following", value: user?.following?.length || 0 },
+        ].map((s) => (
+          <div key={s.label} className={`py-2.5 rounded-lg text-center ${isDark ? "bg-slate-800/60" : "bg-white border border-gray-100"}`}>
+            <div className={`text-lg font-bold ${isDark ? "text-gray-200" : "text-gray-800"}`}>{s.value}</div>
+            <div className={`text-[10px] ${isDark ? "text-gray-500" : "text-gray-400"}`}>{s.label}</div>
+          </div>
+        ))}
       </div>
 
       {/* Blogs Section */}
-      <div
-        className={`w-full max-w-6xl border rounded-md ${isDark ? "border-gray-600" : "border-gray-300"
-          }`}
+      <div className={`w-full max-w-4xl border rounded-lg ${isDark ? "border-slate-700" : "border-gray-200"}`}
       >
         {/* Header with Search */}
-        <div className={`p-4 border-b ${isDark ? "border-gray-600" : "border-gray-300"}`}>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <h2
-              className={`text-2xl sm:text-3xl font-semibold ${isDark ? "text-gray-200" : "text-gray-900"
-                }`}
-            >
+        <div className={`p-3 border-b ${isDark ? "border-slate-700" : "border-gray-200"}`}>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3">
+            <h2 className={`text-sm font-bold ${isDark ? "text-gray-200" : "text-gray-800"}`}>
               Your Blogs ({filteredBlogs.length})
             </h2>
 
@@ -390,8 +365,8 @@ const Profile = () => {
                     </div>
                   ) : (
                     // View Mode
-                    <div className="flex flex-col md:flex-row gap-4 p-4">
-                      <div className="flex-1 relative">
+                    <div className="relative p-4">
+                      <div className="relative">
                         {blog.status === "draft" && (
                           <span className="absolute top-2 right-2 z-10 px-2.5 py-1 text-xs font-bold rounded-md bg-yellow-500 text-white">
                             Draft
@@ -402,8 +377,12 @@ const Profile = () => {
                         </Link>
                       </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex flex-row md:flex-col gap-1.5 sm:gap-2 justify-end md:justify-start">
+                      {/* Action Buttons — top-right on lg, bottom-center on mobile */}
+                      <div className={`
+                        flex gap-1 z-20
+                        justify-center mt-3
+                        md:absolute md:top-3 md:right-3 md:mt-0 md:justify-end
+                      `}>
                         {blog.status === "draft" && (
                           <button
                             onClick={async () => {
@@ -417,35 +396,35 @@ const Profile = () => {
                                 toast.error(err.message || "Failed to publish");
                               }
                             }}
-                            className="px-4 py-2 rounded-md font-medium transition-all duration-300 flex items-center gap-2 bg-brand-primary text-white hover:bg-purple-700"
-                            title="Publish Blog"
+                            className={`w-8 h-8 rounded-md flex items-center justify-center transition-all duration-300 ${isDark
+                              ? "bg-slate-800 text-green-400 hover:text-green-300"
+                              : "bg-white text-green-600 hover:text-green-700 border border-gray-200"
+                              }`}
+                            title="Publish"
                           >
-                            <FontAwesomeIcon icon={faCheck} />
-                            <span className="hidden sm:inline">Publish</span>
+                            <FontAwesomeIcon icon={faCheck} className="text-xs" />
                           </button>
                         )}
                         <button
                           onClick={() => handleEditClick(blog)}
-                          className={`px-4 py-2 rounded-md font-medium transition-all duration-300 flex items-center gap-2 ${isDark
-                            ? "bg-blue-600 text-white hover:bg-blue-700"
-                            : "bg-blue-500 text-white hover:bg-blue-600"
+                          className={`w-8 h-8 rounded-md flex items-center justify-center transition-all duration-300 ${isDark
+                            ? "bg-slate-800 text-blue-400 hover:text-blue-300"
+                            : "bg-white text-blue-500 hover:text-blue-600 border border-gray-200"
                             }`}
-                          title="Edit Blog"
+                          title="Edit"
                         >
-                          <FontAwesomeIcon icon={faEdit} />
-                          <span className="hidden sm:inline">Edit</span>
+                          <FontAwesomeIcon icon={faEdit} className="text-xs" />
                         </button>
 
                         <button
                           onClick={() => setShowDeleteConfirm(blog._id)}
-                          className={`px-4 py-2 rounded-md font-medium transition-all duration-300 flex items-center gap-2 ${isDark
-                            ? "bg-red-600 text-white hover:bg-red-700"
-                            : "bg-red-500 text-white hover:bg-red-600"
+                          className={`w-8 h-8 rounded-md flex items-center justify-center transition-all duration-300 ${isDark
+                            ? "bg-slate-800 text-red-400 hover:text-red-300"
+                            : "bg-white text-red-500 hover:text-red-600 border border-gray-200"
                             }`}
-                          title="Delete Blog"
+                          title="Delete"
                         >
-                          <FontAwesomeIcon icon={faTrash} />
-                          <span className="hidden sm:inline">Delete</span>
+                          <FontAwesomeIcon icon={faTrash} className="text-xs" />
                         </button>
                       </div>
                     </div>

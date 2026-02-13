@@ -77,68 +77,60 @@ const BlogCards = () => {
 
   return (
     <div className="max-w-7xl mx-auto w-full flex flex-col min-h-screen">
-      {/* Search and Category Header */}
-      <div className="px-4 sm:px-5 mt-6 sm:mt-10 mb-2">
+      {/* Header */}
+      <div className="px-4 sm:px-5 mt-4 sm:mt-6 mb-1">
         {searchQuery ? (
           <div>
-            <h2 className={`text-xl sm:text-2xl font-black ${isDark ? "text-white" : "text-gray-900"}`}>
+            <h2 className={`text-lg sm:text-xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
               Search Results
             </h2>
-            <p className={`text-sm font-semibold opacity-60 flex items-center gap-2 mt-1`}>
-              Found {filteredData.length} articles for <span className="text-brand-secondary underline decoration-purple-500/30 underline-offset-4">&quot;{searchQuery}&quot;</span>
-              {currentCategory !== "Explore" && <span> in <span className="text-brand-secondary font-bold">{currentCategory}</span></span>}
+            <p className={`text-xs opacity-60 mt-0.5`}>
+              {filteredData.length} articles for "{searchQuery}"
+              {currentCategory !== "Explore" && ` in ${currentCategory}`}
             </p>
           </div>
         ) : (
           <div>
-            <h2 className={`text-2xl sm:text-3xl font-black ${isDark ? "text-white" : "text-gray-900"}`}>
-              {currentCategory === "Explore" ? "Featured Stories" : currentCategory}
+            <h2 className={`text-lg sm:text-xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
+              {currentCategory === "Explore" ? "Latest" : currentCategory}
             </h2>
-            <p className={`text-sm font-semibold opacity-60 mt-1`}>
+            <p className={`text-xs opacity-60 mt-0.5`}>
               {currentCategory === "Explore"
-                ? "Discover the latest insights, stories, and expertise from writers in any field."
-                : `Exploring the latest trends and articles in ${currentCategory}.`
+                ? "Discover insights, stories, and expertise."
+                : `Latest articles in ${currentCategory}.`
               }
             </p>
           </div>
         )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 p-4 sm:p-5 lg:p-8">
-        {/* Blog Cards Section - 8 columns */}
-        <div className="flex flex-col gap-4 sm:gap-6 lg:col-span-8 order-1 lg:order-1">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 p-4 sm:p-5">
+        {/* Blog Cards Section */}
+        <div className="flex flex-col gap-3 lg:col-span-8 order-1">
           {loading ? (
-            <div className="grid gap-4 sm:gap-6 lg:gap-8">
+            <div className="flex flex-col gap-3">
               {[1, 2, 3, 4, 5].map((i) => {
                 const bg = isDark ? "bg-gray-700" : "bg-gray-200";
                 return (
-                  <div key={i} className={`flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-6 p-4 rounded-md border animate-pulse ${isDark ? "bg-[#0f172a]/40 border-white/5" : "bg-white border-black/5"}`}>
-                    <div className={`w-full md:w-56 lg:w-72 h-40 sm:h-48 md:h-auto rounded-md shrink-0 ${bg}`} />
-                    <div className="flex-1 flex flex-col justify-between py-1">
-                      <div className="space-y-3">
-                        <div className="flex gap-4">
-                          <div className={`h-3 w-24 rounded ${bg}`} />
+                  <div key={i} className={`flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 rounded-lg border animate-pulse ${isDark ? "bg-slate-800/60 border-slate-700/50" : "bg-white border-gray-100"}`}>
+                    <div className={`w-full sm:w-44 md:w-52 h-36 sm:h-32 rounded-md shrink-0 ${bg}`} />
+                    <div className="flex-1 flex flex-col justify-between py-0.5">
+                      <div className="space-y-2.5">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-5 h-5 rounded-full ${bg}`} />
                           <div className={`h-3 w-20 rounded ${bg}`} />
+                          <div className={`h-3 w-14 rounded ${bg}`} />
                         </div>
-                        <div className={`h-6 sm:h-7 w-3/4 rounded ${bg}`} />
-                        <div className="space-y-2">
-                          <div className={`h-4 w-full rounded ${bg}`} />
-                          <div className={`h-4 w-5/6 rounded ${bg}`} />
+                        <div className={`h-5 w-3/4 rounded ${bg}`} />
+                        <div className="space-y-1.5">
+                          <div className={`h-3 w-full rounded ${bg}`} />
+                          <div className={`h-3 w-4/5 rounded ${bg}`} />
                         </div>
                       </div>
-                      <div className="flex flex-wrap items-center justify-between gap-3 pt-4 mt-6 border-t border-dashed border-gray-500/20">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-md ${bg}`} />
-                          <div className="space-y-1">
-                            <div className={`h-3 w-24 rounded ${bg}`} />
-                            <div className={`h-2 w-16 rounded ${bg}`} />
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <div className={`h-7 w-14 rounded-md ${bg}`} />
-                          <div className={`h-7 w-14 rounded-md ${bg}`} />
-                          <div className={`h-7 w-14 rounded-md ${bg}`} />
-                        </div>
+                      <div className="flex items-center gap-3 mt-3">
+                        <div className={`h-3 w-10 rounded ${bg}`} />
+                        <div className={`h-3 w-10 rounded ${bg}`} />
+                        <div className={`h-3 w-10 rounded ${bg}`} />
                       </div>
                     </div>
                   </div>
@@ -146,7 +138,7 @@ const BlogCards = () => {
               })}
             </div>
           ) : currentPosts.length > 0 ? (
-            <div className="grid gap-4 sm:gap-6 lg:gap-8">
+            <div className="flex flex-col gap-3">
               {currentPosts.map((item) => (
                 <Link key={item._id} to={`/blog-details/${item._id}`} className="block">
                   <BlogCard data={item} />
@@ -154,20 +146,17 @@ const BlogCards = () => {
               ))}
             </div>
           ) : (
-            <div className="py-20">
-              <NoData
-                message={searchQuery ? "No results found" : "No Articles Available"}
-                subMessage={searchQuery
-                  ? `We couldn't find any articles matching "${searchQuery}" in ${currentCategory}. Try broadening your search!`
-                  : `Currently there are no articles in the ${currentCategory} category. Stay tuned for updates!`
-                }
-              />
-            </div>
+            <NoData
+              message={searchQuery ? "No results found" : "No articles yet"}
+              subMessage={searchQuery
+                ? `No articles matching "${searchQuery}". Try a different search.`
+                : `No articles in ${currentCategory} yet.`
+              }
+            />
           )}
 
-          {/* Pagination */}
           {currentPosts.length > 0 && totalPages > 1 && (
-            <div className="py-10 border-t border-gray-500/10 mt-4">
+            <div className="py-6 border-t border-gray-500/10 mt-2">
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
@@ -177,8 +166,8 @@ const BlogCards = () => {
           )}
         </div>
 
-        {/* Sidebar - 4 columns */}
-        <div className="lg:col-span-4 order-2 lg:order-2">
+        {/* Sidebar */}
+        <div className="lg:col-span-4 order-2">
           <SideBar blogs={data} />
         </div>
       </div>

@@ -100,8 +100,8 @@ const BlogActionBar = ({ isDark, blogId, likes = [], comments, user, onLike, blo
                 : "bg-white/80 border-gray-200"
                 }`}
         >
-            <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-6">
+            <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-4">
                     <ActionButton
                         icon={faHeart}
                         text={likeCount}

@@ -1,17 +1,18 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  padding: 2rem 0.5rem;
+  padding: 1rem 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 
   @media (min-width: 640px) {
-    padding: 2rem 1rem;
+    padding: 1rem 0.75rem;
   }
 
   @media (min-width: 1024px) {
-    padding: 2rem 2rem;
+    padding: 1.25rem 1.5rem;
   }
 `;
 

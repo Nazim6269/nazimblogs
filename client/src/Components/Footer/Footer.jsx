@@ -31,118 +31,66 @@ const Footer = () => {
   const [subscribeStatus, setSubscribeStatus] = useState(null);
   const [emailError, setEmailError] = useState("");
 
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubscribe = (e) => {
     e.preventDefault();
     setEmailError("");
     setSubscribeStatus(null);
-
-    if (!email) {
-      setEmailError("Email is required");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setEmailError("Please enter a valid email address");
-      return;
-    }
-
+    if (!email) { setEmailError("Email is required"); return; }
+    if (!validateEmail(email)) { setEmailError("Please enter a valid email"); return; }
     setTimeout(() => {
       setSubscribeStatus("success");
       setEmail("");
-      setTimeout(() => {
-        setSubscribeStatus(null);
-      }, 5000);
+      setTimeout(() => setSubscribeStatus(null), 5000);
     }, 500);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
   };
 
   return (
     <footer
-      className={`
-        relative overflow-hidden mt-16 border-t backdrop-blur-lg transition-all duration-500
-        ${isDark
-          ? "bg-[#050816]/95 border-white/10 text-gray-300"
-          : "bg-white/90 border-black/10 text-gray-900"
-        }
-      `}
+      className={`relative mt-10 border-t transition-colors ${isDark
+        ? "bg-slate-900/95 border-slate-800 text-gray-300"
+        : "bg-gray-50 border-gray-200 text-gray-900"
+        }`}
     >
-
-      {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 py-12">
-
-        {/* Top Section: Brand + Description + Social */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12 pb-12 border-b border-white/10">
-          <div className="lg:col-span-2">
-            <h2
-              className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 transition-all duration-500 ${isDark
-                ? "text-brand-secondary"
-                : "text-alter-brand-secondary"
-                }`}
-            >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {/* Top: Brand + Social */}
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6 pb-6 border-b border-gray-500/10">
+          <div className="max-w-md">
+            <h2 className={`text-lg font-bold mb-1 ${isDark ? "text-brand-secondary" : "text-alter-brand-secondary"}`}>
               {brandName}
             </h2>
-            <p className={`text-base leading-relaxed max-w-xl mb-6 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+            <p className={`text-xs leading-relaxed mb-3 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
               {brandDescription}
             </p>
-
-            {/* Contact Info */}
-            <div className="space-y-3">
+            <div className="flex flex-col gap-1.5">
               {configContactInfo.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3 group">
-                  <FontAwesomeIcon
-                    icon={iconMap[item.icon] || faEnvelope}
-                    className={`w-5 h-5 transition-colors duration-300 ${isDark
-                      ? "text-brand-tertiary group-hover:text-purple-300"
-                      : "text-brand-primary group-hover:text-purple-700"
-                      }`}
-                  />
-                  <span className={`text-sm transition-colors duration-300 ${isDark ? "text-gray-400 group-hover:text-gray-300" : "text-gray-600 group-hover:text-gray-700"
-                    }`}>
-                    {item.text}
-                  </span>
+                <div key={idx} className="flex items-center gap-2">
+                  <FontAwesomeIcon icon={iconMap[item.icon] || faEnvelope} className={`text-[10px] ${isDark ? "text-gray-500" : "text-gray-400"}`} />
+                  <span className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>{item.text}</span>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Social Media */}
-          <div className="flex flex-col items-start lg:items-end justify-start">
-            <h3 className="font-semibold mb-4 text-lg">Follow Us</h3>
+          <div className="flex flex-col items-start sm:items-end">
+            <span className={`text-xs font-medium mb-2 ${isDark ? "text-gray-400" : "text-gray-500"}`}>Follow</span>
             <Social links={socialLinks} />
           </div>
         </div>
 
-        {/* Footer Links Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-12">
+        {/* Links Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           {configFooterLinks.map((section, idx) => (
-            <div key={idx} className="space-y-4">
-              <h3 className={`font-bold text-lg mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
+            <div key={idx}>
+              <h3 className={`text-xs font-bold uppercase tracking-wider mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
                 {section.title}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-1.5">
                 {section.links.map((link, i) => (
                   <li key={i}>
                     <a
                       href={link.path}
-                      className={`
-                        text-sm transition-all duration-300 inline-block
-                        hover:translate-x-1
-                        ${isDark
-                          ? "text-gray-400 hover:text-brand-tertiary"
-                          : "text-gray-600 hover:text-blue-600"
-                        }
-                      `}
+                      className={`text-xs transition-colors ${isDark ? "text-gray-500 hover:text-gray-300" : "text-gray-500 hover:text-gray-700"}`}
                     >
                       {link.name}
                     </a>
@@ -153,106 +101,56 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* Newsletter Section */}
-        <div className={`max-w-2xl mx-auto p-4 sm:p-6 md:p-8 rounded-md backdrop-blur-sm mb-12 ${isDark ? "bg-white/5" : "bg-gray-100/50"
-          }`}>
-          <div className="text-center mb-6">
-            <h3 className={`text-xl sm:text-2xl font-bold mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-              Stay Updated
-            </h3>
-            <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-              Subscribe to our newsletter and never miss our latest articles and updates.
-            </p>
-          </div>
-
-          <form onSubmit={handleSubscribe} className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <div className="flex-1">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setEmailError("");
-                    setSubscribeStatus(null);
-                  }}
-                  placeholder="Enter your email address"
-                  className={`
-                    w-full px-5 py-3 rounded-md transition-all duration-300
-                    ${isDark
-                      ? "bg-gray-800/80 text-white placeholder-gray-500 border border-gray-700"
-                      : "bg-white text-gray-900 placeholder-gray-400 border border-gray-300"
-                    }
-                    focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
-                    ${emailError ? "ring-2 ring-red-500" : ""}
-                  `}
-                  aria-label="Email address"
-                />
-                {emailError && (
-                  <p className="text-red-500 text-xs mt-2 flex items-center gap-1">
-                    <FontAwesomeIcon icon={faExclamationCircle} className="w-3 h-3" />
-                    {emailError}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                className={`
-                  px-8 py-3 font-semibold rounded-md transition-all duration-300
-                  transform hover:scale-105 active:scale-95
-                  ${isDark
-                    ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
-                    : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
-                  }
-                `}
-                aria-label="Subscribe to newsletter"
-              >
-                Subscribe
-              </button>
+        {/* Newsletter */}
+        <div className={`max-w-lg mx-auto p-4 rounded-lg mb-6 ${isDark ? "bg-white/5" : "bg-white border border-gray-200"}`}>
+          <p className={`text-sm font-semibold text-center mb-1 ${isDark ? "text-gray-200" : "text-gray-800"}`}>
+            Stay updated
+          </p>
+          <p className={`text-xs text-center mb-3 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+            Get the latest articles in your inbox.
+          </p>
+          <form onSubmit={handleSubscribe} className="flex gap-2">
+            <div className="flex-1">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setEmailError(""); setSubscribeStatus(null); }}
+                placeholder="your@email.com"
+                className={`w-full px-3 py-2 rounded-md text-xs transition-colors ${isDark
+                  ? "bg-gray-800 text-white placeholder-gray-500 border border-gray-700"
+                  : "bg-gray-50 text-gray-900 placeholder-gray-400 border border-gray-200"
+                  } focus:outline-none focus:ring-1 focus:ring-purple-500 ${emailError ? "ring-1 ring-red-500" : ""}`}
+              />
+              {emailError && <p className="text-red-500 text-[10px] mt-1">{emailError}</p>}
             </div>
-
-            {subscribeStatus === "success" && (
-              <div className="flex items-center justify-center gap-2 text-green-500 animate-fade-in">
-                <FontAwesomeIcon icon={faCheckCircle} className="w-5 h-5" />
-                <span className="text-sm font-medium">Successfully subscribed! Check your inbox.</span>
-              </div>
-            )}
+            <button
+              type="submit"
+              className="px-4 py-2 text-xs font-semibold rounded-md text-white bg-brand-primary hover:bg-purple-700 transition-colors shrink-0"
+            >
+              Subscribe
+            </button>
           </form>
+          {subscribeStatus === "success" && (
+            <div className="flex items-center justify-center gap-1.5 text-green-500 text-xs mt-2">
+              <FontAwesomeIcon icon={faCheckCircle} className="text-xs" />
+              Subscribed!
+            </div>
+          )}
         </div>
 
-        {/* Bottom Section: Copyright + Back to Top */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-white/10">
-          <p className={`text-sm ${isDark ? "text-gray-500" : "text-gray-600"}`}>
+        {/* Bottom */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-gray-500/10">
+          <p className={`text-[11px] ${isDark ? "text-gray-500" : "text-gray-400"}`}>
             &copy; {new Date().getFullYear()} {copyrightText}
           </p>
-
           <button
-            onClick={scrollToTop}
-            className={`
-              group flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm
-              transition-all duration-300 transform hover:scale-105
-              ${isDark
-                ? "bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white"
-                : "bg-gray-200 hover:bg-gray-300 text-gray-700 hover:text-gray-900"
-              }
-            `}
-            aria-label="Back to top"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className={`flex items-center gap-1.5 text-[11px] font-medium transition-colors ${isDark ? "text-gray-500 hover:text-gray-300" : "text-gray-400 hover:text-gray-600"}`}
           >
-            <span>Back to Top</span>
-            <FontAwesomeIcon
-              icon={faArrowUp}
-              className="w-4 h-4 transition-transform duration-300 group-hover:-translate-y-1"
-            />
+            Back to top <FontAwesomeIcon icon={faArrowUp} className="text-[10px]" />
           </button>
         </div>
       </div>
-
-      {/* Bottom Accent Line */}
-      <div className={`h-1 ${isDark
-        ? "bg-purple-500/30"
-        : "bg-violet-500/30"
-        }`}></div>
     </footer>
   );
 };

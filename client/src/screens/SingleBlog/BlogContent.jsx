@@ -5,10 +5,10 @@ const BlogContent = ({ content, isDark }) => {
 
   return (
     <article
-      className={`prose prose-lg max-w-none ${isDark ? "prose-invert" : ""}`}
+      className={`prose prose-base max-w-none ${isDark ? "prose-invert" : ""}`}
     >
       <div
-        className={`leading-relaxed text-lg ${isDark ? "text-gray-300" : "text-gray-700"}`}
+        className={`leading-relaxed text-base ${isDark ? "text-gray-300" : "text-gray-700"}`}
         dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
       />
     </article>

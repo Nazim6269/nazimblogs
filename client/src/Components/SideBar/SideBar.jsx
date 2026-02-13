@@ -4,7 +4,7 @@ import PopularBlog from "../../Components/PopularBlog/PopularBlog";
 import { useTheme } from "../../hooks/useTheme";
 import { fetchRecommendedBlogs } from "../../helper/blogApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFire, faHeart, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faFire, faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = ({ blogs = [] }) => {
   const { theme } = useTheme();
@@ -13,7 +13,6 @@ const SideBar = ({ blogs = [] }) => {
   const [recommendedPosts, setRecommendedPosts] = useState([]);
   const [recLoading, setRecLoading] = useState(true);
 
-  // Calculate trending posts (Top 3 by likes)
   const trendingPosts = useMemo(() => {
     if (!blogs || blogs.length === 0) return [];
     return [...blogs]
@@ -21,7 +20,6 @@ const SideBar = ({ blogs = [] }) => {
       .slice(0, 3);
   }, [blogs]);
 
-  // Fetch recommended posts from dedicated endpoint
   useEffect(() => {
     fetchRecommendedBlogs()
       .then((data) => setRecommendedPosts(data))
@@ -30,76 +28,39 @@ const SideBar = ({ blogs = [] }) => {
   }, []);
 
   return (
-    <aside className="w-full lg:w-[380px] flex flex-col gap-6 sm:gap-8 shrink-0 lg:sticky lg:top-24 h-fit">
-      {/* Popular Section */}
-      <section
-        className={`p-4 sm:p-6 rounded-md border transition-all duration-500 overflow-hidden relative group
-        ${isDark ? "bg-[#0f172a]/40 border-white/5 shadow-md backdrop-blur-md" : "bg-white border-black/5 shadow-md"}
-      `}
-      >
-        <div className={`absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/20 transition-colors duration-500`}></div>
-
-        <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
-          <h3 className={`text-lg font-black flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-            <FontAwesomeIcon icon={faFire} className="text-orange-500" />
-            Popular Posts
-          </h3>
-          <button className="text-[10px] font-black uppercase tracking-widest text-brand-secondary hover:text-brand-tertiary transition-colors">
-            See All
-          </button>
-        </div>
-
-        <div className="flex flex-col gap-2 relative z-10">
+    <aside className="w-full lg:w-[340px] flex flex-col gap-4 shrink-0 lg:sticky lg:top-20 h-fit">
+      {/* Popular */}
+      <section className={`p-4 rounded-lg border ${isDark ? "bg-slate-800/60 border-slate-700/50" : "bg-white border-gray-100"}`}>
+        <h3 className={`text-sm font-bold flex items-center gap-1.5 mb-3 ${isDark ? "text-gray-200" : "text-gray-800"}`}>
+          <FontAwesomeIcon icon={faFire} className="text-orange-500 text-xs" />
+          Popular
+        </h3>
+        <div className="flex flex-col gap-1">
           {trendingPosts.length > 0 ? (
-            trendingPosts.map(post => (
-              <PopularBlog key={post._id || post.id} data={post} />
-            ))
+            trendingPosts.map(post => <PopularBlog key={post._id || post.id} data={post} />)
           ) : (
-            [1, 2, 3].map(i => (
-              <div key={i} className="h-16 animate-pulse bg-gray-500/10 rounded-md" />
-            ))
+            [1, 2, 3].map(i => <div key={i} className="h-14 animate-pulse bg-gray-500/10 rounded" />)
           )}
         </div>
       </section>
 
-      {/* Recommended Section */}
-      <section
-        className={`p-4 sm:p-6 rounded-md border transition-all duration-500 overflow-hidden relative group
-        ${isDark ? "bg-[#0f172a]/40 border-white/5 shadow-md backdrop-blur-md" : "bg-white border-black/5 shadow-md"}
-      `}
-      >
-        <div className={`absolute top-0 right-0 w-32 h-32 bg-pink-500/10 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-pink-500/20 transition-colors duration-500`}></div>
-
-        <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
-          <h3 className={`text-lg font-black flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-            <FontAwesomeIcon icon={faHeart} className="text-pink-500" />
-            Recommended
-          </h3>
-          <button className="text-[10px] font-black uppercase tracking-widest text-pink-500 hover:text-pink-400 transition-colors">
-            Discover
-          </button>
-        </div>
-
-        <div className="flex flex-col gap-2 relative z-10">
+      {/* Recommended */}
+      <section className={`p-4 rounded-lg border ${isDark ? "bg-slate-800/60 border-slate-700/50" : "bg-white border-gray-100"}`}>
+        <h3 className={`text-sm font-bold flex items-center gap-1.5 mb-3 ${isDark ? "text-gray-200" : "text-gray-800"}`}>
+          <FontAwesomeIcon icon={faHeart} className="text-pink-500 text-xs" />
+          Recommended
+        </h3>
+        <div className="flex flex-col gap-1">
           {recLoading ? (
-            [1, 2, 3].map(i => (
-              <div key={i} className="h-20 animate-pulse bg-gray-500/10 rounded-md" />
-            ))
+            [1, 2, 3].map(i => <div key={i} className="h-16 animate-pulse bg-gray-500/10 rounded" />)
           ) : recommendedPosts.length > 0 ? (
-            recommendedPosts.map(post => (
-              <Favorite key={post._id || post.id} data={post} />
-            ))
+            recommendedPosts.map(post => <Favorite key={post._id || post.id} data={post} />)
           ) : (
-            <p className={`text-sm text-center py-4 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+            <p className={`text-xs text-center py-3 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
               No recommendations yet
             </p>
           )}
         </div>
-
-        <button className={`w-full mt-4 sm:mt-6 py-2 sm:py-3 rounded-md flex items-center justify-center gap-2 text-xs font-bold transition-all duration-300 ${isDark ? "bg-white/5 hover:bg-white/10 text-gray-300" : "bg-gray-50 hover:bg-gray-100 text-gray-600"}`}>
-          View More Articles
-          <FontAwesomeIcon icon={faArrowRight} className="text-xs" />
-        </button>
       </section>
     </aside>
   );

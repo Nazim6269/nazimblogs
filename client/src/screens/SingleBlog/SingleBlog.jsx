@@ -151,17 +151,17 @@ const SingleBlog = () => {
         }`}
     >
       {/* Main Content Container */}
-      <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-8 md:py-12">
+      <div className="max-w-3xl mx-auto px-4 py-4 sm:px-6 sm:py-6">
         {/* Back Link */}
         <Link
           to="/"
-          className={`inline-flex items-center gap-2 mb-8 font-semibold transition-all duration-300 hover:gap-3 ${isDark
+          className={`inline-flex items-center gap-1.5 mb-5 text-sm font-medium transition-colors ${isDark
             ? "text-gray-400 hover:text-white"
-            : "text-gray-600 hover:text-gray-900"
+            : "text-gray-500 hover:text-gray-900"
             }`}
         >
-          <FontAwesomeIcon icon={faArrowLeft} />
-          Back to feed
+          <FontAwesomeIcon icon={faArrowLeft} className="text-xs" />
+          Back
         </Link>
 
         {/* Blog Header */}

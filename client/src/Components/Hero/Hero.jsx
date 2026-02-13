@@ -10,32 +10,21 @@ const Hero = () => {
 
     return (
         <section
-            className={`relative w-full min-h-[250px] sm:min-h-[300px] md:min-h-[400px] flex items-center justify-center rounded-md overflow-hidden mb-8 ${!backgroundImage
-                ? (isDark ? "bg-gradient-to-br from-purple-900/40 via-slate-900 to-slate-800" : "bg-gradient-to-br from-purple-100 via-white to-blue-50")
+            className={`relative w-full min-h-[180px] sm:min-h-[220px] md:min-h-[280px] flex items-center justify-center rounded-lg overflow-hidden mb-6 ${!backgroundImage
+                ? (isDark ? "bg-gradient-to-br from-purple-900/30 via-slate-900 to-slate-800" : "bg-gradient-to-br from-purple-50 via-white to-blue-50")
                 : ""
                 }`}
         >
             {backgroundImage && (
                 <>
-                    <img
-                        src={backgroundImage}
-                        alt=""
-                        className="absolute inset-0 w-full h-full object-cover"
-                    />
+                    <img src={backgroundImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/50" />
                 </>
             )}
 
-            {!backgroundImage && (
-                <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute -top-20 -right-20 w-72 h-72 bg-brand-primary/20 rounded-full blur-3xl" />
-                    <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-brand-secondary/20 rounded-full blur-3xl" />
-                </div>
-            )}
-
-            <div className="relative z-10 text-center px-4 py-8 sm:px-6 sm:py-12 md:py-16 max-w-3xl mx-auto">
+            <div className="relative z-10 text-center px-4 py-6 sm:px-6 sm:py-8 md:py-10 max-w-2xl mx-auto">
                 <h1
-                    className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 ${backgroundImage
+                    className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 ${backgroundImage
                         ? "text-white"
                         : (isDark ? "text-white" : "text-gray-900")
                         }`}
@@ -43,9 +32,9 @@ const Hero = () => {
                     {title}
                 </h1>
                 <p
-                    className={`text-base sm:text-lg mb-8 max-w-xl mx-auto ${backgroundImage
+                    className={`text-sm sm:text-base mb-5 max-w-lg mx-auto ${backgroundImage
                         ? "text-gray-200"
-                        : (isDark ? "text-gray-400" : "text-gray-600")
+                        : (isDark ? "text-gray-400" : "text-gray-500")
                         }`}
                 >
                     {subtitle}
@@ -53,7 +42,7 @@ const Hero = () => {
                 {ctaText && (
                     <Link
                         to={ctaLink || "/"}
-                        className="inline-block px-6 py-2.5 sm:px-8 sm:py-3 rounded-md font-bold text-white bg-brand-primary hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/30 hover:-translate-y-0.5 transition-all duration-300"
+                        className="inline-block px-5 py-2 sm:px-6 sm:py-2.5 rounded-md text-sm font-semibold text-white bg-brand-primary hover:bg-purple-700 transition-colors duration-200"
                     >
                         {ctaText}
                     </Link>

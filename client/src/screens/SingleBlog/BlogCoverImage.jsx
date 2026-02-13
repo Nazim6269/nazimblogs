@@ -1,10 +1,9 @@
-const BlogCoverImage = ({ id, title, isDark }) => (
-    <div className="relative mb-10 overflow-hidden rounded-md group shadow-md">
-        <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+const BlogCoverImage = ({ id, title, isDark, imageUrl }) => (
+    <div className="relative mb-6 overflow-hidden rounded-lg">
         <img
-            src={`https://picsum.photos/seed/${id}/1200/600`}
+            src={imageUrl || `https://picsum.photos/seed/${id}/1200/600`}
             alt={title}
-            className="w-full h-72 md:h-96 lg:h-[500px] object-cover transition-all duration-700 group-hover:scale-105"
+            className="w-full h-52 sm:h-64 md:h-80 object-cover"
             loading="lazy"
         />
     </div>

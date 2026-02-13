@@ -148,7 +148,7 @@ const Register = () => {
   return (
     <div className="flex w-full min-h-screen items-start justify-center transition-colors duration-500">
       <div
-        className={`w-full max-w-lg px-6 py-8 sm:px-10 sm:py-12 rounded-md shadow-md space-y-8 transition-all duration-500
+        className={`w-full max-w-md px-5 py-6 sm:px-8 sm:py-8 rounded-md shadow-md space-y-6 transition-all duration-500
         ${isDark
             ? "bg-gray-900/90 border border-gray-700 text-gray-200"
             : "bg-white border border-gray-200 text-gray-900"
@@ -159,7 +159,7 @@ const Register = () => {
             {/* Step 1: Registration Form */}
             <div className="text-center space-y-2">
               <h1
-                className={`text-2xl sm:text-3xl md:text-4xl font-extrabold transition-colors duration-500 ${isDark ? "text-gray-100" : "text-gray-900"}`}
+                className={`text-xl sm:text-2xl font-bold transition-colors duration-500 ${isDark ? "text-gray-100" : "text-gray-900"}`}
               >
                 Create Account
               </h1>
@@ -170,7 +170,7 @@ const Register = () => {
               </p>
             </div>
 
-            <form className="space-y-6" onSubmit={handleSendOTP}>
+            <form className="space-y-4" onSubmit={handleSendOTP}>
               <InputGroup
                 name="firstName"
                 label="First Name"
@@ -201,16 +201,16 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={sendingOTP}
-                className={`w-full py-3 font-bold transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed ${isDark
-                  ? "bg-brand-primary text-white hover:bg-purple-700 hover:shadow-md hover:shadow-purple-500/50"
-                  : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
+                className={`w-full py-2.5 text-sm font-semibold rounded-md transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed ${isDark
+                  ? "bg-brand-primary text-white hover:bg-purple-700"
+                  : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary"
                   }`}
               >
                 {sendingOTP ? "Sending OTP..." : "Send Verification Code"}
               </button>
             </form>
 
-            <div className="flex items-center justify-center gap-2 text-sm opacity-70 border-t pt-4 mt-4 border-gray-300 dark:border-gray-700">
+            <div className="flex items-center justify-center gap-2 text-xs opacity-70 border-t pt-3 mt-3 border-gray-300 dark:border-gray-700">
               <p className="transition-colors duration-500">
                 Already have an account?
               </p>
@@ -253,7 +253,7 @@ const Register = () => {
             {/* Step 2: OTP Verification */}
             <div className="text-center space-y-2">
               <h1
-                className={`text-2xl sm:text-3xl md:text-4xl font-extrabold transition-colors duration-500 ${isDark ? "text-gray-100" : "text-gray-900"}`}
+                className={`text-xl sm:text-2xl font-bold transition-colors duration-500 ${isDark ? "text-gray-100" : "text-gray-900"}`}
               >
                 Verify Email
               </h1>
@@ -265,7 +265,7 @@ const Register = () => {
               </p>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               <OTPInput
                 length={6}
                 onComplete={handleVerifyOTP}

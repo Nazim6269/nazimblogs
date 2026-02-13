@@ -1,11 +1,15 @@
+import { useLocation } from "react-router-dom";
 import BlogCards from "../BlogCards/BlogCards";
 import Hero from "../../Components/Hero/Hero";
 import TrendingSection from "../../Components/TrendingSection/TrendingSection";
 
 const Home = () => {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
+
   return (
     <div>
-      <Hero />
+      {isHome && <Hero />}
       <TrendingSection />
       <BlogCards />
     </div>

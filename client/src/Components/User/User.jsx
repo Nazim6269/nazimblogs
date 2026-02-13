@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
 
-const User = ({ author, date, authorId }) => {
+const User = ({ author, date, authorId, photoURL }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -22,17 +22,25 @@ const User = ({ author, date, authorId }) => {
     <div className={`flex items-center space-x-3`}>
       {/* Avatar */}
       <div className="avatar">
-        <div
-          className={`
-            w-10 h-10 rounded-full font-bold flex items-center justify-center
-            ${isDark
-              ? "bg-slate-800 text-gray-100"
-              : "bg-gray-200 text-black border border-gray-300"
-            }
-          `}
-        >
-          {author?.charAt(0).toUpperCase() || "U"}
-        </div>
+        {photoURL ? (
+          <img
+            src={photoURL}
+            alt={author || "User"}
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        ) : (
+          <div
+            className={`
+              w-10 h-10 rounded-full font-bold flex items-center justify-center
+              ${isDark
+                ? "bg-slate-800 text-gray-100"
+                : "bg-gray-200 text-black border border-gray-300"
+              }
+            `}
+          >
+            {author?.charAt(0).toUpperCase() || "U"}
+          </div>
+        )}
       </div>
 
       {/* Info Text */}
@@ -54,6 +62,7 @@ User.propTypes = {
   author: PropTypes.string,
   date: PropTypes.string,
   authorId: PropTypes.string,
+  photoURL: PropTypes.string,
 };
 
 export default User;

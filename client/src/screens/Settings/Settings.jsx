@@ -112,17 +112,17 @@ const Settings = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto py-6 sm:py-8 md:py-12 px-4">
+        <div className="max-w-3xl mx-auto py-4 sm:py-6 px-4">
             <div className={`rounded-md shadow-md overflow-hidden transition-all duration-500 ${isDark ? "bg-gray-900 border border-white/5" : "bg-white border border-black/5"}`}>
-                <div className="p-4 sm:p-6 md:p-8 lg:p-12">
-                    <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-10 mb-6 sm:mb-12">
+                <div className="p-4 sm:p-5 md:p-6">
+                    <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-5 mb-5">
                         {/* Avatar Section */}
                         <div className="relative group">
-                            <div className={`w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-md overflow-hidden border-4 ${isDark ? "border-purple-500/30" : "border-purple-100"} shadow-md relative transition-transform duration-500 group-hover:scale-[1.02]`}>
+                            <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-md overflow-hidden border-2 ${isDark ? "border-purple-500/30" : "border-purple-100"} shadow-sm relative`}>
                                 {imagePreview ? (
                                     <img src={imagePreview} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className={`w-full h-full flex items-center justify-center text-5xl font-bold ${isDark ? "bg-white/5 text-brand-tertiary" : "bg-purple-50 text-brand-primary"}`}>
+                                    <div className={`w-full h-full flex items-center justify-center text-2xl font-bold ${isDark ? "bg-white/5 text-brand-tertiary" : "bg-purple-50 text-brand-primary"}`}>
                                         {formData.name?.charAt(0).toUpperCase() || "U"}
                                     </div>
                                 )}
@@ -130,7 +130,7 @@ const Settings = () => {
                                 {loading && (
                                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
                                         <div className="flex flex-col items-center gap-2">
-                                            <FontAwesomeIcon icon={faSpinner} className="text-white text-3xl animate-spin" />
+                                            <FontAwesomeIcon icon={faSpinner} className="text-white text-xl animate-spin" />
                                             <span className="text-white text-xs font-bold">{Math.round(uploadProgress)}%</span>
                                         </div>
                                     </div>
@@ -139,7 +139,7 @@ const Settings = () => {
 
                             <button
                                 onClick={() => fileInputRef.current.click()}
-                                className={`absolute -bottom-4 -right-4 w-12 h-12 rounded-md flex items-center justify-center shadow-md hover:-translate-y-1 transition-all duration-300 ${isDark ? "bg-brand-primary text-white hover:bg-purple-500" : "bg-brand-primary text-white hover:bg-purple-700"}`}
+                                className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-md flex items-center justify-center shadow-sm text-sm transition-all duration-300 ${isDark ? "bg-brand-primary text-white hover:bg-purple-500" : "bg-brand-primary text-white hover:bg-purple-700"}`}
                             >
                                 <FontAwesomeIcon icon={faCamera} />
                             </button>
@@ -153,16 +153,16 @@ const Settings = () => {
                         </div>
 
                         <div className="text-center md:text-left">
-                            <h1 className={`text-2xl sm:text-3xl md:text-4xl font-black mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>Account Settings</h1>
-                            <p className={`text-sm font-semibold opacity-60`}>Update your profile information and how you appear on HexaBlog.</p>
+                            <h1 className={`text-lg sm:text-xl font-bold mb-1 ${isDark ? "text-white" : "text-gray-900"}`}>Account Settings</h1>
+                            <p className={`text-xs opacity-60`}>Update your profile information.</p>
                         </div>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {/* Name */}
-                            <div className="space-y-3">
-                                <label className={`text-sm font-bold flex items-center gap-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                            <div className="space-y-1.5">
+                                <label className={`text-xs font-semibold flex items-center gap-1.5 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                                     <FontAwesomeIcon icon={faUser} className="text-brand-secondary" />
                                     Full Name
                                 </label>
@@ -172,13 +172,13 @@ const Settings = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                     placeholder="e.g. John Doe"
-                                    className={`w-full px-4 py-3 sm:px-5 sm:py-4 rounded-md outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
+                                    className={`w-full px-3 py-2.5 rounded-md text-sm outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
                                 />
                             </div>
 
                             {/* Email (Read Only) */}
-                            <div className="space-y-3">
-                                <label className={`text-sm font-bold flex items-center gap-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                            <div className="space-y-1.5">
+                                <label className={`text-xs font-semibold flex items-center gap-1.5 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                                     <FontAwesomeIcon icon={faEnvelope} className="text-blue-500" />
                                     Email Address
                                 </label>
@@ -186,13 +186,13 @@ const Settings = () => {
                                     type="email"
                                     value={user?.email || ""}
                                     disabled
-                                    className={`w-full px-5 py-4 rounded-md opacity-50 cursor-not-allowed border ${isDark ? "bg-white/5 border-white/10 text-gray-500" : "bg-gray-100 border-transparent text-gray-500"}`}
+                                    className={`w-full px-3 py-2.5 rounded-md text-sm opacity-50 cursor-not-allowed border ${isDark ? "bg-white/5 border-white/10 text-gray-500" : "bg-gray-100 border-transparent text-gray-500"}`}
                                 />
                             </div>
 
                             {/* Location */}
-                            <div className="space-y-3">
-                                <label className={`text-sm font-bold flex items-center gap-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                            <div className="space-y-1.5">
+                                <label className={`text-xs font-semibold flex items-center gap-1.5 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                                     <FontAwesomeIcon icon={faMapMarkerAlt} className="text-red-500" />
                                     Location
                                 </label>
@@ -202,7 +202,7 @@ const Settings = () => {
                                     value={formData.location}
                                     onChange={handleChange}
                                     placeholder="e.g. New York, USA"
-                                    className={`w-full px-4 py-3 sm:px-5 sm:py-4 rounded-md outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
+                                    className={`w-full px-3 py-2.5 rounded-md text-sm outline-none transition-all duration-300 border ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
                                 />
                             </div>
 
@@ -216,18 +216,18 @@ const Settings = () => {
                                     name="bio"
                                     value={formData.bio}
                                     onChange={handleChange}
-                                    rows="4"
+                                    rows="3"
                                     placeholder="Tell us about yourself..."
-                                    className={`w-full px-5 py-4 rounded-md outline-none transition-all duration-300 border resize-none ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
+                                    className={`w-full px-3 py-2.5 rounded-md text-sm outline-none transition-all duration-300 border resize-none ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
                                 ></textarea>
                             </div>
                         </div>
 
-                        <div className="pt-4 flex justify-end">
+                        <div className="pt-3 flex justify-end">
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className={`px-10 py-4 rounded-md font-black text-white shadow-md transition-all duration-300 flex items-center gap-3 ${loading ? "opacity-70 cursor-not-allowed" : "hover:-translate-y-1 hover:shadow-purple-500/40"} ${isDark ? "bg-brand-primary" : "bg-brand-primary"}`}
+                                className={`px-6 py-2.5 rounded-md text-sm font-semibold text-white shadow-sm transition-all duration-300 flex items-center gap-2 ${loading ? "opacity-70 cursor-not-allowed" : ""} bg-brand-primary hover:bg-purple-700`}
                             >
                                 {loading ? (
                                     <>

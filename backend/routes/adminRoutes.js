@@ -1,6 +1,7 @@
 import express from 'express';
 import { getDashboardStats, banUser, unbanUser, getMessages, markMessageRead } from '../controllers/adminController.js';
 import { getReports, updateReportStatus } from '../controllers/reportController.js';
+import { getPendingBlogs, approveBlog, rejectBlog } from '../controllers/blogController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import { admin } from '../middleware/adminMiddleware.js';
 
@@ -13,5 +14,8 @@ router.get('/messages', protect, admin, getMessages);
 router.put('/messages/:id/read', protect, admin, markMessageRead);
 router.get('/reports', protect, admin, getReports);
 router.put('/reports/:id', protect, admin, updateReportStatus);
+router.get('/pending-blogs', protect, admin, getPendingBlogs);
+router.put('/blogs/:id/approve', protect, admin, approveBlog);
+router.put('/blogs/:id/reject', protect, admin, rejectBlog);
 
 export default router;

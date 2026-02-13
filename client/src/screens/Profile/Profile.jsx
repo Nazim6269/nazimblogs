@@ -449,13 +449,26 @@ const Profile = () => {
                       onDelete={(id) => setShowDeleteConfirm(id)}
                       onPublish={async (id) => {
                         try {
-                          await apiUpdateBlog(id, { status: "published" });
-                          const updatedBlogs = blogs.map((b) => b._id === id ? { ...b, status: "published" } : b);
+                          const updated = await apiUpdateBlog(id, { status: "published" });
+                          const newStatus = updated?.status || "published";
+                          const updatedBlogs = blogs.map((b) => b._id === id ? { ...b, status: newStatus } : b);
                           setBlogs(updatedBlogs);
                           setFilteredBlogs(updatedBlogs);
-                          toast.success("Blog published!");
+                          toast.success(newStatus === "pending" ? "Submitted for review!" : "Blog published!");
                         } catch (err) {
                           toast.error(err.message || "Failed to publish");
+                        }
+                      }}
+                      onResubmit={async (id) => {
+                        try {
+                          const updated = await apiUpdateBlog(id, { status: "published" });
+                          const newStatus = updated?.status || "pending";
+                          const updatedBlogs = blogs.map((b) => b._id === id ? { ...b, status: newStatus, rejectionReason: "" } : b);
+                          setBlogs(updatedBlogs);
+                          setFilteredBlogs(updatedBlogs);
+                          toast.success("Resubmitted for review!");
+                        } catch (err) {
+                          toast.error(err.message || "Failed to resubmit");
                         }
                       }}
                     />

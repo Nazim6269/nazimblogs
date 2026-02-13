@@ -114,6 +114,12 @@ const createBlog = asyncHandler(async (req, res) => {
 
     let finalStatus = status || 'draft';
     let finalScheduledAt = null;
+
+    // Non-admin users cannot publish directly — goes to pending review
+    if (!req.user.isAdmin && finalStatus === 'published') {
+        finalStatus = 'pending';
+    }
+
     if (scheduledAt) {
         const schedDate = new Date(scheduledAt);
         if (schedDate > new Date()) {
@@ -149,6 +155,21 @@ const createBlog = asyncHandler(async (req, res) => {
         }
     }
 
+    // Notify admins when a blog is submitted for review
+    if (finalStatus === 'pending') {
+        const io = req.app.get('io');
+        const admins = await User.find({ isAdmin: true }).select('_id');
+        for (const admin of admins) {
+            await createNotification({
+                recipient: admin._id,
+                type: 'blog_pending',
+                message: `${req.user.name} submitted "${title}" for review`,
+                relatedBlog: blog._id,
+                relatedUser: req.user._id,
+            }, io);
+        }
+    }
+
     res.status(201).json(populated);
 });
 
@@ -175,7 +196,15 @@ const updateBlog = asyncHandler(async (req, res) => {
     if (tags !== undefined) blog.tags = tags;
     if (imageSrc !== undefined) blog.imageSrc = imageSrc;
     if (category !== undefined) blog.category = category;
-    if (status !== undefined) blog.status = status;
+    if (status !== undefined) {
+        // Non-admin users cannot publish directly — goes to pending review
+        if (!req.user.isAdmin && status === 'published') {
+            blog.status = 'pending';
+            blog.rejectionReason = '';
+        } else {
+            blog.status = status;
+        }
+    }
     if (scheduledAt !== undefined) {
         blog.scheduledAt = scheduledAt ? new Date(scheduledAt) : null;
         if (scheduledAt && new Date(scheduledAt) > new Date()) {
@@ -470,4 +499,95 @@ const getTagsWithCounts = asyncHandler(async (req, res) => {
     res.json(tags);
 });
 
-export { getBlogs, getBlogById, getUserBlogs, createBlog, updateBlog, deleteBlog, likeBlog, addComment, deleteComment, getTrendingBlogs, getRecommendedBlogs, getCategoryCounts, getTagsWithCounts };
+// @desc    Get all pending blogs (for admin review)
+// @route   GET /api/admin/pending-blogs
+// @access  Private/Admin
+const getPendingBlogs = asyncHandler(async (req, res) => {
+    const blogs = await Blog.find({ status: 'pending' })
+        .populate('author', 'name email photoURL')
+        .sort({ createdAt: -1 });
+    res.json(blogs);
+});
+
+// @desc    Approve a pending blog
+// @route   PUT /api/admin/blogs/:id/approve
+// @access  Private/Admin
+const approveBlog = asyncHandler(async (req, res) => {
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+        res.status(404);
+        throw new Error('Blog not found');
+    }
+
+    if (blog.status !== 'pending') {
+        res.status(400);
+        throw new Error('Blog is not pending review');
+    }
+
+    blog.status = 'published';
+    blog.rejectionReason = '';
+    await blog.save();
+
+    // Notify the author
+    const io = req.app.get('io');
+    await createNotification({
+        recipient: blog.author,
+        type: 'blog_approved',
+        message: `Your blog "${blog.title}" has been approved and published!`,
+        relatedBlog: blog._id,
+        relatedUser: req.user._id,
+    }, io);
+
+    // Send email notifications to author's followers
+    const author = await User.findById(blog.author);
+    if (author?.followers?.length > 0) {
+        const subscribers = await User.find({
+            _id: { $in: author.followers },
+            emailSubscriptions: true,
+        }).select('email');
+        subscribers.forEach((sub) => {
+            sendBlogNotificationEmail(sub.email, author.name, blog.title, blog._id).catch(() => {});
+        });
+    }
+
+    const populated = await blog.populate('author', 'name email photoURL');
+    res.json(populated);
+});
+
+// @desc    Reject a pending blog
+// @route   PUT /api/admin/blogs/:id/reject
+// @access  Private/Admin
+const rejectBlog = asyncHandler(async (req, res) => {
+    const { reason } = req.body;
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+        res.status(404);
+        throw new Error('Blog not found');
+    }
+
+    if (blog.status !== 'pending') {
+        res.status(400);
+        throw new Error('Blog is not pending review');
+    }
+
+    blog.status = 'rejected';
+    blog.rejectionReason = reason || 'Your blog does not meet our publishing guidelines.';
+    await blog.save();
+
+    // Notify the author
+    const io = req.app.get('io');
+    await createNotification({
+        recipient: blog.author,
+        type: 'blog_rejected',
+        message: `Your blog "${blog.title}" was not approved. Reason: ${blog.rejectionReason}`,
+        relatedBlog: blog._id,
+        relatedUser: req.user._id,
+    }, io);
+
+    const populated = await blog.populate('author', 'name email photoURL');
+    res.json(populated);
+});
+
+export { getBlogs, getBlogById, getUserBlogs, createBlog, updateBlog, deleteBlog, likeBlog, addComment, deleteComment, getTrendingBlogs, getRecommendedBlogs, getCategoryCounts, getTagsWithCounts, getPendingBlogs, approveBlog, rejectBlog };

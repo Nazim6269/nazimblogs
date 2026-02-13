@@ -45,12 +45,16 @@ const blogSchema = mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['draft', 'published', 'scheduled'],
+            enum: ['draft', 'published', 'scheduled', 'pending', 'rejected'],
             default: 'draft',
         },
         scheduledAt: {
             type: Date,
             default: null,
+        },
+        rejectionReason: {
+            type: String,
+            default: '',
         },
         author: {
             type: mongoose.Schema.Types.ObjectId,

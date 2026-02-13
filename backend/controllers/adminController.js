@@ -7,9 +7,10 @@ import Message from '../models/messageModel.js';
 // @route   GET /api/admin/stats
 // @access  Private/Admin
 const getDashboardStats = asyncHandler(async (req, res) => {
-    const [totalUsers, totalBlogs, users] = await Promise.all([
+    const [totalUsers, totalBlogs, pendingBlogs, users] = await Promise.all([
         User.countDocuments({}),
         Blog.countDocuments({}),
+        Blog.countDocuments({ status: 'pending' }),
         User.aggregate([
             {
                 $lookup: {
@@ -33,7 +34,7 @@ const getDashboardStats = asyncHandler(async (req, res) => {
         ]),
     ]);
 
-    res.json({ totalUsers, totalBlogs, users });
+    res.json({ totalUsers, totalBlogs, pendingBlogs, users });
 });
 
 // @desc    Ban a user

@@ -5,6 +5,7 @@ import "react-quill-new/dist/quill.snow.css";
 import Dropzone from "../../Components/Dropzone/Dropzone";
 import { createBlog } from "../../helper/blogApi";
 import { useTheme } from "../../hooks/useTheme";
+import { useAuth } from "../../contexts/AuthContext";
 import toast from "react-hot-toast";
 import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
 import { stripHTML } from "../../utils/stripHTML";
@@ -13,6 +14,8 @@ const CreateBlog = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isAdmin = user?.isAdmin;
 
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
@@ -62,7 +65,9 @@ const CreateBlog = () => {
     if (!validateForm()) return;
 
     setLoading(true);
-    const toastMsg = status === "draft" ? "Saving draft..." : "Publishing blog...";
+    const toastMsg = status === "draft"
+      ? "Saving draft..."
+      : isAdmin ? "Publishing blog..." : "Submitting for review...";
     const saveToast = toast.loading(toastMsg);
 
     try {
@@ -76,7 +81,9 @@ const CreateBlog = () => {
         scheduledAt: scheduledAt || undefined,
       });
 
-      const successMsg = status === "draft" ? "Draft saved!" : "Blog published!";
+      const successMsg = status === "draft"
+        ? "Draft saved!"
+        : isAdmin ? "Blog published!" : "Submitted! Awaiting admin approval.";
       toast.success(successMsg, { id: saveToast });
       setShowConfirm(false);
       navigate("/profile");
@@ -207,7 +214,7 @@ const CreateBlog = () => {
               : "bg-alter-brand-primary text-white hover:bg-alter-brand-secondary hover:shadow-md hover:shadow-violet-500/50"
               }`}
           >
-            {loading ? "Publishing..." : "Publish"}
+            {loading ? (isAdmin ? "Publishing..." : "Submitting...") : (isAdmin ? "Publish" : "Submit for Review")}
           </button>
         </div>
       </form>
@@ -216,9 +223,12 @@ const CreateBlog = () => {
         isOpen={showConfirm}
         onClose={() => setShowConfirm(false)}
         onConfirm={() => handleSave("published")}
-        title="Publish this blog?"
-        message="Your blog will be published and visible to all users."
-        confirmText="Publish"
+        title={isAdmin ? "Publish this blog?" : "Submit for review?"}
+        message={isAdmin
+          ? "Your blog will be published and visible to all users."
+          : "Your blog will be sent to admin for approval before publishing."
+        }
+        confirmText={isAdmin ? "Publish" : "Submit"}
         confirmColor="brand"
         loading={loading}
       />

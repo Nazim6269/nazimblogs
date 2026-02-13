@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { useSiteConfig } from "../../contexts/SiteConfigContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash, faSave, faSpinner, faBan, faCheck, faUsers, faNewspaper, faEnvelope, faChartBar, faGauge, faPalette, faImage, faColumns, faBars, faXmark, faGear, faFlag } from "@fortawesome/free-solid-svg-icons";
-import { fetchDashboardStats, banUser as banUserApi, unbanUser as unbanUserApi, fetchAdminMessages, markMessageRead as markMessageReadApi, fetchReports, updateReportStatus } from "../../helper/adminApi";
+import { faPlus, faTrash, faSave, faSpinner, faBan, faCheck, faUsers, faNewspaper, faEnvelope, faChartBar, faGauge, faPalette, faImage, faColumns, faBars, faXmark, faGear, faFlag, faClock, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { fetchDashboardStats, banUser as banUserApi, unbanUser as unbanUserApi, fetchAdminMessages, markMessageRead as markMessageReadApi, fetchReports, updateReportStatus, fetchPendingBlogs, approveBlog as approveBlogApi, rejectBlog as rejectBlogApi } from "../../helper/adminApi";
 import toast from "react-hot-toast";
 import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
 
@@ -28,6 +28,10 @@ const Admin = () => {
   const [reports, setReports] = useState([]);
   const [loadingReports, setLoadingReports] = useState(false);
   const [reportFilter, setReportFilter] = useState("");
+  const [pendingBlogs, setPendingBlogs] = useState([]);
+  const [loadingPending, setLoadingPending] = useState(false);
+  const [rejectTarget, setRejectTarget] = useState(null);
+  const [rejectReason, setRejectReason] = useState("");
 
   // Form states
   const [navbarForm, setNavbarForm] = useState(siteConfig.navbar);
@@ -107,6 +111,13 @@ const Admin = () => {
         .catch((err) => toast.error(err.message))
         .finally(() => setLoadingReports(false));
     }
+    if (activeTab === "pending") {
+      setLoadingPending(true);
+      fetchPendingBlogs()
+        .then((data) => setPendingBlogs(data))
+        .catch((err) => toast.error(err.message))
+        .finally(() => setLoadingPending(false));
+    }
   }, [activeTab, reportFilter]);
 
   const handleBanToggle = async (u) => {
@@ -146,6 +157,7 @@ const Admin = () => {
 
   const tabs = [
     { id: "dashboard", label: "Dashboard", icon: faGauge },
+    { id: "pending", label: "Pending", icon: faClock },
     { id: "users", label: "Users", icon: faUsers },
     { id: "messages", label: "Messages", icon: faEnvelope },
     { id: "reports", label: "Reports", icon: faFlag },
@@ -159,6 +171,7 @@ const Admin = () => {
       label: "Main",
       items: [
         { id: "dashboard", label: "Dashboard", icon: faGauge },
+        { id: "pending", label: "Pending", icon: faClock },
         { id: "users", label: "Users", icon: faUsers },
         { id: "messages", label: "Messages", icon: faEnvelope },
         { id: "reports", label: "Reports", icon: faFlag },
@@ -414,6 +427,127 @@ const Admin = () => {
                   </div>
                 </>
               ) : null}
+            </div>
+          )}
+
+          {/* Pending Blogs Tab */}
+          {activeTab === "pending" && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className={`text-sm font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
+                  Blogs Pending Review ({pendingBlogs.length})
+                </h2>
+              </div>
+              {loadingPending ? (
+                <div className="flex justify-center py-12">
+                  <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-brand-primary" />
+                </div>
+              ) : pendingBlogs.length > 0 ? (
+                <div className="space-y-3">
+                  {pendingBlogs.map((blog) => (
+                    <div key={blog._id} className={`${cardClass} flex flex-col sm:flex-row gap-3`}>
+                      {/* Thumbnail */}
+                      <div className="w-full sm:w-20 h-32 sm:h-20 rounded-md overflow-hidden shrink-0">
+                        <img
+                          src={blog.imageSrc || `https://picsum.photos/seed/${blog._id}/200/200`}
+                          alt={blog.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <h3 className={`text-sm font-bold line-clamp-1 ${isDark ? "text-gray-100" : "text-gray-900"}`}>{blog.title}</h3>
+                          <span className="px-2 py-0.5 text-[10px] font-bold rounded bg-orange-500/20 text-orange-500 shrink-0">Pending</span>
+                        </div>
+                        <div className="flex items-center gap-2 mb-1">
+                          {blog.author?.photoURL ? (
+                            <img src={blog.author.photoURL} alt="" className="w-4 h-4 rounded-full object-cover" />
+                          ) : (
+                            <div className={`w-4 h-4 rounded-full text-[8px] font-bold flex items-center justify-center ${isDark ? "bg-slate-700 text-gray-300" : "bg-gray-200 text-gray-600"}`}>
+                              {blog.author?.name?.charAt(0).toUpperCase() || "U"}
+                            </div>
+                          )}
+                          <span className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>{blog.author?.name}</span>
+                          <span className={`text-[10px] ${isDark ? "text-gray-600" : "text-gray-400"}`}>
+                            {blog.category} · {new Date(blog.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <p className={`text-xs line-clamp-2 mb-2 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+                          {blog.body?.replace(/<[^>]*>/g, '').substring(0, 200) || "No content"}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={async () => {
+                              try {
+                                await approveBlogApi(blog._id);
+                                setPendingBlogs((prev) => prev.filter((b) => b._id !== blog._id));
+                                toast.success(`"${blog.title}" approved and published!`);
+                              } catch (err) {
+                                toast.error(err.message);
+                              }
+                            }}
+                            className="px-3 py-1.5 rounded-md text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center gap-1"
+                          >
+                            <FontAwesomeIcon icon={faCheck} className="text-[10px]" /> Approve
+                          </button>
+                          <button
+                            onClick={() => { setRejectTarget(blog._id); setRejectReason(""); }}
+                            className="px-3 py-1.5 rounded-md text-xs font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors flex items-center gap-1"
+                          >
+                            <FontAwesomeIcon icon={faTimes} className="text-[10px]" /> Reject
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Reject Reason Input */}
+                      {rejectTarget === blog._id && (
+                        <div className={`w-full sm:w-auto sm:min-w-[220px] flex flex-col gap-2 p-3 rounded-md ${isDark ? "bg-white/5" : "bg-gray-50"}`}>
+                          <label className={`text-xs font-semibold ${isDark ? "text-gray-300" : "text-gray-700"}`}>Rejection Reason</label>
+                          <textarea
+                            value={rejectReason}
+                            onChange={(e) => setRejectReason(e.target.value)}
+                            placeholder="Enter reason for rejection..."
+                            rows={2}
+                            className={`w-full px-3 py-1.5 rounded-md border text-xs ${isDark
+                              ? "bg-slate-700 border-gray-600 text-gray-200 placeholder-gray-500"
+                              : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
+                            } focus:outline-none focus:ring-1 focus:ring-red-500`}
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={async () => {
+                                try {
+                                  await rejectBlogApi(blog._id, rejectReason);
+                                  setPendingBlogs((prev) => prev.filter((b) => b._id !== blog._id));
+                                  setRejectTarget(null);
+                                  toast.success(`"${blog.title}" rejected`);
+                                } catch (err) {
+                                  toast.error(err.message);
+                                }
+                              }}
+                              className="px-3 py-1 rounded text-xs font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors"
+                            >
+                              Confirm Reject
+                            </button>
+                            <button
+                              onClick={() => setRejectTarget(null)}
+                              className={`px-3 py-1 rounded text-xs font-medium transition-colors ${isDark ? "text-gray-400 hover:text-gray-200" : "text-gray-500 hover:text-gray-700"}`}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className={`text-center py-12 ${cardClass}`}>
+                  <FontAwesomeIcon icon={faClock} className={`text-3xl mb-3 ${isDark ? "text-gray-700" : "text-gray-300"}`} />
+                  <p className={`text-sm font-medium ${isDark ? "text-gray-400" : "text-gray-500"}`}>No blogs pending review</p>
+                </div>
+              )}
             </div>
           )}
 

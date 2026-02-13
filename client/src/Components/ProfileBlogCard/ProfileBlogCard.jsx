@@ -4,7 +4,7 @@ import { useTheme } from "../../hooks/useTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faHeart, faEye, faComment, faClock,
-    faEdit, faTrash, faCheck, faArrowUpRightFromSquare,
+    faEdit, faTrash, faCheck, faArrowUpRightFromSquare, faRotateRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { stripHTML } from "../../utils/stripHTML";
 import { calculateReadingTime } from "../../utils/readingTime";
@@ -22,8 +22,16 @@ const formatDate = (dateStr) => {
     return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 };
 
-const ProfileBlogCard = ({ data, editable = false, onEdit, onDelete, onPublish }) => {
-    const { _id, id, title, imageSrc, body, date, createdAt, likes, category, views, comments, status, tags } = data;
+const statusConfig = {
+    draft: { label: "Draft", bg: "bg-yellow-500/20", text: "text-yellow-500" },
+    pending: { label: "Pending", bg: "bg-orange-500/20", text: "text-orange-500" },
+    rejected: { label: "Rejected", bg: "bg-red-500/20", text: "text-red-500" },
+    published: { label: "Live", bg: "bg-emerald-500/20", text: "text-emerald-500" },
+    scheduled: { label: "Scheduled", bg: "bg-blue-500/20", text: "text-blue-500" },
+};
+
+const ProfileBlogCard = ({ data, editable = false, onEdit, onDelete, onPublish, onResubmit }) => {
+    const { _id, id, title, imageSrc, body, date, createdAt, likes, category, views, comments, status, tags, rejectionReason } = data;
     const { theme } = useTheme();
     const isDark = theme === "dark";
 
@@ -32,6 +40,8 @@ const ProfileBlogCard = ({ data, editable = false, onEdit, onDelete, onPublish }
     const commentCount = comments?.length || 0;
     const displayDate = date || formatDate(createdAt);
     const isDraft = status === "draft";
+    const isRejected = status === "rejected";
+    const badge = statusConfig[status] || statusConfig.published;
     const tagList = Array.isArray(tags) ? tags.slice(0, 3) : [];
 
     return (
@@ -74,16 +84,9 @@ const ProfileBlogCard = ({ data, editable = false, onEdit, onDelete, onPublish }
                             {title}
                         </Link>
                         <div className="flex items-center gap-1 shrink-0">
-                            {isDraft && (
-                                <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-yellow-500/20 text-yellow-500">
-                                    Draft
-                                </span>
-                            )}
-                            {!isDraft && (
-                                <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-500/20 text-emerald-500">
-                                    Live
-                                </span>
-                            )}
+                            <span className={`px-1.5 py-0.5 text-[9px] font-bold rounded ${badge.bg} ${badge.text}`}>
+                                {badge.label}
+                            </span>
                         </div>
                     </div>
 
@@ -91,6 +94,13 @@ const ProfileBlogCard = ({ data, editable = false, onEdit, onDelete, onPublish }
                     <p className={`text-xs leading-relaxed line-clamp-1 mb-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
                         {stripHTML(body)?.substring(0, 120) || "No description available."}
                     </p>
+
+                    {/* Rejection reason */}
+                    {isRejected && rejectionReason && (
+                        <p className={`text-[10px] leading-relaxed line-clamp-1 mb-1 ${isDark ? "text-red-400/80" : "text-red-500/80"}`}>
+                            Reason: {rejectionReason}
+                        </p>
+                    )}
 
                     {/* Tags */}
                     {tagList.length > 0 && (
@@ -146,6 +156,18 @@ const ProfileBlogCard = ({ data, editable = false, onEdit, onDelete, onPublish }
                                     title="Publish"
                                 >
                                     <FontAwesomeIcon icon={faCheck} className="text-[10px]" />
+                                </button>
+                            )}
+                            {isRejected && onResubmit && (
+                                <button
+                                    onClick={(e) => { e.preventDefault(); onResubmit(blogId); }}
+                                    className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${isDark
+                                        ? "text-orange-400 hover:bg-orange-500/20"
+                                        : "text-orange-600 hover:bg-orange-50"
+                                    }`}
+                                    title="Resubmit for review"
+                                >
+                                    <FontAwesomeIcon icon={faRotateRight} className="text-[10px]" />
                                 </button>
                             )}
                             <button
@@ -205,11 +227,13 @@ ProfileBlogCard.propTypes = {
         comments: PropTypes.array,
         status: PropTypes.string,
         tags: PropTypes.array,
+        rejectionReason: PropTypes.string,
     }).isRequired,
     editable: PropTypes.bool,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     onPublish: PropTypes.func,
+    onResubmit: PropTypes.func,
 };
 
 export default ProfileBlogCard;

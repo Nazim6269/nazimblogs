@@ -133,3 +133,70 @@
   border-radius: 8px;
   margin: 1.5rem auto;
 }
+
+/* ===== Hero Animated Background Orbs ===== */
+@keyframes hero-orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -50px) scale(1.1); }
+  50% { transform: translate(-20px, 20px) scale(0.95); }
+  75% { transform: translate(50px, 30px) scale(1.05); }
+}
+
+@keyframes hero-orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-40px, 30px) scale(1.08); }
+  66% { transform: translate(20px, -40px) scale(0.92); }
+}
+
+@keyframes hero-orb-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(50px, 20px) scale(1.05); }
+  40% { transform: translate(-30px, -30px) scale(0.98); }
+  60% { transform: translate(10px, 50px) scale(1.1); }
+  80% { transform: translate(-50px, -10px) scale(0.95); }
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-orb-1 {
+  animation: hero-orb-float-1 15s ease-in-out infinite;
+}
+
+.hero-orb-2 {
+  animation: hero-orb-float-2 20s ease-in-out infinite;
+}
+
+.hero-orb-3 {
+  animation: hero-orb-float-3 18s ease-in-out infinite;
+}
+
+/* Hero search bar glassmorphism */
+.hero-search-glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-search-glass-light {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Rotating word clip container */
+.hero-word-slot {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  position: relative;
+}

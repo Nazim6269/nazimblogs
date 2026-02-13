@@ -1,7 +1,6 @@
 import {
   faPen,
   faSearch,
-  faTrash,
   faEdit,
   faTimes,
   faCheck,
@@ -15,7 +14,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import BlogCard from "../../Components/BlogCard/BlogCard";
+import ProfileBlogCard from "../../Components/ProfileBlogCard/ProfileBlogCard";
 import { fetchUserBlogs, deleteBlog as apiDeleteBlog, updateBlog as apiUpdateBlog } from "../../helper/blogApi";
 import { fetchUserAnalytics } from "../../helper/userApi";
 import { useTheme } from "../../hooks/useTheme";
@@ -377,151 +376,89 @@ const Profile = () => {
               <div className="w-12 h-12 rounded-full border-4 border-purple-500/20 border-t-purple-500 animate-spin"></div>
             </div>
           ) : filteredBlogs.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {filteredBlogs.map((blog) => (
-                <div
-                  key={blog._id}
-                  className={`relative rounded-md border transition-all duration-300 ${isDark
-                    ? "bg-slate-800 border-gray-700 hover:border-purple-500/50"
-                    : "bg-white border-gray-300 hover:border-violet-500/50"
-                    }`}
-                >
+                <div key={blog._id}>
                   {editingBlog === blog._id ? (
                     // Edit Mode
-                    <div className="p-4 sm:p-6 space-y-4">
+                    <div className={`p-4 rounded-lg border space-y-3 ${isDark ? "bg-slate-800 border-slate-700" : "bg-white border-gray-200"}`}>
                       <div>
-                        <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
-                          Title
-                        </label>
+                        <label className={`block text-xs font-medium mb-1 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Title</label>
                         <input
                           type="text"
                           value={editForm.title}
                           onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                          className={`w-full px-4 py-2 rounded-md border ${isDark
+                          className={`w-full px-3 py-1.5 rounded-md border text-sm ${isDark
                             ? "bg-slate-700 border-gray-600 text-gray-200"
                             : "bg-white border-gray-300 text-gray-900"
-                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                          } focus:outline-none focus:ring-2 focus:ring-purple-500`}
                         />
                       </div>
-
                       <div>
-                        <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
-                          Tags
-                        </label>
+                        <label className={`block text-xs font-medium mb-1 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Tags</label>
                         <input
                           type="text"
                           value={editForm.tags}
                           onChange={(e) => setEditForm({ ...editForm, tags: e.target.value })}
-                          className={`w-full px-4 py-2 rounded-md border ${isDark
+                          className={`w-full px-3 py-1.5 rounded-md border text-sm ${isDark
                             ? "bg-slate-700 border-gray-600 text-gray-200"
                             : "bg-white border-gray-300 text-gray-900"
-                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                          } focus:outline-none focus:ring-2 focus:ring-purple-500`}
                         />
                       </div>
-
                       <div>
-                        <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
-                          Content
-                        </label>
+                        <label className={`block text-xs font-medium mb-1 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Content</label>
                         <textarea
                           value={editForm.body}
                           onChange={(e) => setEditForm({ ...editForm, body: e.target.value })}
-                          rows={6}
-                          className={`w-full px-4 py-2 rounded-md border ${isDark
+                          rows={4}
+                          className={`w-full px-3 py-1.5 rounded-md border text-sm ${isDark
                             ? "bg-slate-700 border-gray-600 text-gray-200"
                             : "bg-white border-gray-300 text-gray-900"
-                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                          } focus:outline-none focus:ring-2 focus:ring-purple-500`}
                         />
                       </div>
-
-                      <div className="flex gap-3 justify-end">
+                      <div className="flex gap-2 justify-end">
                         <button
                           onClick={handleCancelEdit}
-                          className={`px-4 py-2 rounded-md font-medium transition-all duration-300 ${isDark
+                          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${isDark
                             ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
                             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                            }`}
+                          }`}
                         >
-                          <FontAwesomeIcon icon={faTimes} className="mr-2" />
+                          <FontAwesomeIcon icon={faTimes} className="mr-1" />
                           Cancel
                         </button>
                         <button
                           onClick={() => handleUpdateBlog(blog._id)}
-                          className={`px-4 py-2 rounded-md font-medium text-white transition-all duration-300 ${isDark
+                          className={`px-3 py-1.5 rounded-md text-xs font-medium text-white transition-colors ${isDark
                             ? "bg-brand-primary hover:bg-purple-700"
                             : "bg-alter-brand-primary hover:bg-alter-brand-secondary"
-                            }`}
+                          }`}
                         >
-                          <FontAwesomeIcon icon={faCheck} className="mr-2" />
-                          Save Changes
+                          <FontAwesomeIcon icon={faCheck} className="mr-1" />
+                          Save
                         </button>
                       </div>
                     </div>
                   ) : (
-                    // View Mode
-                    <div className="relative p-4">
-                      <div className="relative">
-                        {blog.status === "draft" && (
-                          <span className="absolute top-2 right-2 z-10 px-2.5 py-1 text-xs font-bold rounded-md bg-yellow-500 text-white">
-                            Draft
-                          </span>
-                        )}
-                        <Link to={`/blog-details/${blog._id}`}>
-                          <BlogCard data={blog} />
-                        </Link>
-                      </div>
-
-                      {/* Action Buttons — top-right on lg, bottom-center on mobile */}
-                      <div className={`
-                        flex gap-1 z-20
-                        justify-center mt-3
-                        md:absolute md:top-3 md:right-3 md:mt-0 md:justify-end
-                      `}>
-                        {blog.status === "draft" && (
-                          <button
-                            onClick={async () => {
-                              try {
-                                await apiUpdateBlog(blog._id, { status: "published" });
-                                const updatedBlogs = blogs.map((b) => b._id === blog._id ? { ...b, status: "published" } : b);
-                                setBlogs(updatedBlogs);
-                                setFilteredBlogs(updatedBlogs);
-                                toast.success("Blog published!");
-                              } catch (err) {
-                                toast.error(err.message || "Failed to publish");
-                              }
-                            }}
-                            className={`w-8 h-8 rounded-md flex items-center justify-center transition-all duration-300 ${isDark
-                              ? "bg-slate-800 text-green-400 hover:text-green-300"
-                              : "bg-white text-green-600 hover:text-green-700 border border-gray-200"
-                              }`}
-                            title="Publish"
-                          >
-                            <FontAwesomeIcon icon={faCheck} className="text-xs" />
-                          </button>
-                        )}
-                        <button
-                          onClick={() => handleEditClick(blog)}
-                          className={`w-8 h-8 rounded-md flex items-center justify-center transition-all duration-300 ${isDark
-                            ? "bg-slate-800 text-blue-400 hover:text-blue-300"
-                            : "bg-white text-blue-500 hover:text-blue-600 border border-gray-200"
-                            }`}
-                          title="Edit"
-                        >
-                          <FontAwesomeIcon icon={faEdit} className="text-xs" />
-                        </button>
-
-                        <button
-                          onClick={() => setShowDeleteConfirm(blog._id)}
-                          className={`w-8 h-8 rounded-md flex items-center justify-center transition-all duration-300 ${isDark
-                            ? "bg-slate-800 text-red-400 hover:text-red-300"
-                            : "bg-white text-red-500 hover:text-red-600 border border-gray-200"
-                            }`}
-                          title="Delete"
-                        >
-                          <FontAwesomeIcon icon={faTrash} className="text-xs" />
-                        </button>
-                      </div>
-                    </div>
+                    <ProfileBlogCard
+                      data={blog}
+                      editable
+                      onEdit={handleEditClick}
+                      onDelete={(id) => setShowDeleteConfirm(id)}
+                      onPublish={async (id) => {
+                        try {
+                          await apiUpdateBlog(id, { status: "published" });
+                          const updatedBlogs = blogs.map((b) => b._id === id ? { ...b, status: "published" } : b);
+                          setBlogs(updatedBlogs);
+                          setFilteredBlogs(updatedBlogs);
+                          toast.success("Blog published!");
+                        } catch (err) {
+                          toast.error(err.message || "Failed to publish");
+                        }
+                      }}
+                    />
                   )}
 
                   {/* Delete Confirmation Modal */}

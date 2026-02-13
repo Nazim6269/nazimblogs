@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import { fetchAuthorProfile } from "../../helper/userApi";
-import BlogCard from "../../Components/BlogCard/BlogCard";
+import ProfileBlogCard from "../../Components/ProfileBlogCard/ProfileBlogCard";
 import FollowButton from "../../Components/FollowButton/FollowButton";
 import AuthorProfileSkeleton from "../../Components/skeletons/AuthorProfileSkeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -122,11 +122,9 @@ const AuthorProfile = () => {
           <p className="text-xs">No published posts yet.</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {author.blogs?.map((blog) => (
-            <Link key={blog._id} to={`/blog-details/${blog._id}`}>
-              <BlogCard data={blog} />
-            </Link>
+            <ProfileBlogCard key={blog._id} data={blog} />
           ))}
         </div>
       )}

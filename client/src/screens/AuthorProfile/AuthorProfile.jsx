@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import { fetchAuthorProfile } from "../../helper/userApi";
@@ -51,6 +52,14 @@ const AuthorProfile = () => {
 
   return (
     <div className="max-w-3xl mx-auto py-4 sm:py-6 px-4">
+      <Helmet>
+        <title>{author.name} | NazimBlogs</title>
+        <meta name="description" content={author.bio || `Check out ${author.name}'s blog posts on NazimBlogs`} />
+        <meta property="og:title" content={`${author.name} on NazimBlogs`} />
+        <meta property="og:description" content={author.bio || `Check out ${author.name}'s blog posts`} />
+        <meta property="og:image" content={author.photoURL || ""} />
+      </Helmet>
+
       {/* Author Header */}
       <div className={`rounded-lg border p-4 sm:p-6 mb-5 ${isDark ? "bg-slate-800/60 border-slate-700/50" : "bg-white border-gray-100"}`}>
         <div className="flex flex-col items-center text-center">

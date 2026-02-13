@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
+import { stripHTML } from "../../utils/stripHTML";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import NoData from "../../Components/NoData/NoData";
@@ -11,6 +13,7 @@ import BlogMeta from "./BlogMeta";
 import BlogCoverImage from "./BlogCoverImage";
 import BlogTags from "./BlogTags";
 import BlogContent from "./BlogContent";
+import TableOfContents from "./TableOfContents";
 import RelatedArticles from "./RelatedArticles";
 import CommentsSection from "./CommentsSection";
 import BlogActionBar from "./BlogActionBar";
@@ -150,6 +153,20 @@ const SingleBlog = () => {
       className={`min-h-screen transition-all duration-500 pb-20 ${isDark ? "text-gray-200" : "text-gray-900"
         }`}
     >
+      <Helmet>
+        <title>{blog.title} | NazimBlogs</title>
+        <meta name="description" content={stripHTML(blog.body)?.substring(0, 160)} />
+        <meta property="og:title" content={blog.title} />
+        <meta property="og:description" content={stripHTML(blog.body)?.substring(0, 160)} />
+        <meta property="og:image" content={blog.imageSrc || ""} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={window.location.href} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={blog.title} />
+        <meta name="twitter:description" content={stripHTML(blog.body)?.substring(0, 160)} />
+        <meta name="twitter:image" content={blog.imageSrc || ""} />
+      </Helmet>
+
       {/* Main Content Container */}
       <div className="max-w-3xl mx-auto px-4 py-4 sm:px-6 sm:py-6">
         {/* Back Link */}
@@ -175,6 +192,9 @@ const SingleBlog = () => {
 
         {/* Tags */}
         <BlogTags tags={tags} isDark={isDark} />
+
+        {/* Table of Contents */}
+        <TableOfContents content={blog.body} isDark={isDark} />
 
         {/* Blog Content */}
         <BlogContent content={blog.body} isDark={isDark} />

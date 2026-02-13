@@ -26,6 +26,7 @@ const authUser = asyncHandler(async (req, res) => {
             location: user.location,
             photoURL: user.photoURL,
             bookmarks: user.bookmarks,
+            emailSubscriptions: user.emailSubscriptions,
         });
     } else {
         res.status(401);
@@ -111,6 +112,7 @@ const socialAuth = asyncHandler(async (req, res) => {
             location: user.location,
             photoURL: user.photoURL,
             bookmarks: user.bookmarks,
+            emailSubscriptions: user.emailSubscriptions,
         });
     } else {
         // Create new user
@@ -358,4 +360,55 @@ const getAuthorProfile = asyncHandler(async (req, res) => {
     });
 });
 
-export { authUser, registerUser, logoutUser, socialAuth, sendRegisterOTP, verifyRegisterOTP, forgotPassword, resetPassword, updateProfile, getAuthorProfile };
+// @desc    Get analytics for logged-in user
+// @route   GET /api/users/analytics
+// @access  Protected
+const getUserAnalytics = asyncHandler(async (req, res) => {
+    const Blog = (await import('../models/blogModel.js')).default;
+    const blogs = await Blog.find({ author: req.user._id });
+
+    const totalViews = blogs.reduce((sum, b) => sum + (b.views || 0), 0);
+    const totalLikes = blogs.reduce((sum, b) => sum + (b.likes?.length || 0), 0);
+    const totalComments = blogs.reduce((sum, b) => sum + (b.comments?.length || 0), 0);
+    const publishedCount = blogs.filter(b => b.status === 'published').length;
+    const draftCount = blogs.filter(b => b.status === 'draft').length;
+
+    const mostPopular = blogs
+        .filter(b => b.status === 'published')
+        .sort((a, b) => (b.views + b.likes.length) - (a.views + a.likes.length))[0] || null;
+
+    const user = await User.findById(req.user._id);
+
+    res.json({
+        totalViews,
+        totalLikes,
+        totalComments,
+        publishedCount,
+        draftCount,
+        followerCount: user.followers?.length || 0,
+        followingCount: user.following?.length || 0,
+        mostPopular: mostPopular ? {
+            _id: mostPopular._id,
+            title: mostPopular.title,
+            views: mostPopular.views,
+            likes: mostPopular.likes.length,
+            comments: mostPopular.comments.length,
+        } : null,
+    });
+});
+
+// @desc    Toggle email subscription preference
+// @route   PUT /api/users/email-subscription
+// @access  Protected
+const toggleEmailSubscription = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        res.status(404);
+        throw new Error('User not found');
+    }
+    user.emailSubscriptions = !user.emailSubscriptions;
+    await user.save({ validateBeforeSave: false });
+    res.json({ emailSubscriptions: user.emailSubscriptions });
+});
+
+export { authUser, registerUser, logoutUser, socialAuth, sendRegisterOTP, verifyRegisterOTP, forgotPassword, resetPassword, updateProfile, getAuthorProfile, getUserAnalytics, toggleEmailSubscription };

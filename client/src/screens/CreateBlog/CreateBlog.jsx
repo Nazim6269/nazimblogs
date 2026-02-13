@@ -21,6 +21,7 @@ const CreateBlog = () => {
   const [imageSrc, setImageSrc] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [scheduledAt, setScheduledAt] = useState("");
 
   const quillModules = useMemo(() => ({
     toolbar: [
@@ -72,6 +73,7 @@ const CreateBlog = () => {
         imageSrc: imageSrc || "",
         category,
         status,
+        scheduledAt: scheduledAt || undefined,
       });
 
       const successMsg = status === "draft" ? "Draft saved!" : "Blog published!";
@@ -159,6 +161,29 @@ const CreateBlog = () => {
             modules={quillModules}
             placeholder="Write your blog content..."
           />
+        </div>
+
+        {/* Schedule Section */}
+        <div className="flex items-center gap-3">
+          <label className={`text-sm font-medium shrink-0 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+            Schedule for:
+          </label>
+          <input
+            type="datetime-local"
+            value={scheduledAt}
+            onChange={(e) => setScheduledAt(e.target.value)}
+            min={new Date().toISOString().slice(0, 16)}
+            className={`flex-1 text-sm px-3 py-2 rounded-md border focus:outline-none transition-colors duration-300 ${
+              isDark
+                ? "bg-slate-800 border-gray-700 text-gray-100 focus:border-purple-500"
+                : "bg-gray-200/40 border-gray-300 text-gray-900 focus:border-indigo-600"
+            }`}
+          />
+          {scheduledAt && (
+            <button type="button" onClick={() => setScheduledAt("")} className="text-xs text-red-400 hover:underline shrink-0">
+              Clear
+            </button>
+          )}
         </div>
 
         {/* Action Buttons */}

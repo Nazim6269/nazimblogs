@@ -10,6 +10,8 @@ import {
     resetPassword,
     updateProfile,
     getAuthorProfile,
+    getUserAnalytics,
+    toggleEmailSubscription,
 } from '../controllers/userController.js';
 import { followUser, unfollowUser } from '../controllers/followController.js';
 import { getBookmarks } from '../controllers/bookmarkController.js';
@@ -26,9 +28,11 @@ router.post('/verify-register-otp', verifyRegisterOTP);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 
-// Profile & bookmarks (BEFORE /:id routes)
+// Profile & bookmarks & analytics (BEFORE /:id routes)
 router.put('/profile', protect, updateProfile);
+router.put('/email-subscription', protect, toggleEmailSubscription);
 router.get('/bookmarks', protect, getBookmarks);
+router.get('/analytics', protect, getUserAnalytics);
 
 // Follow system
 router.put('/:id/follow', protect, followUser);

@@ -4,13 +4,20 @@ import {
   faTrash,
   faEdit,
   faTimes,
-  faCheck
+  faCheck,
+  faChartBar,
+  faChevronDown,
+  faEye,
+  faHeart,
+  faComment,
+  faCrown
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BlogCard from "../../Components/BlogCard/BlogCard";
 import { fetchUserBlogs, deleteBlog as apiDeleteBlog, updateBlog as apiUpdateBlog } from "../../helper/blogApi";
+import { fetchUserAnalytics } from "../../helper/userApi";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../contexts/AuthContext";
 import ProfileEditForm from "../Profile/ProfileEditeForm"
@@ -45,6 +52,25 @@ const Profile = () => {
     location: user?.location || "Unknown",
     photoURL: user?.photoURL || null
   });
+
+  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [analytics, setAnalytics] = useState(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
+
+  const handleToggleAnalytics = async () => {
+    if (!showAnalytics && !analytics) {
+      try {
+        setAnalyticsLoading(true);
+        const data = await fetchUserAnalytics();
+        setAnalytics(data);
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setAnalyticsLoading(false);
+      }
+    }
+    setShowAnalytics(!showAnalytics);
+  };
 
   // Derived stats
   const totalBlogs = blogs.length;
@@ -216,6 +242,74 @@ const Profile = () => {
             <div className={`text-[10px] ${isDark ? "text-gray-500" : "text-gray-400"}`}>{s.label}</div>
           </div>
         ))}
+      </div>
+
+      {/* Analytics Section */}
+      <div className="w-full max-w-3xl">
+        <button
+          onClick={handleToggleAnalytics}
+          className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
+            isDark
+              ? "bg-slate-800/60 text-gray-300 hover:bg-slate-800"
+              : "bg-white border border-gray-100 text-gray-700 hover:bg-gray-50"
+          }`}
+        >
+          <span className="flex items-center gap-2">
+            <FontAwesomeIcon icon={faChartBar} className="text-brand-primary" />
+            Analytics
+          </span>
+          <FontAwesomeIcon icon={faChevronDown} className={`text-xs transition-transform duration-200 ${showAnalytics ? "rotate-180" : ""}`} />
+        </button>
+
+        {showAnalytics && (
+          <div className={`mt-2 p-4 rounded-lg ${isDark ? "bg-slate-800/60" : "bg-white border border-gray-100"}`}>
+            {analyticsLoading ? (
+              <div className="grid grid-cols-3 gap-2">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className={`h-16 rounded-lg animate-pulse ${isDark ? "bg-gray-700" : "bg-gray-200"}`} />
+                ))}
+              </div>
+            ) : analytics ? (
+              <>
+                <div className="grid grid-cols-3 gap-2 mb-3">
+                  {[
+                    { label: "Total Views", value: analytics.totalViews, icon: faEye, color: "text-blue-400" },
+                    { label: "Total Likes", value: analytics.totalLikes, icon: faHeart, color: "text-red-400" },
+                    { label: "Total Comments", value: analytics.totalComments, icon: faComment, color: "text-green-400" },
+                    { label: "Published", value: analytics.publishedCount, icon: faCheck, color: "text-emerald-400" },
+                    { label: "Drafts", value: analytics.draftCount, icon: faEdit, color: "text-yellow-400" },
+                    { label: "Followers", value: analytics.followerCount, icon: faCrown, color: "text-purple-400" },
+                  ].map((s) => (
+                    <div key={s.label} className={`p-3 rounded-lg text-center ${isDark ? "bg-white/5" : "bg-gray-50"}`}>
+                      <FontAwesomeIcon icon={s.icon} className={`text-sm mb-1 ${s.color}`} />
+                      <div className={`text-lg font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{s.value}</div>
+                      <div className={`text-[10px] ${isDark ? "text-gray-500" : "text-gray-400"}`}>{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+                {analytics.mostPopular && (
+                  <Link
+                    to={`/blog-details/${analytics.mostPopular._id}`}
+                    className={`block p-3 rounded-lg transition-colors ${
+                      isDark ? "bg-white/5 hover:bg-white/10" : "bg-gray-50 hover:bg-gray-100"
+                    }`}
+                  >
+                    <div className={`text-[10px] font-semibold mb-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+                      <FontAwesomeIcon icon={faCrown} className="text-yellow-400 mr-1" />
+                      MOST POPULAR POST
+                    </div>
+                    <div className={`text-sm font-bold truncate ${isDark ? "text-gray-200" : "text-gray-800"}`}>
+                      {analytics.mostPopular.title}
+                    </div>
+                    <div className={`text-[10px] mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+                      {analytics.mostPopular.views} views · {analytics.mostPopular.likes} likes · {analytics.mostPopular.comments} comments
+                    </div>
+                  </Link>
+                )}
+              </>
+            ) : null}
+          </div>
+        )}
       </div>
 
       {/* Blogs Section */}

@@ -2,8 +2,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faEye, faComment } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faEye, faComment, faClock } from "@fortawesome/free-solid-svg-icons";
 import { stripHTML } from "../../utils/stripHTML";
+import { calculateReadingTime } from "../../utils/readingTime";
 
 const formatDate = (dateStr) => {
     if (!dateStr) return "Unknown";
@@ -109,6 +110,10 @@ const BlogCard = ({ data }) => {
                 {/* Footer */}
                 <div className="flex items-center justify-between mt-3">
                     <div className={`flex items-center gap-3 text-[11px] ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+                        <span className="flex items-center gap-1">
+                            <FontAwesomeIcon icon={faClock} className="text-[10px]" />
+                            {calculateReadingTime(body)} min
+                        </span>
                         <span className="flex items-center gap-1">
                             <FontAwesomeIcon icon={faEye} className="text-[10px]" />
                             {views || 0}

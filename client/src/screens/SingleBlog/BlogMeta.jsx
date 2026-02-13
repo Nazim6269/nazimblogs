@@ -2,9 +2,10 @@ import React from 'react'
 import { faClock, faComment, faEye, faHeart } from '@fortawesome/free-solid-svg-icons'
 import MetaBadge from './MetaBadge'
 import User from '../../Components/User/User'
+import { calculateReadingTime } from '../../utils/readingTime'
 
 const BlogMeta = ({ blog, isDark }) => {
-    const readingTime = Math.ceil((blog.body?.length || 0) / 1000) || 5;
+    const readingTime = calculateReadingTime(blog.body);
     const views = blog.views || 0;
     const likes = blog.likes?.length || 0;
     const commentCount = blog.comments?.length || 0;

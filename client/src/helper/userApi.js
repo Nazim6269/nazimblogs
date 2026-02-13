@@ -35,6 +35,23 @@ export const fetchAuthorProfile = async (userId) => {
     return res.json();
 };
 
+export const fetchUserAnalytics = async () => {
+    const res = await fetch(`${API_URL}/api/users/analytics`, {
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch analytics');
+    return res.json();
+};
+
+export const toggleEmailSubscription = async () => {
+    const res = await fetch(`${API_URL}/api/users/email-subscription`, {
+        method: 'PUT',
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to toggle email subscription');
+    return res.json();
+};
+
 export const updateProfile = async (data) => {
     const res = await fetch(`${API_URL}/api/users/profile`, {
         method: 'PUT',

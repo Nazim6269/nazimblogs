@@ -1,6 +1,7 @@
 
 import express from 'express';
-
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
@@ -10,11 +11,16 @@ import blogRoutes from './routes/blogRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
+import seriesRoutes from './routes/seriesRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import { startScheduler } from './utils/scheduler.js';
 import { port } from './secret.js';
 
 
-connectDB();
+connectDB().then(() => {
+    startScheduler();
+});
 
 const app = express();
 
@@ -54,6 +60,8 @@ app.use('/api/blogs', blogRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/series', seriesRoutes);
 
 
 app.get('/', (req, res) => {
@@ -67,9 +75,31 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
+// Socket.io setup
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    cors: {
+        origin: allowedOrigins,
+        credentials: true,
+    },
+});
+
+io.use((socket, next) => {
+    const userId = socket.handshake.auth.userId;
+    if (!userId) return next(new Error('Authentication error'));
+    socket.userId = userId;
+    next();
+});
+
+io.on('connection', (socket) => {
+    socket.join(`user:${socket.userId}`);
+});
+
+app.set('io', io);
+
 // Only start the server in development mode
 if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, () => {
+    httpServer.listen(PORT, () => {
         console.log(`Server running on port http://localhost:${port}`);
     });
 }

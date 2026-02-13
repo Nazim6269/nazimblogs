@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react'
 import ActionButton from './ActionButton'
 import { faBookmark, faComment, faHeart, faShare, faCopy, faCheck } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFacebookF, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
+import { faTwitter, faFacebookF, faLinkedinIn, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { toggleBookmark } from '../../helper/blogApi'
 import { useAuth } from '../../contexts/AuthContext'
+import ReportButton from '../../Components/ReportButton/ReportButton'
 import toast from 'react-hot-toast'
 
 const BlogActionBar = ({ isDark, blogId, likes = [], comments, user, onLike, blogTitle }) => {
@@ -91,6 +92,12 @@ const BlogActionBar = ({ isDark, blogId, likes = [], comments, user, onLike, blo
             color: 'hover:text-blue-600',
             url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
         },
+        {
+            name: 'WhatsApp',
+            icon: faWhatsapp,
+            color: 'hover:text-green-500',
+            url: `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`,
+        },
     ];
 
     return (
@@ -169,6 +176,8 @@ const BlogActionBar = ({ isDark, blogId, likes = [], comments, user, onLike, blo
                     </div>
                 </div>
 
+                <div className="flex items-center gap-2">
+                <ReportButton targetType="blog" targetId={blogId} isDark={isDark} />
                 <ActionButton
                     icon={faBookmark}
                     text={isBookmarked ? "Saved" : "Save"}
@@ -177,6 +186,7 @@ const BlogActionBar = ({ isDark, blogId, likes = [], comments, user, onLike, blo
                     isDark={isDark}
                     activeColor="text-yellow-500"
                 />
+                </div>
             </div>
         </div>
     );

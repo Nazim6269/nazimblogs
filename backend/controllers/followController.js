@@ -28,13 +28,14 @@ const followUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(targetId, { $push: { followers: currentUserId } });
     await User.findByIdAndUpdate(currentUserId, { $push: { following: targetId } });
 
+    const io = req.app.get('io');
     // Notify the followed user
     await createNotification({
         recipient: targetId,
         type: 'follow',
         message: `${req.user.name} started following you`,
         relatedUser: currentUserId,
-    });
+    }, io);
 
     res.json({ message: 'Followed successfully' });
 });

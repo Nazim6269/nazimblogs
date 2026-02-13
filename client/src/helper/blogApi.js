@@ -154,6 +154,14 @@ export const fetchBookmarks = async () => {
     return res.json();
 };
 
+export const fetchTags = async () => {
+    const res = await fetch(`${API_URL}/api/blogs/tags`, {
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch tags');
+    return res.json();
+};
+
 export const deleteComment = async (blogId, commentId) => {
     const res = await fetch(`${API_URL}/api/blogs/${blogId}/comments/${commentId}`, {
         method: 'DELETE',

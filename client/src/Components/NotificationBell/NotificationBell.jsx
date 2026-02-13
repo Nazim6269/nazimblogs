@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
+import { useSocket } from "../../contexts/SocketContext";
 import { fetchUnreadCount, fetchNotifications, markAllNotificationsRead, markNotificationRead } from "../../helper/notificationApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faHeart, faComment, faUserPlus, faReply, faCheck } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 const typeIcon = {
   like: faHeart,
@@ -35,13 +37,14 @@ const timeAgo = (dateStr) => {
 const NotificationBell = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const socket = useSocket();
   const [unreadCount, setUnreadCount] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Poll unread count
+  // Poll unread count (fallback for when socket is unavailable)
   useEffect(() => {
     const fetchCount = () => {
       fetchUnreadCount()
@@ -49,9 +52,20 @@ const NotificationBell = () => {
         .catch(() => {});
     };
     fetchCount();
-    const interval = setInterval(fetchCount, 30000);
+    const interval = setInterval(fetchCount, 60000);
     return () => clearInterval(interval);
   }, []);
+
+  // Real-time socket notifications
+  useEffect(() => {
+    if (!socket) return;
+    const handleNotification = (notif) => {
+      setUnreadCount((c) => c + 1);
+      toast(notif.message, { icon: "\u{1F514}", duration: 4000 });
+    };
+    socket.on("notification", handleNotification);
+    return () => socket.off("notification", handleNotification);
+  }, [socket]);
 
   // Close on outside click
   useEffect(() => {

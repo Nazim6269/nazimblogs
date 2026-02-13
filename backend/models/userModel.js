@@ -48,6 +48,10 @@ const userSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Blog',
         }],
+        emailSubscriptions: {
+            type: Boolean,
+            default: false,
+        },
         otp: {
             type: String,
         },

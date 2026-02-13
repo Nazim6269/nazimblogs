@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../hooks/useTheme";
 import { storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { updateProfile } from "../../helper/userApi";
+import { updateProfile, toggleEmailSubscription } from "../../helper/userApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import toast from "react-hot-toast";
 import {
@@ -13,7 +13,8 @@ import {
     faInfoCircle,
     faEnvelope,
     faCheck,
-    faSpinner
+    faSpinner,
+    faBell
 } from "@fortawesome/free-solid-svg-icons";
 
 const Settings = () => {
@@ -28,12 +29,29 @@ const Settings = () => {
         photoURL: user?.photoURL || ""
     });
 
+    const [emailSub, setEmailSub] = useState(user?.emailSubscriptions || false);
+    const [emailSubLoading, setEmailSubLoading] = useState(false);
+
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(user?.photoURL || null);
     const [loading, setLoading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
 
     const fileInputRef = useRef(null);
+
+    const handleToggleEmailSub = async () => {
+        setEmailSubLoading(true);
+        try {
+            const data = await toggleEmailSubscription();
+            setEmailSub(data.emailSubscriptions);
+            updateUser({ emailSubscriptions: data.emailSubscriptions });
+            toast.success(data.emailSubscriptions ? "Email notifications enabled" : "Email notifications disabled");
+        } catch {
+            toast.error("Failed to update preference");
+        } finally {
+            setEmailSubLoading(false);
+        }
+    };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -220,6 +238,28 @@ const Settings = () => {
                                     placeholder="Tell us about yourself..."
                                     className={`w-full px-3 py-2.5 rounded-md text-sm outline-none transition-all duration-300 border resize-none ${isDark ? "bg-white/5 border-white/10 text-white focus:bg-white/10 focus:border-purple-500/50" : "bg-gray-50 border-transparent text-gray-900 focus:bg-white focus:border-purple-500/30"}`}
                                 ></textarea>
+                            </div>
+                        </div>
+
+                        {/* Email Notifications */}
+                        <div className={`p-4 rounded-md border ${isDark ? "bg-white/5 border-white/10" : "bg-gray-50 border-gray-200"}`}>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-9 h-9 rounded-md flex items-center justify-center ${isDark ? "bg-purple-500/10" : "bg-purple-50"}`}>
+                                        <FontAwesomeIcon icon={faBell} className="text-brand-primary text-sm" />
+                                    </div>
+                                    <div>
+                                        <p className={`text-sm font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>Email Notifications</p>
+                                        <p className={`text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}>Get notified when authors you follow publish new posts</p>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleToggleEmailSub}
+                                    disabled={emailSubLoading}
+                                    className={`relative w-11 h-6 rounded-full transition-colors duration-300 ${emailSub ? "bg-brand-primary" : isDark ? "bg-white/10" : "bg-gray-300"} ${emailSubLoading ? "opacity-50" : ""}`}
+                                >
+                                    <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform duration-300 ${emailSub ? "translate-x-5" : "translate-x-0"}`} />
+                                </button>
                             </div>
                         </div>
 

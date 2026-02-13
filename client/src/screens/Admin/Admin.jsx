@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { useSiteConfig } from "../../contexts/SiteConfigContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash, faSave, faSpinner, faBan, faCheck, faUsers, faNewspaper, faEnvelope, faChartBar, faGauge, faPalette, faImage, faColumns, faBars, faXmark, faGear } from "@fortawesome/free-solid-svg-icons";
-import { fetchDashboardStats, banUser as banUserApi, unbanUser as unbanUserApi, fetchAdminMessages, markMessageRead as markMessageReadApi } from "../../helper/adminApi";
+import { faPlus, faTrash, faSave, faSpinner, faBan, faCheck, faUsers, faNewspaper, faEnvelope, faChartBar, faGauge, faPalette, faImage, faColumns, faBars, faXmark, faGear, faFlag } from "@fortawesome/free-solid-svg-icons";
+import { fetchDashboardStats, banUser as banUserApi, unbanUser as unbanUserApi, fetchAdminMessages, markMessageRead as markMessageReadApi, fetchReports, updateReportStatus } from "../../helper/adminApi";
 import toast from "react-hot-toast";
 import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
 
@@ -25,6 +25,9 @@ const Admin = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [banTarget, setBanTarget] = useState(null);
   const [banLoading, setBanLoading] = useState(false);
+  const [reports, setReports] = useState([]);
+  const [loadingReports, setLoadingReports] = useState(false);
+  const [reportFilter, setReportFilter] = useState("");
 
   // Form states
   const [navbarForm, setNavbarForm] = useState(siteConfig.navbar);
@@ -97,7 +100,14 @@ const Admin = () => {
         .catch((err) => toast.error(err.message))
         .finally(() => setLoadingMessages(false));
     }
-  }, [activeTab]);
+    if (activeTab === "reports") {
+      setLoadingReports(true);
+      fetchReports(reportFilter || undefined)
+        .then((data) => setReports(data))
+        .catch((err) => toast.error(err.message))
+        .finally(() => setLoadingReports(false));
+    }
+  }, [activeTab, reportFilter]);
 
   const handleBanToggle = async (u) => {
     try {
@@ -124,10 +134,21 @@ const Admin = () => {
     }
   };
 
+  const handleUpdateReportStatus = async (reportId, status) => {
+    try {
+      await updateReportStatus(reportId, status);
+      setReports((prev) => prev.map((r) => r._id === reportId ? { ...r, status } : r));
+      toast.success(`Report marked as ${status}`);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const tabs = [
     { id: "dashboard", label: "Dashboard", icon: faGauge },
     { id: "users", label: "Users", icon: faUsers },
     { id: "messages", label: "Messages", icon: faEnvelope },
+    { id: "reports", label: "Reports", icon: faFlag },
     { id: "navbar", label: "Navbar", icon: faPalette },
     { id: "hero", label: "Hero", icon: faImage },
     { id: "footer", label: "Footer", icon: faColumns },
@@ -140,6 +161,7 @@ const Admin = () => {
         { id: "dashboard", label: "Dashboard", icon: faGauge },
         { id: "users", label: "Users", icon: faUsers },
         { id: "messages", label: "Messages", icon: faEnvelope },
+        { id: "reports", label: "Reports", icon: faFlag },
       ],
     },
     {
@@ -491,6 +513,103 @@ const Admin = () => {
                             <FontAwesomeIcon icon={faCheck} className="sm:hidden" />
                             <span className="hidden sm:inline">Mark Read</span>
                           </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Reports Tab */}
+          {activeTab === "reports" && (
+            <div className={cardClass}>
+              <h2 className={`text-sm font-bold mb-3 ${isDark ? "text-white" : "text-gray-900"}`}>User Reports</h2>
+
+              {/* Filter Buttons */}
+              <div className="flex flex-wrap gap-1.5 mb-4">
+                {[
+                  { label: "All", value: "" },
+                  { label: "Pending", value: "pending" },
+                  { label: "Reviewed", value: "reviewed" },
+                  { label: "Dismissed", value: "dismissed" },
+                ].map((filter) => (
+                  <button
+                    key={filter.value}
+                    onClick={() => setReportFilter(filter.value)}
+                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+                      reportFilter === filter.value
+                        ? "bg-brand-primary text-white"
+                        : isDark
+                          ? "bg-white/5 text-gray-400 hover:bg-white/10"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    }`}
+                  >
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
+
+              {loadingReports ? (
+                <div className="flex justify-center py-8">
+                  <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xl text-brand-primary" />
+                </div>
+              ) : reports.length === 0 ? (
+                <div className="text-center py-10">
+                  <FontAwesomeIcon icon={faFlag} className={`text-2xl mb-2 ${isDark ? "text-gray-600" : "text-gray-300"}`} />
+                  <p className={`text-sm ${isDark ? "text-gray-500" : "text-gray-400"}`}>No reports yet.</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {reports.map((report) => (
+                    <div
+                      key={report._id}
+                      className={`p-3 rounded-md border transition-colors ${
+                        report.status === "pending"
+                          ? isDark ? "border-purple-500/30 bg-purple-900/10" : "border-purple-200 bg-purple-50"
+                          : isDark ? "border-gray-700/50 bg-gray-800/20" : "border-gray-100 bg-gray-50"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <p className={`text-sm font-bold truncate ${isDark ? "text-gray-200" : "text-gray-900"}`}>
+                              {report.reporter?.name || "Unknown User"}
+                            </p>
+                            <span className={`shrink-0 text-[10px] px-2 py-0.5 rounded-full font-semibold ${
+                              report.status === "pending" ? "bg-yellow-100 text-yellow-700" :
+                              report.status === "reviewed" ? "bg-green-100 text-green-700" :
+                              "bg-gray-200 text-gray-600"
+                            }`}>
+                              {report.status.charAt(0).toUpperCase() + report.status.slice(1)}
+                            </span>
+                          </div>
+                          <p className={`text-[10px] mb-1.5 truncate ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+                            <span className="hidden sm:inline">{report.reporter?.email} &middot; </span>
+                            Target: {report.targetType || "N/A"} &middot; {new Date(report.createdAt).toLocaleDateString()}
+                          </p>
+                          <p className={`text-xs line-clamp-3 sm:line-clamp-none ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                            {report.reason}
+                          </p>
+                        </div>
+                        {report.status === "pending" && (
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <button
+                              onClick={() => handleUpdateReportStatus(report._id, "reviewed")}
+                              className="px-2 py-1 rounded-md text-[10px] font-semibold bg-green-600 text-white hover:bg-green-700 transition-colors"
+                            >
+                              <FontAwesomeIcon icon={faCheck} className="sm:mr-1" />
+                              <span className="hidden sm:inline">Review</span>
+                            </button>
+                            <button
+                              onClick={() => handleUpdateReportStatus(report._id, "dismissed")}
+                              className="px-2 py-1 rounded-md text-[10px] font-semibold bg-red-600 text-white hover:bg-red-700 transition-colors"
+                            >
+                              <FontAwesomeIcon icon={faBan} className="sm:mr-1" />
+                              <span className="hidden sm:inline">Dismiss</span>
+                            </button>
+                          </div>
                         )}
                       </div>
                     </div>

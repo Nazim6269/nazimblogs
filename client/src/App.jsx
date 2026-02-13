@@ -36,6 +36,9 @@ const ForgotPassword = lazy(() => import("./screens/ForgotPassword/ForgotPasswor
 const ReadingList = lazy(() => import("./screens/ReadingList/ReadingList"));
 const AuthorProfile = lazy(() => import("./screens/AuthorProfile/AuthorProfile"));
 const Notifications = lazy(() => import("./screens/Notifications/Notifications"));
+const TagsPage = lazy(() => import("./screens/Tags/TagsPage"));
+const TagBlogsPage = lazy(() => import("./screens/Tags/TagBlogsPage"));
+const SeriesPage = lazy(() => import("./screens/Series/SeriesPage"));
 const NotFound = lazy(() => import("./screens/NotFound/NotFound"));
 
 function RouteProgressBar() {
@@ -74,6 +77,9 @@ function App() {
                 <Route path="/community" element={<Suspense fallback={<HomeSkeleton />}><Home /></Suspense>} />
                 <Route path="/blog-details/:id" element={<Suspense fallback={<BlogDetailSkeleton />}><SingleBlog /></Suspense>} />
                 <Route path="/author/:id" element={<Suspense fallback={<AuthorProfileSkeleton />}><AuthorProfile /></Suspense>} />
+                <Route path="/tags" element={<Suspense fallback={<HomeSkeleton />}><TagsPage /></Suspense>} />
+                <Route path="/tags/:tag" element={<Suspense fallback={<HomeSkeleton />}><TagBlogsPage /></Suspense>} />
+                <Route path="/series/:id" element={<Suspense fallback={<HomeSkeleton />}><SeriesPage /></Suspense>} />
 
                 {/* Auth Routes - Only accessible when NOT logged in */}
                 <Route

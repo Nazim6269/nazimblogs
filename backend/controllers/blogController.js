@@ -1,6 +1,8 @@
 import asyncHandler from 'express-async-handler';
 import Blog from '../models/blogModel.js';
+import User from '../models/userModel.js';
 import createNotification from '../utils/createNotification.js';
+import { sendBlogNotificationEmail } from '../utils/sendEmail.js';
 
 // @desc    Get all blogs
 // @route   GET /api/blogs
@@ -20,6 +22,10 @@ const getBlogs = asyncHandler(async (req, res) => {
 
     if (category && category !== 'Explore') {
         query.category = category;
+    }
+
+    if (req.query.tag) {
+        query.tags = { $regex: new RegExp(`^${req.query.tag}$`, 'i') };
     }
 
     const skip = (Number(page) - 1) * Number(limit);
@@ -90,7 +96,7 @@ const getUserBlogs = asyncHandler(async (req, res) => {
 // @route   POST /api/blogs
 // @access  Private
 const createBlog = asyncHandler(async (req, res) => {
-    const { title, body, tags, imageSrc, category, status } = req.body;
+    const { title, body, tags, imageSrc, category, status, scheduledAt } = req.body;
 
     if (!title || !body) {
         res.status(400);
@@ -106,17 +112,42 @@ const createBlog = asyncHandler(async (req, res) => {
         }
     }
 
+    let finalStatus = status || 'draft';
+    let finalScheduledAt = null;
+    if (scheduledAt) {
+        const schedDate = new Date(scheduledAt);
+        if (schedDate > new Date()) {
+            finalStatus = 'scheduled';
+            finalScheduledAt = schedDate;
+        }
+    }
+
     const blog = await Blog.create({
         title,
         body,
         tags: tags || [],
         imageSrc: imageSrc || '',
         category: category || 'Community',
-        status: status || 'draft',
+        status: finalStatus,
+        scheduledAt: finalScheduledAt,
         author: req.user._id,
     });
 
     const populated = await blog.populate('author', 'name email photoURL');
+
+    // Send email notifications to subscribed followers on publish
+    if (finalStatus === 'published') {
+        const author = await User.findById(req.user._id);
+        if (author && author.followers.length > 0) {
+            const subscribers = await User.find({
+                _id: { $in: author.followers },
+                emailSubscriptions: true,
+            }).select('email');
+            subscribers.forEach((sub) => {
+                sendBlogNotificationEmail(sub.email, author.name, title, blog._id).catch(() => {});
+            });
+        }
+    }
 
     res.status(201).json(populated);
 });
@@ -137,7 +168,7 @@ const updateBlog = asyncHandler(async (req, res) => {
         throw new Error('Not authorized to update this blog');
     }
 
-    const { title, body, tags, imageSrc, category, status } = req.body;
+    const { title, body, tags, imageSrc, category, status, scheduledAt } = req.body;
 
     if (title !== undefined) blog.title = title;
     if (body !== undefined) blog.body = body;
@@ -145,6 +176,12 @@ const updateBlog = asyncHandler(async (req, res) => {
     if (imageSrc !== undefined) blog.imageSrc = imageSrc;
     if (category !== undefined) blog.category = category;
     if (status !== undefined) blog.status = status;
+    if (scheduledAt !== undefined) {
+        blog.scheduledAt = scheduledAt ? new Date(scheduledAt) : null;
+        if (scheduledAt && new Date(scheduledAt) > new Date()) {
+            blog.status = 'scheduled';
+        }
+    }
 
     const updated = await blog.save();
     const populated = await updated.populate('author', 'name email photoURL');
@@ -200,6 +237,7 @@ const likeBlog = asyncHandler(async (req, res) => {
         blog.likes.push(req.user._id);
         await blog.save();
 
+        const io = req.app.get('io');
         // Notify blog author
         await createNotification({
             recipient: blog.author,
@@ -207,7 +245,7 @@ const likeBlog = asyncHandler(async (req, res) => {
             message: `${req.user.name} liked your post "${blog.title}"`,
             relatedBlog: blog._id,
             relatedUser: req.user._id,
-        });
+        }, io);
     } else {
         blog.likes.splice(index, 1);
         await blog.save();
@@ -266,6 +304,7 @@ const addComment = asyncHandler(async (req, res) => {
     blog.comments.unshift(comment);
     await blog.save();
 
+    const io = req.app.get('io');
     // Notify blog author about the comment
     await createNotification({
         recipient: blog.author,
@@ -273,7 +312,7 @@ const addComment = asyncHandler(async (req, res) => {
         message: `${req.user.name} commented on your post "${blog.title}"`,
         relatedBlog: blog._id,
         relatedUser: req.user._id,
-    });
+    }, io);
 
     // If this is a reply, also notify the parent comment author
     if (resolvedParent) {
@@ -285,7 +324,7 @@ const addComment = asyncHandler(async (req, res) => {
                 message: `${req.user.name} replied to your comment on "${blog.title}"`,
                 relatedBlog: blog._id,
                 relatedUser: req.user._id,
-            });
+            }, io);
         }
     }
 
@@ -418,4 +457,17 @@ const getCategoryCounts = asyncHandler(async (req, res) => {
     res.json(result);
 });
 
-export { getBlogs, getBlogById, getUserBlogs, createBlog, updateBlog, deleteBlog, likeBlog, addComment, deleteComment, getTrendingBlogs, getRecommendedBlogs, getCategoryCounts };
+// @desc    Get all unique tags with counts
+// @route   GET /api/blogs/tags
+// @access  Public
+const getTagsWithCounts = asyncHandler(async (req, res) => {
+    const tags = await Blog.aggregate([
+        { $match: { status: 'published' } },
+        { $unwind: '$tags' },
+        { $group: { _id: { $toLower: '$tags' }, count: { $sum: 1 }, displayName: { $first: '$tags' } } },
+        { $sort: { count: -1 } },
+    ]);
+    res.json(tags);
+});
+
+export { getBlogs, getBlogById, getUserBlogs, createBlog, updateBlog, deleteBlog, likeBlog, addComment, deleteComment, getTrendingBlogs, getRecommendedBlogs, getCategoryCounts, getTagsWithCounts };

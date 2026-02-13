@@ -46,6 +46,26 @@ export const fetchAdminMessages = async () => {
     return data;
 };
 
+export const fetchReports = async (status) => {
+    const params = status ? `?status=${status}` : '';
+    const res = await fetch(`${API_URL}/api/admin/reports${params}`, { credentials: 'include' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to fetch reports');
+    return data;
+};
+
+export const updateReportStatus = async (reportId, status) => {
+    const res = await fetch(`${API_URL}/api/admin/reports/${reportId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ status }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to update report');
+    return data;
+};
+
 export const markMessageRead = async (messageId) => {
     const res = await fetch(`${API_URL}/api/admin/messages/${messageId}/read`, {
         method: 'PUT',

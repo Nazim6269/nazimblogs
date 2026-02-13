@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import connectDB from './config/db.js';
 import User from './models/userModel.js';
 import Blog from './models/blogModel.js';
+import Notification from './models/notificationModel.js';
+import Message from './models/messageModel.js';
 
 const sampleBlogs = [
     {
@@ -13,7 +15,7 @@ const sampleBlogs = [
         tags: ['React', 'JavaScript', 'Hooks', 'Frontend'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/react-hooks/800/600',
-        views:342,
+        views: 342,
     },
     {
         title: 'Modern CSS Grid Layout Techniques',
@@ -21,7 +23,7 @@ const sampleBlogs = [
         tags: ['CSS', 'Grid', 'Layout', 'Design'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/css-grid/800/600',
-        views:218,
+        views: 218,
     },
     {
         title: 'Building RESTful APIs with Express.js',
@@ -29,7 +31,7 @@ const sampleBlogs = [
         tags: ['Node.js', 'Express', 'API', 'Backend'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/express-api/800/600',
-        views:456,
+        views: 456,
     },
     {
         title: 'UI Design Principles Every Developer Should Know',
@@ -37,7 +39,7 @@ const sampleBlogs = [
         tags: ['UI', 'Design', 'UX', 'Typography'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/ui-design/800/600',
-        views:567,
+        views: 567,
     },
     {
         title: 'Understanding MongoDB Aggregation Pipeline',
@@ -45,7 +47,7 @@ const sampleBlogs = [
         tags: ['MongoDB', 'Database', 'NoSQL', 'Backend'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/mongodb-agg/800/600',
-        views:289,
+        views: 289,
     },
     {
         title: 'Creating Accessible Web Applications',
@@ -53,7 +55,7 @@ const sampleBlogs = [
         tags: ['Accessibility', 'A11y', 'HTML', 'Web Standards'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/accessibility/800/600',
-        views:321,
+        views: 321,
     },
     {
         title: 'Tailwind CSS Tips and Tricks for Faster Development',
@@ -61,7 +63,7 @@ const sampleBlogs = [
         tags: ['Tailwind', 'CSS', 'Frontend', 'Styling'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/tailwind-tips/800/600',
-        views:412,
+        views: 412,
     },
     {
         title: 'Authentication Best Practices for Web Apps',
@@ -69,7 +71,7 @@ const sampleBlogs = [
         tags: ['Security', 'Authentication', 'JWT', 'OAuth'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/auth-best/800/600',
-        views:534,
+        views: 534,
     },
     {
         title: 'Open Source Contribution Guide for Beginners',
@@ -77,7 +79,7 @@ const sampleBlogs = [
         tags: ['Open Source', 'Git', 'GitHub', 'Community'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/opensource/800/600',
-        views:267,
+        views: 267,
     },
     {
         title: 'Responsive Design Patterns with Flexbox',
@@ -85,7 +87,7 @@ const sampleBlogs = [
         tags: ['CSS', 'Flexbox', 'Responsive', 'Layout'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/flexbox/800/600',
-        views:345,
+        views: 345,
     },
     {
         title: 'Introduction to TypeScript for JavaScript Developers',
@@ -93,7 +95,7 @@ const sampleBlogs = [
         tags: ['TypeScript', 'JavaScript', 'Types', 'Frontend'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/typescript/800/600',
-        views:478,
+        views: 478,
     },
     {
         title: 'Color Theory in Web Design: A Practical Guide',
@@ -101,7 +103,7 @@ const sampleBlogs = [
         tags: ['Design', 'Color Theory', 'UI', 'Branding'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/color-theory/800/600',
-        views:234,
+        views: 234,
     },
     {
         title: 'Setting Up a CI/CD Pipeline with GitHub Actions',
@@ -109,7 +111,7 @@ const sampleBlogs = [
         tags: ['CI/CD', 'GitHub Actions', 'DevOps', 'Automation'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/cicd/800/600',
-        views:312,
+        views: 312,
     },
     {
         title: 'Building a Developer Community: Lessons Learned',
@@ -117,7 +119,7 @@ const sampleBlogs = [
         tags: ['Community', 'Leadership', 'Networking', 'Culture'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/dev-community/800/600',
-        views:189,
+        views: 189,
     },
     {
         title: 'State Management in React: Context vs Redux vs Zustand',
@@ -125,7 +127,7 @@ const sampleBlogs = [
         tags: ['React', 'State Management', 'Redux', 'Zustand'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/state-mgmt/800/600',
-        views:523,
+        views: 523,
     },
     {
         title: 'Designing Effective Dashboard Interfaces',
@@ -133,7 +135,7 @@ const sampleBlogs = [
         tags: ['Dashboard', 'UI', 'Data Visualization', 'Design'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/dashboard/800/600',
-        views:387,
+        views: 387,
     },
     {
         title: 'The Art of Writing Clean Code',
@@ -141,7 +143,7 @@ const sampleBlogs = [
         tags: ['Clean Code', 'Best Practices', 'JavaScript', 'Architecture'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/clean-code/800/600',
-        views:601,
+        views: 601,
     },
     {
         title: 'Docker for Frontend Developers',
@@ -149,7 +151,7 @@ const sampleBlogs = [
         tags: ['Docker', 'DevOps', 'Frontend', 'Containers'],
         category: 'Tutorials',
         imageSrc: 'https://picsum.photos/seed/docker-fe/800/600',
-        views:276,
+        views: 276,
     },
     {
         title: 'Growing as a Self-Taught Developer',
@@ -157,7 +159,7 @@ const sampleBlogs = [
         tags: ['Career', 'Learning', 'Self-Taught', 'Growth'],
         category: 'Community',
         imageSrc: 'https://picsum.photos/seed/self-taught/800/600',
-        views:445,
+        views: 445,
     },
     {
         title: 'Micro-Animations That Improve UX',
@@ -165,55 +167,317 @@ const sampleBlogs = [
         tags: ['Animation', 'UX', 'CSS', 'Framer Motion'],
         category: 'Design',
         imageSrc: 'https://picsum.photos/seed/micro-anim/800/600',
-        views:356,
+        views: 356,
     },
 ];
 
 const sampleAuthors = [
-    { name: 'Nazim Uddin', email: 'nazimdev10022001@gmail.com', password: 'admin123456', isAdmin: true },
-    { name: 'Sarah Chen', email: 'sarah.chen@example.com', password: 'password123' },
-    { name: 'Alex Rivera', email: 'alex.rivera@example.com', password: 'password123' },
-    { name: 'Priya Sharma', email: 'priya.sharma@example.com', password: 'password123' },
-    { name: 'James Mitchell', email: 'james.mitchell@example.com', password: 'password123' },
+    {
+        name: 'Nazim Uddin',
+        email: 'nazimdev10022001@gmail.com',
+        password: 'admin123456',
+        isAdmin: true,
+        bio: 'Full-stack developer & open-source enthusiast. Building things for the web.',
+        location: 'Dhaka, Bangladesh',
+    },
+    {
+        name: 'Sarah Chen',
+        email: 'sarah.chen@example.com',
+        password: 'password123',
+        bio: 'Frontend engineer at a fintech startup. Passionate about design systems and accessibility.',
+        location: 'San Francisco, CA',
+    },
+    {
+        name: 'Alex Rivera',
+        email: 'alex.rivera@example.com',
+        password: 'password123',
+        bio: 'Backend developer who loves Node.js, databases, and DevOps. Writing about what I learn.',
+        location: 'Austin, TX',
+    },
+    {
+        name: 'Priya Sharma',
+        email: 'priya.sharma@example.com',
+        password: 'password123',
+        bio: 'UI/UX designer turned developer. I write about the intersection of design and code.',
+        location: 'Mumbai, India',
+    },
+    {
+        name: 'James Mitchell',
+        email: 'james.mitchell@example.com',
+        password: 'password123',
+        bio: 'Self-taught developer, community builder, and technical writer. Sharing everything I know.',
+        location: 'London, UK',
+    },
 ];
+
+// ── Sample comments for blogs ──
+const sampleComments = [
+    'Great article! This really helped me understand the topic better.',
+    'Thanks for sharing this. I have been looking for a clear explanation like this.',
+    'Really well written. The code examples are super helpful.',
+    'I have a question — does this approach work well at scale?',
+    'Bookmarked this for future reference. Excellent resource!',
+    'I tried implementing this in my project and it works perfectly.',
+    'This is exactly what I needed to read today. Thanks!',
+    'Solid explanation. Would love a follow-up on advanced patterns.',
+    'I disagree with the third point, but overall a solid post.',
+    'The comparison section is really useful. Keep up the great work!',
+    'I shared this with my team. Everyone found it valuable.',
+    'Clear, concise, and practical. More articles like this please!',
+    'How would you handle error cases in this setup?',
+    'This changed how I think about the problem. Thank you!',
+    'Nice write-up! Looking forward to more content from you.',
+];
+
+// ── Sample replies ──
+const sampleReplies = [
+    'Thanks for the kind words!',
+    'Great question! I will cover that in a follow-up post.',
+    'Glad it helped. Feel free to reach out if you have more questions.',
+    'Absolutely, it scales well. I have used it in production.',
+    'Good point — I should have clarified that part more.',
+    'Thanks for sharing with your team! That means a lot.',
+    'You are welcome! Happy coding.',
+];
+
+// ── Sample messages to admin ──
+const sampleMessages = [
+    'Love the blog platform! Any plans to add a dark code editor?',
+    'Found a small typo on the homepage — the word "developrs" should be "developers".',
+    'Would it be possible to add an RSS feed for new articles?',
+    'Great work on the design refresh. The dark mode looks fantastic.',
+    'I would love to write a guest post. How can I get involved?',
+    'The reading list feature is super useful. Thanks for building it!',
+    'Suggestion: add tag-based filtering on the main page.',
+    'Is there an API I can use to fetch blog posts for my portfolio site?',
+];
+
+// ── Helpers ──
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const pickN = (arr, n) => {
+    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.min(n, arr.length));
+};
+const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const daysAgo = (days) => new Date(Date.now() - days * 24 * 60 * 60 * 1000);
 
 const seedDatabase = async () => {
     try {
         await connectDB();
 
-        // Clear existing blogs
+        // ── Clear existing data ──
         await Blog.deleteMany({});
-        console.log('Existing blogs cleared');
+        await Notification.deleteMany({});
+        await Message.deleteMany({});
+        console.log('Cleared blogs, notifications, and messages');
 
-        // Create or find all authors
+        // ── Create or update authors ──
         const authors = [];
         for (const authorData of sampleAuthors) {
             let user = await User.findOne({ email: authorData.email });
             if (user) {
-                if (authorData.isAdmin) {
-                    user.isAdmin = true;
-                    await user.save();
-                }
-                console.log(`Author found: ${user.name} (${user.email})`);
+                if (authorData.isAdmin) user.isAdmin = true;
+                user.bio = authorData.bio;
+                user.location = authorData.location;
+                user.followers = [];
+                user.following = [];
+                user.bookmarks = [];
+                await user.save();
+                console.log(`Author updated: ${user.name}`);
             } else {
                 user = await User.create(authorData);
-                console.log(`Author created: ${user.name} (${user.email})`);
+                console.log(`Author created: ${user.name}`);
             }
             authors.push(user);
         }
 
-        // Distribute blogs across authors
+        // ── Create blogs with likes and comments ──
         const blogsWithAuthor = sampleBlogs.map((blog, index) => ({
             ...blog,
             author: authors[index % authors.length]._id,
+            status: 'published',
         }));
 
         const createdBlogs = await Blog.insertMany(blogsWithAuthor);
-        console.log(`\nSeeded ${createdBlogs.length} blog posts across ${authors.length} authors`);
+        console.log(`Seeded ${createdBlogs.length} blogs`);
 
+        const notifications = [];
+
+        // ── Add likes to blogs ──
+        for (const blog of createdBlogs) {
+            const otherUsers = authors.filter((a) => !a._id.equals(blog.author));
+            const likers = pickN(otherUsers, randomInt(1, otherUsers.length));
+
+            blog.likes = likers.map((u) => u._id);
+
+            for (const liker of likers) {
+                notifications.push({
+                    recipient: blog.author,
+                    type: 'like',
+                    message: `${liker.name} liked your post "${blog.title}"`,
+                    relatedBlog: blog._id,
+                    relatedUser: liker._id,
+                    read: Math.random() > 0.4,
+                    createdAt: daysAgo(randomInt(0, 14)),
+                });
+            }
+        }
+        console.log('Added likes to blogs');
+
+        // ── Add comments and replies ──
+        for (const blog of createdBlogs) {
+            const otherUsers = authors.filter((a) => !a._id.equals(blog.author));
+            const commentCount = randomInt(1, 4);
+            const commenters = pickN(otherUsers, commentCount);
+
+            for (const commenter of commenters) {
+                const comment = {
+                    _id: new mongoose.Types.ObjectId(),
+                    user: commenter._id,
+                    text: pick(sampleComments),
+                    parentComment: null,
+                    createdAt: daysAgo(randomInt(0, 12)),
+                };
+                blog.comments.push(comment);
+
+                notifications.push({
+                    recipient: blog.author,
+                    type: 'comment',
+                    message: `${commenter.name} commented on "${blog.title}"`,
+                    relatedBlog: blog._id,
+                    relatedUser: commenter._id,
+                    read: Math.random() > 0.4,
+                    createdAt: comment.createdAt,
+                });
+
+                // 50% chance the author replies
+                if (Math.random() > 0.5) {
+                    const reply = {
+                        _id: new mongoose.Types.ObjectId(),
+                        user: blog.author,
+                        text: pick(sampleReplies),
+                        parentComment: comment._id,
+                        createdAt: new Date(comment.createdAt.getTime() + randomInt(1, 24) * 60 * 60 * 1000),
+                    };
+                    blog.comments.push(reply);
+
+                    notifications.push({
+                        recipient: commenter._id,
+                        type: 'reply',
+                        message: `${authors.find((a) => a._id.equals(blog.author)).name} replied to your comment on "${blog.title}"`,
+                        relatedBlog: blog._id,
+                        relatedUser: blog.author,
+                        read: Math.random() > 0.3,
+                        createdAt: reply.createdAt,
+                    });
+                }
+            }
+        }
+
+        // Save all blogs with likes and comments
+        for (const blog of createdBlogs) {
+            await blog.save();
+        }
+        console.log('Added comments and replies to blogs');
+
+        // ── Set up follower/following relationships ──
+        // Each non-admin user follows admin + 1-2 random others
+        // Admin follows 2 random users
+        const admin = authors[0];
+        const nonAdmins = authors.slice(1);
+
+        for (const user of nonAdmins) {
+            // Follow admin
+            user.following.push(admin._id);
+            admin.followers.push(user._id);
+
+            notifications.push({
+                recipient: admin._id,
+                type: 'follow',
+                message: `${user.name} started following you`,
+                relatedUser: user._id,
+                read: Math.random() > 0.3,
+                createdAt: daysAgo(randomInt(1, 20)),
+            });
+
+            // Follow 1-2 random others
+            const othersToFollow = pickN(
+                nonAdmins.filter((u) => !u._id.equals(user._id)),
+                randomInt(1, 2)
+            );
+            for (const target of othersToFollow) {
+                if (!user.following.some((id) => id.equals(target._id))) {
+                    user.following.push(target._id);
+                    target.followers.push(user._id);
+
+                    notifications.push({
+                        recipient: target._id,
+                        type: 'follow',
+                        message: `${user.name} started following you`,
+                        relatedUser: user._id,
+                        read: Math.random() > 0.3,
+                        createdAt: daysAgo(randomInt(1, 20)),
+                    });
+                }
+            }
+        }
+
+        // Admin follows 2 random users
+        const adminFollows = pickN(nonAdmins, 2);
+        for (const target of adminFollows) {
+            admin.following.push(target._id);
+            target.followers.push(admin._id);
+
+            notifications.push({
+                recipient: target._id,
+                type: 'follow',
+                message: `${admin.name} started following you`,
+                relatedUser: admin._id,
+                read: Math.random() > 0.3,
+                createdAt: daysAgo(randomInt(1, 20)),
+            });
+        }
+
+        // Save all users with followers/following
+        for (const user of authors) {
+            await user.save();
+        }
+        console.log('Set up follower/following relationships');
+
+        // ── Add bookmarks ──
+        for (const user of authors) {
+            const otherBlogs = createdBlogs.filter((b) => !b.author.equals(user._id));
+            const bookmarked = pickN(otherBlogs, randomInt(2, 5));
+            user.bookmarks = bookmarked.map((b) => b._id);
+            await user.save();
+        }
+        console.log('Added bookmarks');
+
+        // ── Create notifications ──
+        await Notification.insertMany(notifications);
+        console.log(`Seeded ${notifications.length} notifications`);
+
+        // ── Create admin messages ──
+        const messages = sampleMessages.map((text, i) => ({
+            from: nonAdmins[i % nonAdmins.length]._id,
+            text,
+            read: i < 3,
+            createdAt: daysAgo(randomInt(0, 10)),
+        }));
+        await Message.insertMany(messages);
+        console.log(`Seeded ${messages.length} messages`);
+
+        // ── Summary ──
+        console.log('\n── Seed Summary ──');
+        for (const a of authors) {
+            const blogCount = createdBlogs.filter((b) => b.author.equals(a._id)).length;
+            console.log(`  ${a.name} — ${blogCount} blogs, ${a.followers.length} followers, ${a.following.length} following, ${a.bookmarks.length} bookmarks${a.isAdmin ? ' [ADMIN]' : ''}`);
+        }
+        const totalLikes = createdBlogs.reduce((sum, b) => sum + b.likes.length, 0);
+        const totalComments = createdBlogs.reduce((sum, b) => sum + b.comments.length, 0);
+        console.log(`  Blogs: ${createdBlogs.length} | Likes: ${totalLikes} | Comments: ${totalComments}`);
+        console.log(`  Notifications: ${notifications.length} | Messages: ${messages.length}`);
         console.log('\nSeed completed successfully!');
-        authors.forEach((a) => console.log(`  ${a.name} (${a.email})${a.isAdmin ? ' [ADMIN]' : ''}`));
-        console.log(`Blogs: ${createdBlogs.length} posts created`);
 
         process.exit(0);
     } catch (error) {
